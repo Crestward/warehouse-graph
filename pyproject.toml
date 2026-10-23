@@ -1,0 +1,42 @@
+[project]
+name = "warehouse-graph"
+version = "0.1.0"
+description = "Shared metadata/lineage graph, warehouse adapters, policy-as-code and MCP server for warehouse-qa and pipeline-sentinel."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=2.1,<3",
+]
+
+[project.scripts]
+warehouse-graph = "warehouse_graph.cli:main"
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/warehouse_graph"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["src", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
