@@ -44,3 +44,8 @@ Format: **context → options → choice → why**. Newest at the bottom. Scope 
 - **Choice:** keep Azure + Azure Databricks (PRD §6.1). No swap to AWS.
 - **Why:** the ads are cloud-agnostic, so depth on one cloud is what counts. Azure leads the NZ data-platform sample, and Unity Catalog row filters / masks map directly onto policy-as-code. The adapter design keeps a later AWS port limited to PRD §6.6–6.7.
 - **MLOps:** v1 already covers the practices employers mean (CI gates, eval gates, IaC, monitoring, cost controls). MLflow tracking was parked rather than added (scope contract, swap never add).
+
+## D8. Azure region: Australia East (task 0.7, check 4)
+- **Evidence:** Azure Databricks isn't offered in New Zealand North (Microsoft Learn region list, updated 2026-10-21). Australia East has serverless SQL warehouses, Unity Catalog, system tables and Model Serving.
+- **Choice:** the whole `azure` profile (Databricks, storage/queue, Function App, Key Vault, App Insights) goes in **Australia East**.
+- **Why one region:** splitting the Functions into NZ North would add cross-region latency and egress without any residency gain, because the data lives in Databricks. Australia East is the nearest Databricks region to NZ. Re-check before Phase 16 in case NZ North is added.
