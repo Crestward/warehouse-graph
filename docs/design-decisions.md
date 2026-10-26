@@ -38,3 +38,9 @@ Format: **context → options → choice → why**. Newest at the bottom. Scope 
 ## D6. Licence and dependency wiring
 - **Choice:** MIT for all three repos. `warehouse-qa` and `pipeline-sentinel` depend on `warehouse-graph` as a git dependency pinned to a tag, not published to PyPI.
 - **Why:** simplest permissive licence for a portfolio; a git tag pin keeps the three repos reproducible without a package registry.
+
+## D7. Cloud choice confirmed by market evidence (task 0.6)
+- **Evidence:** the NZ AI/ML ads I'd apply for almost all say "cloud-native engineering on Azure, AWS, or GCP; Python; modern MLOps tooling" (`docs/market-evidence.md`).
+- **Choice:** keep Azure + Azure Databricks (PRD §6.1). No swap to AWS.
+- **Why:** the ads are cloud-agnostic, so depth on one cloud is what counts. Azure leads the NZ data-platform sample, and Unity Catalog row filters / masks map directly onto policy-as-code. The adapter design keeps a later AWS port limited to PRD §6.6–6.7.
+- **MLOps:** v1 already covers the practices employers mean (CI gates, eval gates, IaC, monitoring, cost controls). MLflow tracking was parked rather than added (scope contract, swap never add).
