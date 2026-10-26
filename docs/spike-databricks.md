@@ -7,6 +7,9 @@ Goal: find the platform limits now, not in week 11. Record each result and the f
 2. In the workspace: **Settings → Developer → Access tokens → Generate** (lifetime: 30 days). Put the URL and token in `.env` as `DATABRICKS_HOST` and `DATABRICKS_TOKEN` (never commit).
 3. Note the SQL warehouse's HTTP path (**SQL Warehouses → your warehouse → Connection details**) as `DATABRICKS_HTTP_PATH`.
 
+**Connection test (2026-10-26): passed.** `databricks-sql-connector` → Serverless Starter Warehouse: `SELECT 1` works, default catalog `workspace`, catalogs visible `samples`, `system`, `workspace`. First connect took about 15 s (warehouse cold start).
+- Gotcha: `DATABRICKS_HOST` must be the bare `https://dbc-….cloud.databricks.com`. The browser URL's `/?o=<workspace-id>` suffix makes the connection fail with a generic `RequestError`.
+
 ## Checks
 | # | Check | How | Result | Fallback if it fails |
 |---|---|---|---|---|
