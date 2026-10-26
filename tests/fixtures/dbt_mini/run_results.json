@@ -1,0 +1,252 @@
+{
+ "metadata": {
+  "dbt_schema_version": "https://schemas.getdbt.com/dbt/run-results/v6.json",
+  "dbt_version": "1.12.6",
+  "env": {},
+  "generated_at": "2026-10-26T12:23:03.001273Z",
+  "invocation_id": "85282593-5c68-4b80-9b88-e418cce59605",
+  "invocation_started_at": "2026-10-26T12:22:38.540635Z"
+ },
+ "results": [
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.2077770233154297,
+   "failures": null,
+   "message": "CREATE VIEW",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"staging\".\"stg_hr__employees\"",
+   "status": "success",
+   "thread_id": "Thread-2 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:40.227614Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:40.212208Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:40.387161Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:40.270657Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.stg_hr__employees"
+  },
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.21807169914245605,
+   "failures": null,
+   "message": "CREATE VIEW",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"staging\".\"stg_marketing__ad_spend\"",
+   "status": "success",
+   "thread_id": "Thread-3 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:40.226604Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:40.215235Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:40.398696Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:40.227614Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.stg_marketing__ad_spend"
+  },
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.07868266105651855,
+   "failures": null,
+   "message": "CREATE VIEW",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"staging\".\"stg_shop__orders\"",
+   "status": "success",
+   "thread_id": "Thread-4 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:40.429970Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:40.419828Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:40.492021Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:40.430970Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.stg_shop__orders"
+  },
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.09005928039550781,
+   "failures": null,
+   "message": "CREATE VIEW",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"staging\".\"stg_marketing__campaigns\"",
+   "status": "success",
+   "thread_id": "Thread-2 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:40.422344Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:40.412798Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:40.497491Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:40.426404Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.stg_marketing__campaigns"
+  },
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.09146237373352051,
+   "failures": null,
+   "message": "CREATE VIEW",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"staging\".\"stg_shop__payments\"",
+   "status": "success",
+   "thread_id": "Thread-1 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:40.520991Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:40.509580Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:40.593309Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:40.524913Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.stg_shop__payments"
+  },
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.07146620750427246,
+   "failures": null,
+   "message": "CREATE VIEW",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"intermediate\".\"int_marketing__spend_daily\"",
+   "status": "success",
+   "thread_id": "Thread-1 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:41.650526Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:41.635321Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:41.700025Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:41.653531Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.int_marketing__spend_daily"
+  },
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.12955164909362793,
+   "failures": null,
+   "message": "SELECT 29468",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"marts\".\"orders_v1\"",
+   "status": "success",
+   "thread_id": "Thread-4 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:41.674393Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:41.667858Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:41.789419Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:41.675401Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.orders_v1"
+  },
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.07087993621826172,
+   "failures": null,
+   "message": "SELECT 1356",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"marts\".\"fct_ad_spend_daily\"",
+   "status": "success",
+   "thread_id": "Thread-1 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:42.089519Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:42.085519Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:42.149772Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:42.089519Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.fct_ad_spend_daily"
+  },
+  {
+   "batch_results": null,
+   "compiled": true,
+   "execution_time": 0.27287983894348145,
+   "failures": null,
+   "message": "SELECT 29468",
+   "overload_results": null,
+   "relation_name": "\"warehouse\".\"marts\".\"fct_orders\"",
+   "status": "success",
+   "thread_id": "Thread-2 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:22:43.657918Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:22:43.651549Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:22:43.922402Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:22:43.657918Z"
+    }
+   ],
+   "unique_id": "model.kiwi_retail.fct_orders"
+  },
+  {
+   "batch_results": null,
+   "compiled": null,
+   "execution_time": 0.0044345855712890625,
+   "failures": 0,
+   "message": "NO-OP",
+   "overload_results": null,
+   "relation_name": null,
+   "status": "no-op",
+   "thread_id": "Thread-4 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:23:01.091617Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:23:01.091617Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:23:01.093054Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:23:01.093054Z"
+    }
+   ],
+   "unique_id": "exposure.kiwi_retail.marketing_performance_dashboard"
+  }
+ ]
+}

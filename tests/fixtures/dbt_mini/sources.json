@@ -1,0 +1,123 @@
+{
+ "metadata": {
+  "dbt_schema_version": "https://schemas.getdbt.com/dbt/sources/v3.json",
+  "dbt_version": "1.12.6",
+  "env": {},
+  "generated_at": "2026-10-26T12:23:07.155910Z",
+  "invocation_id": "1c299bd6-1532-4af2-a50a-bc33186886f5",
+  "invocation_started_at": "2026-10-26T12:23:05.957175Z"
+ },
+ "results": [
+  {
+   "adapter_response": {
+    "_message": "SELECT 1",
+    "code": "SELECT",
+    "rows_affected": 1
+   },
+   "criteria": {
+    "error_after": {
+     "count": 48,
+     "period": "hour"
+    },
+    "filter": null,
+    "warn_after": {
+     "count": 24,
+     "period": "hour"
+    }
+   },
+   "execution_time": 0.03462409973144531,
+   "max_loaded_at": "2026-10-26T12:22:33.385837+00:00",
+   "max_loaded_at_time_ago_in_s": 33.747849,
+   "snapshotted_at": "2026-10-26T12:23:07.133686+00:00",
+   "status": "pass",
+   "thread_id": "Thread-1 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:23:07.105955Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:23:07.105955Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:23:07.138414Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:23:07.105955Z"
+    }
+   ],
+   "unique_id": "source.kiwi_retail.marketing.ad_spend"
+  },
+  {
+   "adapter_response": {
+    "_message": "SELECT 1",
+    "code": "SELECT",
+    "rows_affected": 1
+   },
+   "criteria": {
+    "error_after": {
+     "count": 24,
+     "period": "hour"
+    },
+    "filter": null,
+    "warn_after": {
+     "count": 12,
+     "period": "hour"
+    }
+   },
+   "execution_time": 0.035614728927612305,
+   "max_loaded_at": "2026-10-26T12:22:33.385837+00:00",
+   "max_loaded_at_time_ago_in_s": 33.747825,
+   "snapshotted_at": "2026-10-26T12:23:07.133662+00:00",
+   "status": "pass",
+   "thread_id": "Thread-3 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:23:07.105955Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:23:07.105955Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:23:07.140416Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:23:07.107278Z"
+    }
+   ],
+   "unique_id": "source.kiwi_retail.shop.payments"
+  },
+  {
+   "adapter_response": {
+    "_message": "SELECT 1",
+    "code": "SELECT",
+    "rows_affected": 1
+   },
+   "criteria": {
+    "error_after": {
+     "count": 24,
+     "period": "hour"
+    },
+    "filter": null,
+    "warn_after": {
+     "count": 12,
+     "period": "hour"
+    }
+   },
+   "execution_time": 0.037940025329589844,
+   "max_loaded_at": "2026-10-26T12:22:33.385837+00:00",
+   "max_loaded_at_time_ago_in_s": 33.747394,
+   "snapshotted_at": "2026-10-26T12:23:07.133231+00:00",
+   "status": "pass",
+   "thread_id": "Thread-2 (worker)",
+   "timing": [
+    {
+     "completed_at": "2026-10-26T12:23:07.105955Z",
+     "name": "compile",
+     "started_at": "2026-10-26T12:23:07.105955Z"
+    },
+    {
+     "completed_at": "2026-10-26T12:23:07.141730Z",
+     "name": "execute",
+     "started_at": "2026-10-26T12:23:07.107278Z"
+    }
+   ],
+   "unique_id": "source.kiwi_retail.shop.orders"
+  }
+ ]
+}

@@ -1,0 +1,6241 @@
+{
+ "exposures": {
+  "exposure.kiwi_retail.marketing_performance_dashboard": {
+   "config": {
+    "enabled": true,
+    "meta": {
+     "consumers": "marketing team",
+     "criticality": "medium"
+    },
+    "tags": []
+   },
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_ad_spend_daily"
+    ]
+   },
+   "description": "Campaign spend, CAC and ROAS.",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "marketing_performance_dashboard"
+   ],
+   "label": "Marketing Performance",
+   "maturity": "medium",
+   "meta": {
+    "consumers": "marketing team",
+    "criticality": "medium"
+   },
+   "metrics": [],
+   "name": "marketing_performance_dashboard",
+   "original_file_path": "models\\marts\\_exposures.yml",
+   "owner": {
+    "email": "marketing-analytics@kiwiretail.example",
+    "name": "Marketing Analytics"
+   },
+   "package_name": "kiwi_retail",
+   "path": "marts\\_exposures.yml",
+   "refs": [
+    {
+     "name": "rpt_campaign_performance",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "fct_ad_spend_daily",
+     "package": null,
+     "version": null
+    }
+   ],
+   "resource_type": "exposure",
+   "sources": [],
+   "tags": [],
+   "type": "dashboard",
+   "unique_id": "exposure.kiwi_retail.marketing_performance_dashboard",
+   "url": "https://bi.kiwiretail.example/dashboards/marketing"
+  }
+ },
+ "metadata": {
+  "adapter_type": "postgres",
+  "dbt_schema_version": "https://schemas.getdbt.com/dbt/manifest/v12.json",
+  "dbt_version": "1.12.6",
+  "env": {},
+  "generated_at": "2026-10-26T12:23:10.687003Z",
+  "invocation_id": "a4869e79-a1bd-4eae-84f4-af9b12590793",
+  "invocation_started_at": "2026-10-26T12:07:32.844033+00:00",
+  "project_id": "56b807187f44d0d57bb862b4f4a84eff",
+  "project_name": "kiwi_retail",
+  "quoting": {
+   "column": null,
+   "database": true,
+   "identifier": true,
+   "schema": true
+  },
+  "run_started_at": "2026-10-26T12:07:32.845277+00:00",
+  "send_anonymous_usage_stats": true,
+  "user_id": "cad392b1-4505-4143-b359-8bcc57c479a9"
+ },
+ "metrics": {
+  "metric.kiwi_retail.ad_spend_nzd": {
+   "config": {
+    "enabled": true,
+    "group": null,
+    "meta": {
+     "canonical": true,
+     "owner": "marketing-analytics@kiwiretail.example",
+     "team": "marketing"
+    }
+   },
+   "depends_on": {
+    "macros": [],
+    "nodes": []
+   },
+   "description": "Paid media spend in NZD.",
+   "filter": null,
+   "fqn": [
+    "kiwi_retail",
+    "semantic",
+    "ad_spend_nzd"
+   ],
+   "group": null,
+   "label": "Ad spend",
+   "meta": {
+    "canonical": true,
+    "owner": "marketing-analytics@kiwiretail.example",
+    "team": "marketing"
+   },
+   "metadata": null,
+   "metrics": [],
+   "name": "ad_spend_nzd",
+   "original_file_path": "models\\semantic\\metrics.yml",
+   "package_name": "kiwi_retail",
+   "path": "semantic\\metrics.yml",
+   "refs": [],
+   "resource_type": "metric",
+   "sources": [],
+   "tags": [],
+   "time_granularity": null,
+   "type": "simple",
+   "type_params": {
+    "conversion_type_params": null,
+    "cumulative_type_params": null,
+    "denominator": null,
+    "expr": null,
+    "fill_nulls_with": null,
+    "grain_to_date": null,
+    "input_measures": [
+     {
+      "alias": null,
+      "fill_nulls_with": null,
+      "filter": null,
+      "join_to_timespine": false,
+      "name": "spend_nzd"
+     }
+    ],
+    "is_private": null,
+    "join_to_timespine": false,
+    "measure": {
+     "alias": null,
+     "fill_nulls_with": null,
+     "filter": null,
+     "join_to_timespine": false,
+     "name": "spend_nzd"
+    },
+    "metric_aggregation_params": null,
+    "metrics": [],
+    "numerator": null,
+    "window": null
+   },
+   "unique_id": "metric.kiwi_retail.ad_spend_nzd"
+  }
+ },
+ "nodes": {
+  "model.kiwi_retail.fct_ad_spend_daily": {
+   "access": "protected",
+   "alias": "fct_ad_spend_daily",
+   "checksum": {
+    "checksum": "6c9fe4826db4c6bab7ed09b59c918e23c3cd14939548334799b3edfa6c10e600",
+    "name": "sha256"
+   },
+   "columns": {
+    "ad_spend_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "ad_spend_id",
+     "quote": null,
+     "tags": []
+    },
+    "campaign_channel": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "campaign_channel",
+     "quote": null,
+     "tags": []
+    },
+    "campaign_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "campaign_id",
+     "quote": null,
+     "tags": []
+    },
+    "clicks": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "clicks",
+     "quote": null,
+     "tags": []
+    },
+    "impressions": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "impressions",
+     "quote": null,
+     "tags": []
+    },
+    "region_code": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "region_code",
+     "quote": null,
+     "tags": []
+    },
+    "spend_date": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "spend_date",
+     "quote": null,
+     "tags": []
+    },
+    "spend_nzd": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "spend_nzd",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "select\n    ad_spend_id,\n    campaign_id,\n    campaign_channel,\n    region_code,\n    spend_date,\n    spend_nzd,\n    impressions,\n    clicks\nfrom \"warehouse\".\"intermediate\".\"int_marketing__spend_daily\"",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\marketing\\fct_ad_spend_daily.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "table",
+    "meta": {
+     "layer": "marts",
+     "owner": "marketing-analytics@kiwiretail.example"
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "marts",
+    "static_analysis": null,
+    "tags": [
+     "marketing"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.int_marketing__spend_daily"
+    ]
+   },
+   "deprecation_date": null,
+   "description": "One row per campaign per day with spend (NZD), impressions and clicks.",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "marketing",
+    "fct_ad_spend_daily"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "layer": "marts",
+    "owner": "marketing-analytics@kiwiretail.example"
+   },
+   "metrics": [],
+   "name": "fct_ad_spend_daily",
+   "original_file_path": "models\\marts\\marketing\\fct_ad_spend_daily.sql",
+   "package_name": "kiwi_retail",
+   "path": "marts\\marketing\\fct_ad_spend_daily.sql",
+   "primary_key": [
+    "ad_spend_id"
+   ],
+   "refs": [
+    {
+     "name": "int_marketing__spend_daily",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": "\"warehouse\".\"marts\".\"fct_ad_spend_daily\"",
+   "resource_type": "model",
+   "schema": "marts",
+   "sources": [],
+   "tags": [
+    "marketing"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.fct_ad_spend_daily",
+   "version": null
+  },
+  "model.kiwi_retail.fct_orders": {
+   "access": "protected",
+   "alias": "fct_orders",
+   "checksum": {
+    "checksum": "003971dcc4c9aa9b724c7a76ec57058e1ca8c55f38c13906c2d5a795c1d16e20",
+    "name": "sha256"
+   },
+   "columns": {
+    "channel": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "channel",
+     "quote": null,
+     "tags": []
+    },
+    "currency_code": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "currency_code",
+     "quote": null,
+     "tags": []
+    },
+    "customer_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "customer_id",
+     "quote": null,
+     "tags": []
+    },
+    "discount_code": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "discount_code",
+     "quote": null,
+     "tags": []
+    },
+    "failed_payment_attempts": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "failed_payment_attempts",
+     "quote": null,
+     "tags": []
+    },
+    "fx_rate_to_nzd": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "fx_rate_to_nzd",
+     "quote": null,
+     "tags": []
+    },
+    "is_revenue_order": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "True for completed and returned orders.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "is_revenue_order",
+     "quote": null,
+     "tags": []
+    },
+    "is_split_tender": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "is_split_tender",
+     "quote": null,
+     "tags": []
+    },
+    "items_cost_nzd": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "items_cost_nzd",
+     "quote": null,
+     "tags": []
+    },
+    "items_subtotal": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "items_subtotal",
+     "quote": null,
+     "tags": []
+    },
+    "line_count": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "line_count",
+     "quote": null,
+     "tags": []
+    },
+    "net_revenue_nzd": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "For revenue orders, order_total_nzd minus refunds; 0 otherwise.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "net_revenue_nzd",
+     "quote": null,
+     "tags": []
+    },
+    "order_date": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_date",
+     "quote": null,
+     "tags": []
+    },
+    "order_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Primary key.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_id",
+     "quote": null,
+     "tags": []
+    },
+    "order_status": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_status",
+     "quote": null,
+     "tags": []
+    },
+    "order_total": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Items + shipping in order currency.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_total",
+     "quote": null,
+     "tags": []
+    },
+    "order_total_nzd": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Items + shipping in NZD.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_total_nzd",
+     "quote": null,
+     "tags": []
+    },
+    "ordered_at": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "ordered_at",
+     "quote": null,
+     "tags": []
+    },
+    "paid_amount": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Successful payments only, in order currency.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "paid_amount",
+     "quote": null,
+     "tags": []
+    },
+    "refund_amount": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "refund_amount",
+     "quote": null,
+     "tags": []
+    },
+    "refund_amount_nzd": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "refund_amount_nzd",
+     "quote": null,
+     "tags": []
+    },
+    "region_code": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Region of the store that took the order.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "region_code",
+     "quote": null,
+     "tags": []
+    },
+    "shipping_fee": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "shipping_fee",
+     "quote": null,
+     "tags": []
+    },
+    "store_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "store_id",
+     "quote": null,
+     "tags": []
+    },
+    "units": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "units",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "select\n    o.order_id,\n    o.customer_id,\n    o.store_id,\n    o.region_code,\n    o.channel,\n    o.ordered_at,\n    o.order_date,\n    o.order_status,\n    o.is_revenue_order,\n    o.currency_code,\n    o.fx_rate_to_nzd,\n    o.discount_code,\n    coalesce(t.line_count, 0) as line_count,\n    coalesce(t.units, 0) as units,\n    coalesce(t.items_subtotal, 0) as items_subtotal,\n    o.shipping_fee,\n    coalesce(t.items_subtotal, 0) + o.shipping_fee as order_total,\n    round(cast(coalesce(t.items_subtotal, 0) + o.shipping_fee * case when o.currency_code = 'AUD' then 1.09 else 1 end as numeric(28,6)), 2) as order_total_nzd,\n    coalesce(t.items_cost_nzd, 0) as items_cost_nzd,\n    coalesce(p.paid_amount, 0) as paid_amount,\n    coalesce(p.failed_attempts, 0) as failed_payment_attempts,\n    coalesce(p.is_split_tender, false) as is_split_tender,\n    coalesce(r.refund_amount, 0) as refund_amount,\n    round(cast(coalesce(r.refund_amount, 0) * case when o.currency_code = 'AUD' then 1.09 else 1 end as numeric(28,6)), 2) as refund_amount_nzd,\n    case\n        when o.is_revenue_order\n            then round(cast(coalesce(t.items_subtotal, 0) + o.shipping_fee - coalesce(r.refund_amount, 0) * case when o.currency_code = 'AUD' then 1.09 else 1 end as numeric(28,6)), 2)\n        else 0\n    end as net_revenue_nzd\nfrom \"warehouse\".\"intermediate\".\"int_orders__enriched\" as o\nleft join \"warehouse\".\"intermediate\".\"int_orders__item_totals\" as t on o.order_id = t.order_id\nleft join \"warehouse\".\"intermediate\".\"int_payments__by_order\" as p on o.order_id = p.order_id\nleft join \"warehouse\".\"intermediate\".\"int_refunds__by_order\" as r on o.order_id = r.order_id",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\core\\fct_orders.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "table",
+    "meta": {
+     "layer": "marts",
+     "owner": "analytics-engineering@kiwiretail.example"
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "marts",
+    "static_analysis": null,
+    "tags": [
+     "core"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": []
+   },
+   "deprecation_date": null,
+   "description": "One row per order (all statuses) with totals in order currency and NZD, payments and refunds. The trusted order-grain fact. Revenue orders are completed + returned.\n",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "core",
+    "fct_orders"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "layer": "marts",
+    "owner": "analytics-engineering@kiwiretail.example"
+   },
+   "metrics": [],
+   "name": "fct_orders",
+   "original_file_path": "models\\marts\\core\\fct_orders.sql",
+   "package_name": "kiwi_retail",
+   "path": "marts\\core\\fct_orders.sql",
+   "primary_key": [
+    "order_id"
+   ],
+   "refs": [
+    {
+     "name": "int_orders__enriched",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "int_orders__item_totals",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "int_payments__by_order",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "int_refunds__by_order",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": "\"warehouse\".\"marts\".\"fct_orders\"",
+   "resource_type": "model",
+   "schema": "marts",
+   "sources": [],
+   "tags": [
+    "core"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.fct_orders",
+   "version": null
+  },
+  "model.kiwi_retail.int_marketing__spend_daily": {
+   "access": "protected",
+   "alias": "int_marketing__spend_daily",
+   "checksum": {
+    "checksum": "9e210bc601049413ab013d8b22edfbdb493f63302f08681387c43c31a5c45d77",
+    "name": "sha256"
+   },
+   "columns": {
+    "ad_spend_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "ad_spend_id",
+     "quote": null,
+     "tags": []
+    },
+    "spend_nzd": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "spend_nzd",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "-- Daily spend per campaign with campaign attributes, converted to NZD.\nselect\n    a.ad_spend_id,\n    a.campaign_id,\n    c.campaign_name,\n    c.campaign_channel,\n    c.region_code,\n    a.spend_date,\n    a.spend,\n    c.currency_code,\n    round(cast(a.spend * case when c.currency_code = 'AUD' then 1.09 else 1 end as numeric(28,6)), 2) as spend_nzd,\n    a.impressions,\n    a.clicks\nfrom \"warehouse\".\"staging\".\"stg_marketing__ad_spend\" as a\ninner join \"warehouse\".\"staging\".\"stg_marketing__campaigns\" as c on a.campaign_id = c.campaign_id",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\intermediate\\int_marketing__spend_daily.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "view",
+    "meta": {
+     "layer": "intermediate",
+     "owner": "analytics-engineering@kiwiretail.example"
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "intermediate",
+    "static_analysis": null,
+    "tags": [
+     "intermediate"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_marketing__ad_spend",
+     "model.kiwi_retail.stg_marketing__campaigns"
+    ]
+   },
+   "deprecation_date": null,
+   "description": "Daily spend per campaign with channel and region, converted to NZD.",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "intermediate",
+    "int_marketing__spend_daily"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "layer": "intermediate",
+    "owner": "analytics-engineering@kiwiretail.example"
+   },
+   "metrics": [],
+   "name": "int_marketing__spend_daily",
+   "original_file_path": "models\\intermediate\\int_marketing__spend_daily.sql",
+   "package_name": "kiwi_retail",
+   "path": "intermediate\\int_marketing__spend_daily.sql",
+   "primary_key": [
+    "ad_spend_id"
+   ],
+   "refs": [
+    {
+     "name": "stg_marketing__ad_spend",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "stg_marketing__campaigns",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": "\"warehouse\".\"intermediate\".\"int_marketing__spend_daily\"",
+   "resource_type": "model",
+   "schema": "intermediate",
+   "sources": [],
+   "tags": [
+    "intermediate"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.int_marketing__spend_daily",
+   "version": null
+  },
+  "model.kiwi_retail.orders_v1": {
+   "access": "protected",
+   "alias": "orders_v1",
+   "checksum": {
+    "checksum": "30aa9f1e546c0353d8749b1bbf133b08786b48d9282e46852cf727fb6d9f4516",
+    "name": "sha256"
+   },
+   "columns": {
+    "order_amount": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Sum of all payment attempts (wrong for split/failed payments).",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_amount",
+     "quote": null,
+     "tags": []
+    },
+    "order_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_id",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "-- DEPRECATED (planted): the 2022 orders model. Sums every payment attempt (including failed\n-- ones), ignores currency and refunds. Replaced by fct_orders.\nselect\n    o.order_id,\n    o.customer_id,\n    o.store_id,\n    o.order_date,\n    o.order_status,\n    sum(p.amount) as order_amount\nfrom \"warehouse\".\"staging\".\"stg_shop__orders\" as o\nleft join \"warehouse\".\"staging\".\"stg_shop__payments\" as p on o.order_id = p.order_id\ngroup by o.order_id, o.customer_id, o.store_id, o.order_date, o.order_status",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\legacy\\orders_v1.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "table",
+    "meta": {
+     "deprecated": true,
+     "layer": "marts",
+     "owner": "analytics-engineering@kiwiretail.example",
+     "replaced_by": "fct_orders",
+     "trap": {
+      "kind": "deprecated_model",
+      "note": "Still queried by old notebooks; amounts are wrong."
+     }
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "marts",
+    "static_analysis": null,
+    "tags": [
+     "legacy"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders",
+     "model.kiwi_retail.stg_shop__payments"
+    ]
+   },
+   "deprecation_date": null,
+   "description": "DEPRECATED. The 2022 orders model. order_amount sums every payment attempt (including failed ones) and ignores currency and refunds. Use fct_orders.\n",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "legacy",
+    "orders_v1"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "deprecated": true,
+    "layer": "marts",
+    "owner": "analytics-engineering@kiwiretail.example",
+    "replaced_by": "fct_orders",
+    "trap": {
+     "kind": "deprecated_model",
+     "note": "Still queried by old notebooks; amounts are wrong."
+    }
+   },
+   "metrics": [],
+   "name": "orders_v1",
+   "original_file_path": "models\\marts\\legacy\\orders_v1.sql",
+   "package_name": "kiwi_retail",
+   "path": "marts\\legacy\\orders_v1.sql",
+   "primary_key": [
+    "order_id"
+   ],
+   "refs": [
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "stg_shop__payments",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": "\"warehouse\".\"marts\".\"orders_v1\"",
+   "resource_type": "model",
+   "schema": "marts",
+   "sources": [],
+   "tags": [
+    "legacy"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.orders_v1",
+   "version": null
+  },
+  "model.kiwi_retail.stg_hr__employees": {
+   "access": "protected",
+   "alias": "stg_hr__employees",
+   "checksum": {
+    "checksum": "933297140bcbe32bbd0838c75f04b8102c9546f7ecbd36fcd24af69ad9d075e3",
+    "name": "sha256"
+   },
+   "columns": {
+    "annual_salary": {
+     "config": {
+      "meta": {
+       "pii": "salary",
+       "sensitivity": "restricted"
+      },
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Gross annual base salary in salary_currency.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {
+      "pii": "salary",
+      "sensitivity": "restricted"
+     },
+     "name": "annual_salary",
+     "quote": null,
+     "tags": []
+    },
+    "employee_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "employee_id",
+     "quote": null,
+     "tags": []
+    },
+    "first_name": {
+     "config": {
+      "meta": {
+       "pii": "name"
+      },
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {
+      "pii": "name"
+     },
+     "name": "first_name",
+     "quote": null,
+     "tags": []
+    },
+    "hired_on": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "hired_on",
+     "quote": null,
+     "tags": []
+    },
+    "job_title": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "job_title",
+     "quote": null,
+     "tags": []
+    },
+    "last_name": {
+     "config": {
+      "meta": {
+       "pii": "name"
+      },
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {
+      "pii": "name"
+     },
+     "name": "last_name",
+     "quote": null,
+     "tags": []
+    },
+    "manager_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "employee_id of the store manager; null for managers.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "manager_id",
+     "quote": null,
+     "tags": []
+    },
+    "salary_currency": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "salary_currency",
+     "quote": null,
+     "tags": []
+    },
+    "store_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "store_id",
+     "quote": null,
+     "tags": []
+    },
+    "terminated_on": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Last day of employment; null for current staff.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "terminated_on",
+     "quote": null,
+     "tags": []
+    },
+    "work_email": {
+     "config": {
+      "meta": {
+       "pii": "email"
+      },
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {
+      "pii": "email"
+     },
+     "name": "work_email",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "select\n    employee_id,\n    first_name,\n    last_name,\n    work_email,\n    store_id,\n    job_title,\n    hired_on,\n    terminated_on,\n    annual_salary,\n    salary_currency,\n    manager_id\nfrom \"warehouse\".\"raw\".\"employees\"",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\hr\\stg_hr__employees.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "view",
+    "meta": {
+     "layer": "staging",
+     "owner": "people-ops@kiwiretail.example",
+     "sensitivity": "restricted"
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "staging",
+    "static_analysis": null,
+    "tags": [
+     "staging"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "source.kiwi_retail.hr.employees"
+    ]
+   },
+   "deprecation_date": null,
+   "description": "Employees, current and former. Contains salary (restricted).",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "hr",
+    "stg_hr__employees"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "layer": "staging",
+    "owner": "people-ops@kiwiretail.example",
+    "sensitivity": "restricted"
+   },
+   "metrics": [],
+   "name": "stg_hr__employees",
+   "original_file_path": "models\\staging\\hr\\stg_hr__employees.sql",
+   "package_name": "kiwi_retail",
+   "path": "staging\\hr\\stg_hr__employees.sql",
+   "primary_key": [
+    "employee_id"
+   ],
+   "refs": [],
+   "relation_name": "\"warehouse\".\"staging\".\"stg_hr__employees\"",
+   "resource_type": "model",
+   "schema": "staging",
+   "sources": [
+    [
+     "hr",
+     "employees"
+    ]
+   ],
+   "tags": [
+    "staging"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.stg_hr__employees",
+   "version": null
+  },
+  "model.kiwi_retail.stg_marketing__ad_spend": {
+   "access": "protected",
+   "alias": "stg_marketing__ad_spend",
+   "checksum": {
+    "checksum": "6eed00a0339a9610956cd1ccae48f780f4c95c8d7e3a8d1f4beadf77905f55e3",
+    "name": "sha256"
+   },
+   "columns": {
+    "ad_spend_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Surrogate key campaign_id-spend_date.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "ad_spend_id",
+     "quote": null,
+     "tags": []
+    },
+    "campaign_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "campaign_id",
+     "quote": null,
+     "tags": []
+    },
+    "clicks": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "clicks",
+     "quote": null,
+     "tags": []
+    },
+    "impressions": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "impressions",
+     "quote": null,
+     "tags": []
+    },
+    "spend": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Spend in the campaign's currency.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "spend",
+     "quote": null,
+     "tags": []
+    },
+    "spend_date": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "spend_date",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "select\n    cast(campaign_id as TEXT) || '-' || cast(spend_date as TEXT) as ad_spend_id,\n    campaign_id,\n    spend_date,\n    spend,\n    impressions,\n    clicks\nfrom \"warehouse\".\"raw\".\"ad_spend\"",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\marketing\\stg_marketing__ad_spend.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "view",
+    "meta": {
+     "layer": "staging",
+     "owner": "data-platform@kiwiretail.example"
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "staging",
+    "static_analysis": null,
+    "tags": [
+     "staging"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "source.kiwi_retail.marketing.ad_spend"
+    ]
+   },
+   "deprecation_date": null,
+   "description": "Daily ad spend per campaign, one row per campaign per day.",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "stg_marketing__ad_spend"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "layer": "staging",
+    "owner": "data-platform@kiwiretail.example"
+   },
+   "metrics": [],
+   "name": "stg_marketing__ad_spend",
+   "original_file_path": "models\\staging\\marketing\\stg_marketing__ad_spend.sql",
+   "package_name": "kiwi_retail",
+   "path": "staging\\marketing\\stg_marketing__ad_spend.sql",
+   "primary_key": [
+    "ad_spend_id"
+   ],
+   "refs": [],
+   "relation_name": "\"warehouse\".\"staging\".\"stg_marketing__ad_spend\"",
+   "resource_type": "model",
+   "schema": "staging",
+   "sources": [
+    [
+     "marketing",
+     "ad_spend"
+    ]
+   ],
+   "tags": [
+    "staging"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.stg_marketing__ad_spend",
+   "version": null
+  },
+  "model.kiwi_retail.stg_marketing__campaigns": {
+   "access": "protected",
+   "alias": "stg_marketing__campaigns",
+   "checksum": {
+    "checksum": "e71d927077c7840b5af03ceef2e53848f2315929ca733c0068910b1d6225e481",
+    "name": "sha256"
+   },
+   "columns": {
+    "budget": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Planned budget in currency_code.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "budget",
+     "quote": null,
+     "tags": []
+    },
+    "campaign_channel": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "campaign_channel",
+     "quote": null,
+     "tags": []
+    },
+    "campaign_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "campaign_id",
+     "quote": null,
+     "tags": []
+    },
+    "campaign_name": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "campaign_name",
+     "quote": null,
+     "tags": []
+    },
+    "currency_code": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "currency_code",
+     "quote": null,
+     "tags": []
+    },
+    "ended_on": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "ended_on",
+     "quote": null,
+     "tags": []
+    },
+    "region_code": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "region_code",
+     "quote": null,
+     "tags": []
+    },
+    "started_on": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "started_on",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "select\n    campaign_id,\n    campaign_name,\n    channel as campaign_channel,\n    region_code,\n    started_on,\n    ended_on,\n    budget,\n    currency_code\nfrom \"warehouse\".\"raw\".\"campaigns\"",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\marketing\\stg_marketing__campaigns.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "view",
+    "meta": {
+     "layer": "staging",
+     "owner": "data-platform@kiwiretail.example"
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "staging",
+    "static_analysis": null,
+    "tags": [
+     "staging"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "source.kiwi_retail.marketing.campaigns"
+    ]
+   },
+   "deprecation_date": null,
+   "description": "Paid campaigns, one row per campaign.",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "stg_marketing__campaigns"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "layer": "staging",
+    "owner": "data-platform@kiwiretail.example"
+   },
+   "metrics": [],
+   "name": "stg_marketing__campaigns",
+   "original_file_path": "models\\staging\\marketing\\stg_marketing__campaigns.sql",
+   "package_name": "kiwi_retail",
+   "path": "staging\\marketing\\stg_marketing__campaigns.sql",
+   "primary_key": [
+    "campaign_id"
+   ],
+   "refs": [],
+   "relation_name": "\"warehouse\".\"staging\".\"stg_marketing__campaigns\"",
+   "resource_type": "model",
+   "schema": "staging",
+   "sources": [
+    [
+     "marketing",
+     "campaigns"
+    ]
+   ],
+   "tags": [
+    "staging"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.stg_marketing__campaigns",
+   "version": null
+  },
+  "model.kiwi_retail.stg_shop__orders": {
+   "access": "protected",
+   "alias": "stg_shop__orders",
+   "checksum": {
+    "checksum": "9001a4f9dbf1f1d1871f370b9fe05a1b1e984f9ed251a944df0bc5239002a9e4",
+    "name": "sha256"
+   },
+   "columns": {
+    "currency_code": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Currency of all amounts on this order (NZD or AUD).",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "currency_code",
+     "quote": null,
+     "tags": []
+    },
+    "customer_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "customer_id",
+     "quote": null,
+     "tags": []
+    },
+    "discount_code": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Promo code applied to the whole order, if any.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "discount_code",
+     "quote": null,
+     "tags": []
+    },
+    "has_discount": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "has_discount",
+     "quote": null,
+     "tags": []
+    },
+    "order_date": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Date part of ordered_at.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_date",
+     "quote": null,
+     "tags": []
+    },
+    "order_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Primary key.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_id",
+     "quote": null,
+     "tags": []
+    },
+    "order_status": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "completed, returned, cancelled, or pending (awaiting payment).",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_status",
+     "quote": null,
+     "tags": []
+    },
+    "ordered_at": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Timestamp the order was placed (store local time).",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "ordered_at",
+     "quote": null,
+     "tags": []
+    },
+    "shipping_fee": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Shipping charged, in order currency. Zero for in-store orders.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "shipping_fee",
+     "quote": null,
+     "tags": []
+    },
+    "store_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Store or online storefront that took the order.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "store_id",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "select\n    order_id,\n    customer_id,\n    store_id,\n    ordered_at,\n    cast(ordered_at as date) as order_date,\n    status as order_status,\n    currency_code,\n    shipping_fee,\n    discount_code,\n    discount_code is not null as has_discount\nfrom \"warehouse\".\"raw\".\"orders\"",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\stg_shop__orders.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "view",
+    "meta": {
+     "layer": "staging",
+     "owner": "data-platform@kiwiretail.example"
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "staging",
+    "static_analysis": null,
+    "tags": [
+     "staging"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "source.kiwi_retail.shop.orders"
+    ]
+   },
+   "deprecation_date": null,
+   "description": "Order headers, one row per order, all channels and statuses.",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "stg_shop__orders"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "layer": "staging",
+    "owner": "data-platform@kiwiretail.example"
+   },
+   "metrics": [],
+   "name": "stg_shop__orders",
+   "original_file_path": "models\\staging\\shop\\stg_shop__orders.sql",
+   "package_name": "kiwi_retail",
+   "path": "staging\\shop\\stg_shop__orders.sql",
+   "primary_key": [
+    "order_id"
+   ],
+   "refs": [],
+   "relation_name": "\"warehouse\".\"staging\".\"stg_shop__orders\"",
+   "resource_type": "model",
+   "schema": "staging",
+   "sources": [
+    [
+     "shop",
+     "orders"
+    ]
+   ],
+   "tags": [
+    "staging"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.stg_shop__orders",
+   "version": null
+  },
+  "model.kiwi_retail.stg_shop__payments": {
+   "access": "protected",
+   "alias": "stg_shop__payments",
+   "checksum": {
+    "checksum": "b0ca0aaa3bb4185c95f788461963f733ad4ccde4d8788ff6cc717a238df3155a",
+    "name": "sha256"
+   },
+   "columns": {
+    "amount": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "Amount attempted, in order currency.",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "amount",
+     "quote": null,
+     "tags": []
+    },
+    "order_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "order_id",
+     "quote": null,
+     "tags": []
+    },
+    "paid_at": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "paid_at",
+     "quote": null,
+     "tags": []
+    },
+    "payment_id": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "payment_id",
+     "quote": null,
+     "tags": []
+    },
+    "payment_method": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "payment_method",
+     "quote": null,
+     "tags": []
+    },
+    "payment_status": {
+     "config": {
+      "meta": {},
+      "tags": []
+     },
+     "constraints": [],
+     "data_type": null,
+     "description": "",
+     "dimension": null,
+     "doc_blocks": [],
+     "entity": null,
+     "granularity": null,
+     "meta": {},
+     "name": "payment_status",
+     "quote": null,
+     "tags": []
+    }
+   },
+   "compiled": true,
+   "compiled_code": "select\n    payment_id,\n    order_id,\n    payment_method,\n    amount,\n    status as payment_status,\n    created_at as paid_at\nfrom \"warehouse\".\"raw\".\"payments\"",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\stg_shop__payments.sql",
+   "config": {
+    "access": "protected",
+    "alias": null,
+    "batch_size": null,
+    "begin": null,
+    "column_types": {},
+    "concurrent_batches": null,
+    "contract": {
+     "alias_types": true,
+     "enforced": false
+    },
+    "database": null,
+    "docs": {
+     "node_color": null,
+     "show": true
+    },
+    "enabled": true,
+    "event_time": null,
+    "freshness": null,
+    "full_refresh": null,
+    "grants": {},
+    "group": null,
+    "incremental_strategy": null,
+    "latest_version_pointer": {
+     "alias": null,
+     "enabled": null
+    },
+    "lookback": 1,
+    "materialized": "view",
+    "meta": {
+     "layer": "staging",
+     "owner": "data-platform@kiwiretail.example"
+    },
+    "on_configuration_change": "apply",
+    "on_error": null,
+    "on_schema_change": "ignore",
+    "packages": [],
+    "persist_docs": {},
+    "post-hook": [],
+    "pre-hook": [],
+    "quoting": {},
+    "schema": "staging",
+    "static_analysis": null,
+    "tags": [
+     "staging"
+    ],
+    "unique_key": null
+   },
+   "constraints": [],
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "source.kiwi_retail.shop.payments"
+    ]
+   },
+   "deprecation_date": null,
+   "description": "Payment attempts, one row per attempt. Includes failed attempts and split tenders, so an order can have several rows. Filter payment_status = 'success' before summing.\n",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "stg_shop__payments"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "latest_version": null,
+   "meta": {
+    "layer": "staging",
+    "owner": "data-platform@kiwiretail.example"
+   },
+   "metrics": [],
+   "name": "stg_shop__payments",
+   "original_file_path": "models\\staging\\shop\\stg_shop__payments.sql",
+   "package_name": "kiwi_retail",
+   "path": "staging\\shop\\stg_shop__payments.sql",
+   "primary_key": [
+    "payment_id"
+   ],
+   "refs": [],
+   "relation_name": "\"warehouse\".\"staging\".\"stg_shop__payments\"",
+   "resource_type": "model",
+   "schema": "staging",
+   "sources": [
+    [
+     "shop",
+     "payments"
+    ]
+   ],
+   "tags": [
+    "staging"
+   ],
+   "time_spine": null,
+   "unique_id": "model.kiwi_retail.stg_shop__payments",
+   "version": null
+  },
+  "test.kiwi_retail.accepted_values_fct_orders_order_status__completed__returned__cancelled__pending.436c636884": {
+   "alias": "accepted_values_fct_orders_7ea808ff4e34507bf2925a8e6e8895b2",
+   "attached_node": "model.kiwi_retail.fct_orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_status",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith all_values as (\n\n    select\n        order_status as value_field,\n        count(*) as n_records\n\n    from \"warehouse\".\"marts\".\"fct_orders\"\n    group by order_status\n\n)\n\nselect *\nfrom all_values\nwhere value_field not in (\n    'completed','returned','cancelled','pending'\n)\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\accepted_values_fct_orders_7ea808ff4e34507bf2925a8e6e8895b2.sql",
+   "config": {
+    "alias": "accepted_values_fct_orders_7ea808ff4e34507bf2925a8e6e8895b2",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.fct_orders",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "accepted_values_fct_orders_order_status__completed__returned__cancelled__pending"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "accepted_values_fct_orders_order_status__completed__returned__cancelled__pending",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "accepted_values_fct_orders_7ea808ff4e34507bf2925a8e6e8895b2.sql",
+   "refs": [
+    {
+     "name": "fct_orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_status",
+     "model": "{{ get_where_subquery(ref('fct_orders')) }}",
+     "values": [
+      "completed",
+      "returned",
+      "cancelled",
+      "pending"
+     ]
+    },
+    "name": "accepted_values",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.accepted_values_fct_orders_order_status__completed__returned__cancelled__pending.436c636884"
+  },
+  "test.kiwi_retail.accepted_values_stg_marketing__campaigns_campaign_channel__search__social__email__display.b67314acfc": {
+   "alias": "accepted_values_stg_marketing__7aafbfa56890923612cc561bba59f335",
+   "attached_node": "model.kiwi_retail.stg_marketing__campaigns",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "campaign_channel",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith all_values as (\n\n    select\n        campaign_channel as value_field,\n        count(*) as n_records\n\n    from \"warehouse\".\"staging\".\"stg_marketing__campaigns\"\n    group by campaign_channel\n\n)\n\nselect *\nfrom all_values\nwhere value_field not in (\n    'search','social','email','display'\n)\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\marketing\\_marketing__models.yml\\accepted_values_stg_marketing__7aafbfa56890923612cc561bba59f335.sql",
+   "config": {
+    "alias": "accepted_values_stg_marketing__7aafbfa56890923612cc561bba59f335",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_marketing__campaigns"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_marketing__campaigns",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "accepted_values_stg_marketing__campaigns_campaign_channel__search__social__email__display"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "accepted_values_stg_marketing__campaigns_campaign_channel__search__social__email__display",
+   "original_file_path": "models\\staging\\marketing\\_marketing__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "accepted_values_stg_marketing__7aafbfa56890923612cc561bba59f335.sql",
+   "refs": [
+    {
+     "name": "stg_marketing__campaigns",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "campaign_channel",
+     "model": "{{ get_where_subquery(ref('stg_marketing__campaigns')) }}",
+     "values": [
+      "search",
+      "social",
+      "email",
+      "display"
+     ]
+    },
+    "name": "accepted_values",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.accepted_values_stg_marketing__campaigns_campaign_channel__search__social__email__display.b67314acfc"
+  },
+  "test.kiwi_retail.accepted_values_stg_shop__orders_currency_code__NZD__AUD.a8da6fb6d2": {
+   "alias": "accepted_values_stg_shop__orders_currency_code__NZD__AUD",
+   "attached_node": "model.kiwi_retail.stg_shop__orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "currency_code",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith all_values as (\n\n    select\n        currency_code as value_field,\n        count(*) as n_records\n\n    from \"warehouse\".\"staging\".\"stg_shop__orders\"\n    group by currency_code\n\n)\n\nselect *\nfrom all_values\nwhere value_field not in (\n    'NZD','AUD'\n)\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\accepted_values_stg_shop__orders_currency_code__NZD__AUD.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__orders",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "accepted_values_stg_shop__orders_currency_code__NZD__AUD"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "accepted_values_stg_shop__orders_currency_code__NZD__AUD",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "accepted_values_stg_shop__orders_currency_code__NZD__AUD.sql",
+   "refs": [
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "currency_code",
+     "model": "{{ get_where_subquery(ref('stg_shop__orders')) }}",
+     "values": [
+      "NZD",
+      "AUD"
+     ]
+    },
+    "name": "accepted_values",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.accepted_values_stg_shop__orders_currency_code__NZD__AUD.a8da6fb6d2"
+  },
+  "test.kiwi_retail.accepted_values_stg_shop__orders_order_status__completed__returned__cancelled__pending.a377581ae2": {
+   "alias": "accepted_values_stg_shop__orde_b93e59bb854af05a4152c87476eb6ddf",
+   "attached_node": "model.kiwi_retail.stg_shop__orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_status",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith all_values as (\n\n    select\n        order_status as value_field,\n        count(*) as n_records\n\n    from \"warehouse\".\"staging\".\"stg_shop__orders\"\n    group by order_status\n\n)\n\nselect *\nfrom all_values\nwhere value_field not in (\n    'completed','returned','cancelled','pending'\n)\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\accepted_values_stg_shop__orde_b93e59bb854af05a4152c87476eb6ddf.sql",
+   "config": {
+    "alias": "accepted_values_stg_shop__orde_b93e59bb854af05a4152c87476eb6ddf",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__orders",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "accepted_values_stg_shop__orders_order_status__completed__returned__cancelled__pending"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "accepted_values_stg_shop__orders_order_status__completed__returned__cancelled__pending",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "accepted_values_stg_shop__orde_b93e59bb854af05a4152c87476eb6ddf.sql",
+   "refs": [
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_status",
+     "model": "{{ get_where_subquery(ref('stg_shop__orders')) }}",
+     "values": [
+      "completed",
+      "returned",
+      "cancelled",
+      "pending"
+     ]
+    },
+    "name": "accepted_values",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.accepted_values_stg_shop__orders_order_status__completed__returned__cancelled__pending.a377581ae2"
+  },
+  "test.kiwi_retail.accepted_values_stg_shop__payments_payment_method__card__afterpay__paypal__eftpos__gift_card.94bdb459ab": {
+   "alias": "accepted_values_stg_shop__paym_7667adee42b946c1eae635f7e184fc1a",
+   "attached_node": "model.kiwi_retail.stg_shop__payments",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "payment_method",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith all_values as (\n\n    select\n        payment_method as value_field,\n        count(*) as n_records\n\n    from \"warehouse\".\"staging\".\"stg_shop__payments\"\n    group by payment_method\n\n)\n\nselect *\nfrom all_values\nwhere value_field not in (\n    'card','afterpay','paypal','eftpos','gift_card'\n)\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\accepted_values_stg_shop__paym_7667adee42b946c1eae635f7e184fc1a.sql",
+   "config": {
+    "alias": "accepted_values_stg_shop__paym_7667adee42b946c1eae635f7e184fc1a",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__payments"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__payments",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "accepted_values_stg_shop__payments_payment_method__card__afterpay__paypal__eftpos__gift_card"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "accepted_values_stg_shop__payments_payment_method__card__afterpay__paypal__eftpos__gift_card",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "accepted_values_stg_shop__paym_7667adee42b946c1eae635f7e184fc1a.sql",
+   "refs": [
+    {
+     "name": "stg_shop__payments",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "payment_method",
+     "model": "{{ get_where_subquery(ref('stg_shop__payments')) }}",
+     "values": [
+      "card",
+      "afterpay",
+      "paypal",
+      "eftpos",
+      "gift_card"
+     ]
+    },
+    "name": "accepted_values",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.accepted_values_stg_shop__payments_payment_method__card__afterpay__paypal__eftpos__gift_card.94bdb459ab"
+  },
+  "test.kiwi_retail.accepted_values_stg_shop__payments_payment_status__success__failed.c0f160d98e": {
+   "alias": "accepted_values_stg_shop__paym_5dfcc93f22a3d1bcaf43b399a1f3a12d",
+   "attached_node": "model.kiwi_retail.stg_shop__payments",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "payment_status",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith all_values as (\n\n    select\n        payment_status as value_field,\n        count(*) as n_records\n\n    from \"warehouse\".\"staging\".\"stg_shop__payments\"\n    group by payment_status\n\n)\n\nselect *\nfrom all_values\nwhere value_field not in (\n    'success','failed'\n)\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\accepted_values_stg_shop__paym_5dfcc93f22a3d1bcaf43b399a1f3a12d.sql",
+   "config": {
+    "alias": "accepted_values_stg_shop__paym_5dfcc93f22a3d1bcaf43b399a1f3a12d",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__payments"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__payments",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "accepted_values_stg_shop__payments_payment_status__success__failed"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "accepted_values_stg_shop__payments_payment_status__success__failed",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "accepted_values_stg_shop__paym_5dfcc93f22a3d1bcaf43b399a1f3a12d.sql",
+   "refs": [
+    {
+     "name": "stg_shop__payments",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "payment_status",
+     "model": "{{ get_where_subquery(ref('stg_shop__payments')) }}",
+     "values": [
+      "success",
+      "failed"
+     ]
+    },
+    "name": "accepted_values",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.accepted_values_stg_shop__payments_payment_status__success__failed.c0f160d98e"
+  },
+  "test.kiwi_retail.not_null_fct_ad_spend_daily_ad_spend_id.77f725e1c0": {
+   "alias": "not_null_fct_ad_spend_daily_ad_spend_id",
+   "attached_node": "model.kiwi_retail.fct_ad_spend_daily",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "ad_spend_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect ad_spend_id\nfrom \"warehouse\".\"marts\".\"fct_ad_spend_daily\"\nwhere ad_spend_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\not_null_fct_ad_spend_daily_ad_spend_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_ad_spend_daily"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.fct_ad_spend_daily",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "not_null_fct_ad_spend_daily_ad_spend_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_fct_ad_spend_daily_ad_spend_id",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_fct_ad_spend_daily_ad_spend_id.sql",
+   "refs": [
+    {
+     "name": "fct_ad_spend_daily",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "ad_spend_id",
+     "model": "{{ get_where_subquery(ref('fct_ad_spend_daily')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_fct_ad_spend_daily_ad_spend_id.77f725e1c0"
+  },
+  "test.kiwi_retail.not_null_fct_orders_order_id.4e687af8d0": {
+   "alias": "not_null_fct_orders_order_id",
+   "attached_node": "model.kiwi_retail.fct_orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect order_id\nfrom \"warehouse\".\"marts\".\"fct_orders\"\nwhere order_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\not_null_fct_orders_order_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.fct_orders",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "not_null_fct_orders_order_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_fct_orders_order_id",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_fct_orders_order_id.sql",
+   "refs": [
+    {
+     "name": "fct_orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_id",
+     "model": "{{ get_where_subquery(ref('fct_orders')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_fct_orders_order_id.4e687af8d0"
+  },
+  "test.kiwi_retail.not_null_int_marketing__spend_daily_ad_spend_id.70fe328bed": {
+   "alias": "not_null_int_marketing__spend_daily_ad_spend_id",
+   "attached_node": "model.kiwi_retail.int_marketing__spend_daily",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "ad_spend_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect ad_spend_id\nfrom \"warehouse\".\"intermediate\".\"int_marketing__spend_daily\"\nwhere ad_spend_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\intermediate\\_intermediate__models.yml\\not_null_int_marketing__spend_daily_ad_spend_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.int_marketing__spend_daily"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.int_marketing__spend_daily",
+   "fqn": [
+    "kiwi_retail",
+    "intermediate",
+    "not_null_int_marketing__spend_daily_ad_spend_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_int_marketing__spend_daily_ad_spend_id",
+   "original_file_path": "models\\intermediate\\_intermediate__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_int_marketing__spend_daily_ad_spend_id.sql",
+   "refs": [
+    {
+     "name": "int_marketing__spend_daily",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "ad_spend_id",
+     "model": "{{ get_where_subquery(ref('int_marketing__spend_daily')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_int_marketing__spend_daily_ad_spend_id.70fe328bed"
+  },
+  "test.kiwi_retail.not_null_orders_v1_order_id.8309715a7a": {
+   "alias": "not_null_orders_v1_order_id",
+   "attached_node": "model.kiwi_retail.orders_v1",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect order_id\nfrom \"warehouse\".\"marts\".\"orders_v1\"\nwhere order_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\not_null_orders_v1_order_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.orders_v1"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.orders_v1",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "not_null_orders_v1_order_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_orders_v1_order_id",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_orders_v1_order_id.sql",
+   "refs": [
+    {
+     "name": "orders_v1",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_id",
+     "model": "{{ get_where_subquery(ref('orders_v1')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_orders_v1_order_id.8309715a7a"
+  },
+  "test.kiwi_retail.not_null_stg_hr__employees_employee_id.4a7055c550": {
+   "alias": "not_null_stg_hr__employees_employee_id",
+   "attached_node": "model.kiwi_retail.stg_hr__employees",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "employee_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect employee_id\nfrom \"warehouse\".\"staging\".\"stg_hr__employees\"\nwhere employee_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\hr\\_hr__models.yml\\not_null_stg_hr__employees_employee_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_hr__employees"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_hr__employees",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "hr",
+    "not_null_stg_hr__employees_employee_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_stg_hr__employees_employee_id",
+   "original_file_path": "models\\staging\\hr\\_hr__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_stg_hr__employees_employee_id.sql",
+   "refs": [
+    {
+     "name": "stg_hr__employees",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "employee_id",
+     "model": "{{ get_where_subquery(ref('stg_hr__employees')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_stg_hr__employees_employee_id.4a7055c550"
+  },
+  "test.kiwi_retail.not_null_stg_marketing__ad_spend_ad_spend_id.e1b8a014ba": {
+   "alias": "not_null_stg_marketing__ad_spend_ad_spend_id",
+   "attached_node": "model.kiwi_retail.stg_marketing__ad_spend",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "ad_spend_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect ad_spend_id\nfrom \"warehouse\".\"staging\".\"stg_marketing__ad_spend\"\nwhere ad_spend_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\marketing\\_marketing__models.yml\\not_null_stg_marketing__ad_spend_ad_spend_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_marketing__ad_spend"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_marketing__ad_spend",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "not_null_stg_marketing__ad_spend_ad_spend_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_stg_marketing__ad_spend_ad_spend_id",
+   "original_file_path": "models\\staging\\marketing\\_marketing__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_stg_marketing__ad_spend_ad_spend_id.sql",
+   "refs": [
+    {
+     "name": "stg_marketing__ad_spend",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "ad_spend_id",
+     "model": "{{ get_where_subquery(ref('stg_marketing__ad_spend')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_stg_marketing__ad_spend_ad_spend_id.e1b8a014ba"
+  },
+  "test.kiwi_retail.not_null_stg_marketing__campaigns_campaign_id.2f8b8e4140": {
+   "alias": "not_null_stg_marketing__campaigns_campaign_id",
+   "attached_node": "model.kiwi_retail.stg_marketing__campaigns",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "campaign_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect campaign_id\nfrom \"warehouse\".\"staging\".\"stg_marketing__campaigns\"\nwhere campaign_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\marketing\\_marketing__models.yml\\not_null_stg_marketing__campaigns_campaign_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_marketing__campaigns"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_marketing__campaigns",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "not_null_stg_marketing__campaigns_campaign_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_stg_marketing__campaigns_campaign_id",
+   "original_file_path": "models\\staging\\marketing\\_marketing__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_stg_marketing__campaigns_campaign_id.sql",
+   "refs": [
+    {
+     "name": "stg_marketing__campaigns",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "campaign_id",
+     "model": "{{ get_where_subquery(ref('stg_marketing__campaigns')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_stg_marketing__campaigns_campaign_id.2f8b8e4140"
+  },
+  "test.kiwi_retail.not_null_stg_shop__orders_customer_id.b61e89efc8": {
+   "alias": "not_null_stg_shop__orders_customer_id",
+   "attached_node": "model.kiwi_retail.stg_shop__orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "customer_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect customer_id\nfrom \"warehouse\".\"staging\".\"stg_shop__orders\"\nwhere customer_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\not_null_stg_shop__orders_customer_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__orders",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "not_null_stg_shop__orders_customer_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_stg_shop__orders_customer_id",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_stg_shop__orders_customer_id.sql",
+   "refs": [
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "customer_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__orders')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_stg_shop__orders_customer_id.b61e89efc8"
+  },
+  "test.kiwi_retail.not_null_stg_shop__orders_order_id.9108b6fc37": {
+   "alias": "not_null_stg_shop__orders_order_id",
+   "attached_node": "model.kiwi_retail.stg_shop__orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect order_id\nfrom \"warehouse\".\"staging\".\"stg_shop__orders\"\nwhere order_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\not_null_stg_shop__orders_order_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__orders",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "not_null_stg_shop__orders_order_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_stg_shop__orders_order_id",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_stg_shop__orders_order_id.sql",
+   "refs": [
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__orders')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_stg_shop__orders_order_id.9108b6fc37"
+  },
+  "test.kiwi_retail.not_null_stg_shop__orders_store_id.0d31f72675": {
+   "alias": "not_null_stg_shop__orders_store_id",
+   "attached_node": "model.kiwi_retail.stg_shop__orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "store_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect store_id\nfrom \"warehouse\".\"staging\".\"stg_shop__orders\"\nwhere store_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\not_null_stg_shop__orders_store_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__orders",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "not_null_stg_shop__orders_store_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_stg_shop__orders_store_id",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_stg_shop__orders_store_id.sql",
+   "refs": [
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "store_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__orders')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_stg_shop__orders_store_id.0d31f72675"
+  },
+  "test.kiwi_retail.not_null_stg_shop__payments_order_id.5e495be872": {
+   "alias": "not_null_stg_shop__payments_order_id",
+   "attached_node": "model.kiwi_retail.stg_shop__payments",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect order_id\nfrom \"warehouse\".\"staging\".\"stg_shop__payments\"\nwhere order_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\not_null_stg_shop__payments_order_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__payments"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__payments",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "not_null_stg_shop__payments_order_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_stg_shop__payments_order_id",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_stg_shop__payments_order_id.sql",
+   "refs": [
+    {
+     "name": "stg_shop__payments",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__payments')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_stg_shop__payments_order_id.5e495be872"
+  },
+  "test.kiwi_retail.not_null_stg_shop__payments_payment_id.6adf27a71a": {
+   "alias": "not_null_stg_shop__payments_payment_id",
+   "attached_node": "model.kiwi_retail.stg_shop__payments",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "payment_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\n\n\nselect payment_id\nfrom \"warehouse\".\"staging\".\"stg_shop__payments\"\nwhere payment_id is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\not_null_stg_shop__payments_payment_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__payments"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__payments",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "not_null_stg_shop__payments_payment_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "not_null_stg_shop__payments_payment_id",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "not_null_stg_shop__payments_payment_id.sql",
+   "refs": [
+    {
+     "name": "stg_shop__payments",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "payment_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__payments')) }}"
+    },
+    "name": "not_null",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.not_null_stg_shop__payments_payment_id.6adf27a71a"
+  },
+  "test.kiwi_retail.relationships_fct_ad_spend_daily_campaign_id__campaign_id__ref_dim_campaigns_.480bc0b7ee": {
+   "alias": "relationships_fct_ad_spend_dai_d9f1e78875ace84c8b827b5fe5f91158",
+   "attached_node": "model.kiwi_retail.fct_ad_spend_daily",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "campaign_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith child as (\n    select campaign_id as from_field\n    from \"warehouse\".\"marts\".\"fct_ad_spend_daily\"\n    where campaign_id is not null\n),\n\nparent as (\n    select campaign_id as to_field\n    from \"warehouse\".\"marts\".\"dim_campaigns\"\n)\n\nselect\n    from_field\n\nfrom child\nleft join parent\n    on child.from_field = parent.to_field\n\nwhere parent.to_field is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\relationships_fct_ad_spend_dai_d9f1e78875ace84c8b827b5fe5f91158.sql",
+   "config": {
+    "alias": "relationships_fct_ad_spend_dai_d9f1e78875ace84c8b827b5fe5f91158",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_ad_spend_daily"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.fct_ad_spend_daily",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "relationships_fct_ad_spend_daily_campaign_id__campaign_id__ref_dim_campaigns_"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "relationships_fct_ad_spend_daily_campaign_id__campaign_id__ref_dim_campaigns_",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "relationships_fct_ad_spend_dai_d9f1e78875ace84c8b827b5fe5f91158.sql",
+   "refs": [
+    {
+     "name": "dim_campaigns",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "fct_ad_spend_daily",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "campaign_id",
+     "field": "campaign_id",
+     "model": "{{ get_where_subquery(ref('fct_ad_spend_daily')) }}",
+     "to": "ref('dim_campaigns')"
+    },
+    "name": "relationships",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.relationships_fct_ad_spend_daily_campaign_id__campaign_id__ref_dim_campaigns_.480bc0b7ee"
+  },
+  "test.kiwi_retail.relationships_fct_orders_customer_id__customer_id__ref_dim_customers_.d5636051d4": {
+   "alias": "relationships_fct_orders_0c6c6d9e6f30dfb9b653557ebf38e47c",
+   "attached_node": "model.kiwi_retail.fct_orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "customer_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith child as (\n    select customer_id as from_field\n    from \"warehouse\".\"marts\".\"fct_orders\"\n    where customer_id is not null\n),\n\nparent as (\n    select customer_id as to_field\n    from \"warehouse\".\"marts\".\"dim_customers\"\n)\n\nselect\n    from_field\n\nfrom child\nleft join parent\n    on child.from_field = parent.to_field\n\nwhere parent.to_field is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\relationships_fct_orders_0c6c6d9e6f30dfb9b653557ebf38e47c.sql",
+   "config": {
+    "alias": "relationships_fct_orders_0c6c6d9e6f30dfb9b653557ebf38e47c",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.fct_orders",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "relationships_fct_orders_customer_id__customer_id__ref_dim_customers_"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "relationships_fct_orders_customer_id__customer_id__ref_dim_customers_",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "relationships_fct_orders_0c6c6d9e6f30dfb9b653557ebf38e47c.sql",
+   "refs": [
+    {
+     "name": "dim_customers",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "fct_orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "customer_id",
+     "field": "customer_id",
+     "model": "{{ get_where_subquery(ref('fct_orders')) }}",
+     "to": "ref('dim_customers')"
+    },
+    "name": "relationships",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.relationships_fct_orders_customer_id__customer_id__ref_dim_customers_.d5636051d4"
+  },
+  "test.kiwi_retail.relationships_fct_orders_store_id__store_id__ref_dim_stores_.f4d7f709c6": {
+   "alias": "relationships_fct_orders_store_id__store_id__ref_dim_stores_",
+   "attached_node": "model.kiwi_retail.fct_orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "store_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith child as (\n    select store_id as from_field\n    from \"warehouse\".\"marts\".\"fct_orders\"\n    where store_id is not null\n),\n\nparent as (\n    select store_id as to_field\n    from \"warehouse\".\"marts\".\"dim_stores\"\n)\n\nselect\n    from_field\n\nfrom child\nleft join parent\n    on child.from_field = parent.to_field\n\nwhere parent.to_field is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\relationships_fct_orders_store_id__store_id__ref_dim_stores_.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.fct_orders",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "relationships_fct_orders_store_id__store_id__ref_dim_stores_"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "relationships_fct_orders_store_id__store_id__ref_dim_stores_",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "relationships_fct_orders_store_id__store_id__ref_dim_stores_.sql",
+   "refs": [
+    {
+     "name": "dim_stores",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "fct_orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "store_id",
+     "field": "store_id",
+     "model": "{{ get_where_subquery(ref('fct_orders')) }}",
+     "to": "ref('dim_stores')"
+    },
+    "name": "relationships",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.relationships_fct_orders_store_id__store_id__ref_dim_stores_.f4d7f709c6"
+  },
+  "test.kiwi_retail.relationships_stg_hr__employees_store_id__store_id__ref_stg_shop__stores_.f7e7dd0c04": {
+   "alias": "relationships_stg_hr__employee_029bd6c051ae969ab1892988482e6636",
+   "attached_node": "model.kiwi_retail.stg_hr__employees",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "store_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith child as (\n    select store_id as from_field\n    from \"warehouse\".\"staging\".\"stg_hr__employees\"\n    where store_id is not null\n),\n\nparent as (\n    select store_id as to_field\n    from \"warehouse\".\"staging\".\"stg_shop__stores\"\n)\n\nselect\n    from_field\n\nfrom child\nleft join parent\n    on child.from_field = parent.to_field\n\nwhere parent.to_field is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\hr\\_hr__models.yml\\relationships_stg_hr__employee_029bd6c051ae969ab1892988482e6636.sql",
+   "config": {
+    "alias": "relationships_stg_hr__employee_029bd6c051ae969ab1892988482e6636",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_hr__employees"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_hr__employees",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "hr",
+    "relationships_stg_hr__employees_store_id__store_id__ref_stg_shop__stores_"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "relationships_stg_hr__employees_store_id__store_id__ref_stg_shop__stores_",
+   "original_file_path": "models\\staging\\hr\\_hr__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "relationships_stg_hr__employee_029bd6c051ae969ab1892988482e6636.sql",
+   "refs": [
+    {
+     "name": "stg_shop__stores",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "stg_hr__employees",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "store_id",
+     "field": "store_id",
+     "model": "{{ get_where_subquery(ref('stg_hr__employees')) }}",
+     "to": "ref('stg_shop__stores')"
+    },
+    "name": "relationships",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.relationships_stg_hr__employees_store_id__store_id__ref_stg_shop__stores_.f7e7dd0c04"
+  },
+  "test.kiwi_retail.relationships_stg_marketing__ad_spend_campaign_id__campaign_id__ref_stg_marketing__campaigns_.2e9293eff2": {
+   "alias": "relationships_stg_marketing__a_bf13d8a2cddc2cf8baf21596e0e65bcf",
+   "attached_node": "model.kiwi_retail.stg_marketing__ad_spend",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "campaign_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith child as (\n    select campaign_id as from_field\n    from \"warehouse\".\"staging\".\"stg_marketing__ad_spend\"\n    where campaign_id is not null\n),\n\nparent as (\n    select campaign_id as to_field\n    from \"warehouse\".\"staging\".\"stg_marketing__campaigns\"\n)\n\nselect\n    from_field\n\nfrom child\nleft join parent\n    on child.from_field = parent.to_field\n\nwhere parent.to_field is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\marketing\\_marketing__models.yml\\relationships_stg_marketing__a_bf13d8a2cddc2cf8baf21596e0e65bcf.sql",
+   "config": {
+    "alias": "relationships_stg_marketing__a_bf13d8a2cddc2cf8baf21596e0e65bcf",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_marketing__campaigns",
+     "model.kiwi_retail.stg_marketing__ad_spend"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_marketing__ad_spend",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "relationships_stg_marketing__ad_spend_campaign_id__campaign_id__ref_stg_marketing__campaigns_"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "relationships_stg_marketing__ad_spend_campaign_id__campaign_id__ref_stg_marketing__campaigns_",
+   "original_file_path": "models\\staging\\marketing\\_marketing__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "relationships_stg_marketing__a_bf13d8a2cddc2cf8baf21596e0e65bcf.sql",
+   "refs": [
+    {
+     "name": "stg_marketing__campaigns",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "stg_marketing__ad_spend",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "campaign_id",
+     "field": "campaign_id",
+     "model": "{{ get_where_subquery(ref('stg_marketing__ad_spend')) }}",
+     "to": "ref('stg_marketing__campaigns')"
+    },
+    "name": "relationships",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.relationships_stg_marketing__ad_spend_campaign_id__campaign_id__ref_stg_marketing__campaigns_.2e9293eff2"
+  },
+  "test.kiwi_retail.relationships_stg_shop__orders_customer_id__customer_id__ref_stg_shop__customers_.24441a1269": {
+   "alias": "relationships_stg_shop__orders_49852f04eefd50a1a8f6422d5e3d538a",
+   "attached_node": "model.kiwi_retail.stg_shop__orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "customer_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith child as (\n    select customer_id as from_field\n    from \"warehouse\".\"staging\".\"stg_shop__orders\"\n    where customer_id is not null\n),\n\nparent as (\n    select customer_id as to_field\n    from \"warehouse\".\"staging\".\"stg_shop__customers\"\n)\n\nselect\n    from_field\n\nfrom child\nleft join parent\n    on child.from_field = parent.to_field\n\nwhere parent.to_field is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\relationships_stg_shop__orders_49852f04eefd50a1a8f6422d5e3d538a.sql",
+   "config": {
+    "alias": "relationships_stg_shop__orders_49852f04eefd50a1a8f6422d5e3d538a",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__orders",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "relationships_stg_shop__orders_customer_id__customer_id__ref_stg_shop__customers_"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "relationships_stg_shop__orders_customer_id__customer_id__ref_stg_shop__customers_",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "relationships_stg_shop__orders_49852f04eefd50a1a8f6422d5e3d538a.sql",
+   "refs": [
+    {
+     "name": "stg_shop__customers",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "customer_id",
+     "field": "customer_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__orders')) }}",
+     "to": "ref('stg_shop__customers')"
+    },
+    "name": "relationships",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.relationships_stg_shop__orders_customer_id__customer_id__ref_stg_shop__customers_.24441a1269"
+  },
+  "test.kiwi_retail.relationships_stg_shop__orders_store_id__store_id__ref_stg_shop__stores_.ab81f2d92e": {
+   "alias": "relationships_stg_shop__orders_49e7b35aaf4254ef281b2e451d42199d",
+   "attached_node": "model.kiwi_retail.stg_shop__orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "store_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith child as (\n    select store_id as from_field\n    from \"warehouse\".\"staging\".\"stg_shop__orders\"\n    where store_id is not null\n),\n\nparent as (\n    select store_id as to_field\n    from \"warehouse\".\"staging\".\"stg_shop__stores\"\n)\n\nselect\n    from_field\n\nfrom child\nleft join parent\n    on child.from_field = parent.to_field\n\nwhere parent.to_field is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\relationships_stg_shop__orders_49e7b35aaf4254ef281b2e451d42199d.sql",
+   "config": {
+    "alias": "relationships_stg_shop__orders_49e7b35aaf4254ef281b2e451d42199d",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__orders",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "relationships_stg_shop__orders_store_id__store_id__ref_stg_shop__stores_"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "relationships_stg_shop__orders_store_id__store_id__ref_stg_shop__stores_",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "relationships_stg_shop__orders_49e7b35aaf4254ef281b2e451d42199d.sql",
+   "refs": [
+    {
+     "name": "stg_shop__stores",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "store_id",
+     "field": "store_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__orders')) }}",
+     "to": "ref('stg_shop__stores')"
+    },
+    "name": "relationships",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.relationships_stg_shop__orders_store_id__store_id__ref_stg_shop__stores_.ab81f2d92e"
+  },
+  "test.kiwi_retail.relationships_stg_shop__payments_order_id__order_id__ref_stg_shop__orders_.52d053c292": {
+   "alias": "relationships_stg_shop__paymen_87a071c926e65b1dfe91936d2783cf5f",
+   "attached_node": "model.kiwi_retail.stg_shop__payments",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nwith child as (\n    select order_id as from_field\n    from \"warehouse\".\"staging\".\"stg_shop__payments\"\n    where order_id is not null\n),\n\nparent as (\n    select order_id as to_field\n    from \"warehouse\".\"staging\".\"stg_shop__orders\"\n)\n\nselect\n    from_field\n\nfrom child\nleft join parent\n    on child.from_field = parent.to_field\n\nwhere parent.to_field is null\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\relationships_stg_shop__paymen_87a071c926e65b1dfe91936d2783cf5f.sql",
+   "config": {
+    "alias": "relationships_stg_shop__paymen_87a071c926e65b1dfe91936d2783cf5f",
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders",
+     "model.kiwi_retail.stg_shop__payments"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__payments",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "relationships_stg_shop__payments_order_id__order_id__ref_stg_shop__orders_"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "relationships_stg_shop__payments_order_id__order_id__ref_stg_shop__orders_",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "relationships_stg_shop__paymen_87a071c926e65b1dfe91936d2783cf5f.sql",
+   "refs": [
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    },
+    {
+     "name": "stg_shop__payments",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_id",
+     "field": "order_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__payments')) }}",
+     "to": "ref('stg_shop__orders')"
+    },
+    "name": "relationships",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.relationships_stg_shop__payments_order_id__order_id__ref_stg_shop__orders_.52d053c292"
+  },
+  "test.kiwi_retail.unique_fct_ad_spend_daily_ad_spend_id.a861cf68d4": {
+   "alias": "unique_fct_ad_spend_daily_ad_spend_id",
+   "attached_node": "model.kiwi_retail.fct_ad_spend_daily",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "ad_spend_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    ad_spend_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"marts\".\"fct_ad_spend_daily\"\nwhere ad_spend_id is not null\ngroup by ad_spend_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\unique_fct_ad_spend_daily_ad_spend_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_ad_spend_daily"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.fct_ad_spend_daily",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "unique_fct_ad_spend_daily_ad_spend_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_fct_ad_spend_daily_ad_spend_id",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_fct_ad_spend_daily_ad_spend_id.sql",
+   "refs": [
+    {
+     "name": "fct_ad_spend_daily",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "ad_spend_id",
+     "model": "{{ get_where_subquery(ref('fct_ad_spend_daily')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_fct_ad_spend_daily_ad_spend_id.a861cf68d4"
+  },
+  "test.kiwi_retail.unique_fct_orders_order_id.523ddb6ce5": {
+   "alias": "unique_fct_orders_order_id",
+   "attached_node": "model.kiwi_retail.fct_orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    order_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"marts\".\"fct_orders\"\nwhere order_id is not null\ngroup by order_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\unique_fct_orders_order_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.fct_orders",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "unique_fct_orders_order_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_fct_orders_order_id",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_fct_orders_order_id.sql",
+   "refs": [
+    {
+     "name": "fct_orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_id",
+     "model": "{{ get_where_subquery(ref('fct_orders')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_fct_orders_order_id.523ddb6ce5"
+  },
+  "test.kiwi_retail.unique_int_marketing__spend_daily_ad_spend_id.a448183796": {
+   "alias": "unique_int_marketing__spend_daily_ad_spend_id",
+   "attached_node": "model.kiwi_retail.int_marketing__spend_daily",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "ad_spend_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    ad_spend_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"intermediate\".\"int_marketing__spend_daily\"\nwhere ad_spend_id is not null\ngroup by ad_spend_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\intermediate\\_intermediate__models.yml\\unique_int_marketing__spend_daily_ad_spend_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.int_marketing__spend_daily"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.int_marketing__spend_daily",
+   "fqn": [
+    "kiwi_retail",
+    "intermediate",
+    "unique_int_marketing__spend_daily_ad_spend_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_int_marketing__spend_daily_ad_spend_id",
+   "original_file_path": "models\\intermediate\\_intermediate__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_int_marketing__spend_daily_ad_spend_id.sql",
+   "refs": [
+    {
+     "name": "int_marketing__spend_daily",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "ad_spend_id",
+     "model": "{{ get_where_subquery(ref('int_marketing__spend_daily')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_int_marketing__spend_daily_ad_spend_id.a448183796"
+  },
+  "test.kiwi_retail.unique_orders_v1_order_id.9d715709c5": {
+   "alias": "unique_orders_v1_order_id",
+   "attached_node": "model.kiwi_retail.orders_v1",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    order_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"marts\".\"orders_v1\"\nwhere order_id is not null\ngroup by order_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\marts\\_marts__models.yml\\unique_orders_v1_order_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.orders_v1"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.orders_v1",
+   "fqn": [
+    "kiwi_retail",
+    "marts",
+    "unique_orders_v1_order_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_orders_v1_order_id",
+   "original_file_path": "models\\marts\\_marts__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_orders_v1_order_id.sql",
+   "refs": [
+    {
+     "name": "orders_v1",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_id",
+     "model": "{{ get_where_subquery(ref('orders_v1')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_orders_v1_order_id.9d715709c5"
+  },
+  "test.kiwi_retail.unique_stg_hr__employees_employee_id.7398847059": {
+   "alias": "unique_stg_hr__employees_employee_id",
+   "attached_node": "model.kiwi_retail.stg_hr__employees",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "employee_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    employee_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"staging\".\"stg_hr__employees\"\nwhere employee_id is not null\ngroup by employee_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\hr\\_hr__models.yml\\unique_stg_hr__employees_employee_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_hr__employees"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_hr__employees",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "hr",
+    "unique_stg_hr__employees_employee_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_stg_hr__employees_employee_id",
+   "original_file_path": "models\\staging\\hr\\_hr__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_stg_hr__employees_employee_id.sql",
+   "refs": [
+    {
+     "name": "stg_hr__employees",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "employee_id",
+     "model": "{{ get_where_subquery(ref('stg_hr__employees')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_stg_hr__employees_employee_id.7398847059"
+  },
+  "test.kiwi_retail.unique_stg_marketing__ad_spend_ad_spend_id.e937a39da0": {
+   "alias": "unique_stg_marketing__ad_spend_ad_spend_id",
+   "attached_node": "model.kiwi_retail.stg_marketing__ad_spend",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "ad_spend_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    ad_spend_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"staging\".\"stg_marketing__ad_spend\"\nwhere ad_spend_id is not null\ngroup by ad_spend_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\marketing\\_marketing__models.yml\\unique_stg_marketing__ad_spend_ad_spend_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_marketing__ad_spend"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_marketing__ad_spend",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "unique_stg_marketing__ad_spend_ad_spend_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_stg_marketing__ad_spend_ad_spend_id",
+   "original_file_path": "models\\staging\\marketing\\_marketing__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_stg_marketing__ad_spend_ad_spend_id.sql",
+   "refs": [
+    {
+     "name": "stg_marketing__ad_spend",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "ad_spend_id",
+     "model": "{{ get_where_subquery(ref('stg_marketing__ad_spend')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_stg_marketing__ad_spend_ad_spend_id.e937a39da0"
+  },
+  "test.kiwi_retail.unique_stg_marketing__campaigns_campaign_id.dc85e19976": {
+   "alias": "unique_stg_marketing__campaigns_campaign_id",
+   "attached_node": "model.kiwi_retail.stg_marketing__campaigns",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "campaign_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    campaign_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"staging\".\"stg_marketing__campaigns\"\nwhere campaign_id is not null\ngroup by campaign_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\marketing\\_marketing__models.yml\\unique_stg_marketing__campaigns_campaign_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_marketing__campaigns"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_marketing__campaigns",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "unique_stg_marketing__campaigns_campaign_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_stg_marketing__campaigns_campaign_id",
+   "original_file_path": "models\\staging\\marketing\\_marketing__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_stg_marketing__campaigns_campaign_id.sql",
+   "refs": [
+    {
+     "name": "stg_marketing__campaigns",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "campaign_id",
+     "model": "{{ get_where_subquery(ref('stg_marketing__campaigns')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_stg_marketing__campaigns_campaign_id.dc85e19976"
+  },
+  "test.kiwi_retail.unique_stg_shop__orders_order_id.d5f93b6e86": {
+   "alias": "unique_stg_shop__orders_order_id",
+   "attached_node": "model.kiwi_retail.stg_shop__orders",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "order_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    order_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"staging\".\"stg_shop__orders\"\nwhere order_id is not null\ngroup by order_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\unique_stg_shop__orders_order_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__orders"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__orders",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "unique_stg_shop__orders_order_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_stg_shop__orders_order_id",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_stg_shop__orders_order_id.sql",
+   "refs": [
+    {
+     "name": "stg_shop__orders",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "order_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__orders')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_stg_shop__orders_order_id.d5f93b6e86"
+  },
+  "test.kiwi_retail.unique_stg_shop__payments_payment_id.aaa2e31adc": {
+   "alias": "unique_stg_shop__payments_payment_id",
+   "attached_node": "model.kiwi_retail.stg_shop__payments",
+   "checksum": {
+    "checksum": "",
+    "name": "none"
+   },
+   "column_name": "payment_id",
+   "columns": {},
+   "compiled": true,
+   "compiled_code": "\n    \n    \n\nselect\n    payment_id as unique_field,\n    count(*) as n_records\n\nfrom \"warehouse\".\"staging\".\"stg_shop__payments\"\nwhere payment_id is not null\ngroup by payment_id\nhaving count(*) > 1\n\n\n",
+   "compiled_path": "target\\compiled\\kiwi_retail\\models\\staging\\shop\\_shop__models.yml\\unique_stg_shop__payments_payment_id.sql",
+   "config": {
+    "alias": null,
+    "database": null,
+    "enabled": true,
+    "error_if": "!= 0",
+    "fail_calc": "count(*)",
+    "group": null,
+    "limit": null,
+    "materialized": "test",
+    "meta": {},
+    "schema": "dbt_test__audit",
+    "severity": "error",
+    "sql_header": null,
+    "static_analysis": null,
+    "store_failures": null,
+    "store_failures_as": null,
+    "tags": [],
+    "warn_if": "!= 0",
+    "where": null
+   },
+   "contract": {
+    "alias_types": true,
+    "checksum": null,
+    "enforced": false
+   },
+   "database": "warehouse",
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.stg_shop__payments"
+    ]
+   },
+   "description": "",
+   "doc_blocks": [],
+   "extra_ctes": [],
+   "extra_ctes_injected": true,
+   "file_key_name": "models.stg_shop__payments",
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "unique_stg_shop__payments_payment_id"
+   ],
+   "functions": [],
+   "group": null,
+   "language": "sql",
+   "meta": {},
+   "metrics": [],
+   "name": "unique_stg_shop__payments_payment_id",
+   "original_file_path": "models\\staging\\shop\\_shop__models.yml",
+   "package_name": "kiwi_retail",
+   "path": "unique_stg_shop__payments_payment_id.sql",
+   "refs": [
+    {
+     "name": "stg_shop__payments",
+     "package": null,
+     "version": null
+    }
+   ],
+   "relation_name": null,
+   "resource_type": "test",
+   "schema": "dbt_test__audit",
+   "sources": [],
+   "tags": [],
+   "test_metadata": {
+    "kwargs": {
+     "column_name": "payment_id",
+     "model": "{{ get_where_subquery(ref('stg_shop__payments')) }}"
+    },
+    "name": "unique",
+    "namespace": null
+   },
+   "unique_id": "test.kiwi_retail.unique_stg_shop__payments_payment_id.aaa2e31adc"
+  }
+ },
+ "semantic_models": {
+  "semantic_model.kiwi_retail.ad_spend": {
+   "config": {
+    "enabled": true,
+    "group": null,
+    "meta": {}
+   },
+   "created_at": 1793016754.0469575,
+   "defaults": {
+    "agg_time_dimension": "spend_date"
+   },
+   "depends_on": {
+    "macros": [],
+    "nodes": [
+     "model.kiwi_retail.fct_ad_spend_daily"
+    ]
+   },
+   "description": "Daily campaign spend (NZD).",
+   "dimensions": [
+    {
+     "config": {
+      "meta": {}
+     },
+     "datatype": null,
+     "description": null,
+     "expr": null,
+     "is_partition": false,
+     "label": null,
+     "metadata": null,
+     "name": "spend_date",
+     "type": "time",
+     "type_params": {
+      "time_granularity": "day",
+      "validity_params": null
+     }
+    },
+    {
+     "config": {
+      "meta": {}
+     },
+     "datatype": null,
+     "description": null,
+     "expr": null,
+     "is_partition": false,
+     "label": null,
+     "metadata": null,
+     "name": "campaign_channel",
+     "type": "categorical",
+     "type_params": null
+    },
+    {
+     "config": {
+      "meta": {}
+     },
+     "datatype": null,
+     "description": null,
+     "expr": null,
+     "is_partition": false,
+     "label": null,
+     "metadata": null,
+     "name": "region_code",
+     "type": "categorical",
+     "type_params": null
+    }
+   ],
+   "entities": [
+    {
+     "config": {
+      "meta": {}
+     },
+     "description": null,
+     "expr": "ad_spend_id",
+     "label": null,
+     "name": "ad_spend_day",
+     "role": null,
+     "type": "primary"
+    }
+   ],
+   "fqn": [
+    "kiwi_retail",
+    "semantic",
+    "ad_spend"
+   ],
+   "group": null,
+   "label": null,
+   "measures": [
+    {
+     "agg": "sum",
+     "agg_params": null,
+     "agg_time_dimension": null,
+     "config": {
+      "meta": {}
+     },
+     "create_metric": false,
+     "description": null,
+     "expr": null,
+     "label": null,
+     "name": "spend_nzd",
+     "non_additive_dimension": null
+    },
+    {
+     "agg": "sum",
+     "agg_params": null,
+     "agg_time_dimension": null,
+     "config": {
+      "meta": {}
+     },
+     "create_metric": false,
+     "description": null,
+     "expr": null,
+     "label": null,
+     "name": "clicks",
+     "non_additive_dimension": null
+    },
+    {
+     "agg": "sum",
+     "agg_params": null,
+     "agg_time_dimension": null,
+     "config": {
+      "meta": {}
+     },
+     "create_metric": false,
+     "description": null,
+     "expr": null,
+     "label": null,
+     "name": "impressions",
+     "non_additive_dimension": null
+    }
+   ],
+   "metadata": null,
+   "model": "ref('fct_ad_spend_daily')",
+   "name": "ad_spend",
+   "node_relation": {
+    "alias": "fct_ad_spend_daily",
+    "database": "warehouse",
+    "relation_name": "\"warehouse\".\"marts\".\"fct_ad_spend_daily\"",
+    "schema_name": "marts"
+   },
+   "original_file_path": "models\\semantic\\metrics.yml",
+   "package_name": "kiwi_retail",
+   "path": "semantic\\metrics.yml",
+   "primary_entity": null,
+   "refs": [
+    {
+     "name": "fct_ad_spend_daily",
+     "package": null,
+     "version": null
+    }
+   ],
+   "resource_type": "semantic_model",
+   "unique_id": "semantic_model.kiwi_retail.ad_spend",
+   "unrendered_config": {}
+  }
+ },
+ "sources": {
+  "source.kiwi_retail.hr.employees": {
+   "columns": {},
+   "config": {
+    "enabled": true,
+    "event_time": null,
+    "freshness": {
+     "error_after": {
+      "count": null,
+      "period": null
+     },
+     "filter": null,
+     "warn_after": {
+      "count": null,
+      "period": null
+     }
+    },
+    "loaded_at_field": "_loaded_at",
+    "loaded_at_query": null,
+    "meta": {
+     "loader": "hris-export",
+     "owner": "people-ops@kiwiretail.example",
+     "sensitivity": "restricted"
+    },
+    "static_analysis": null,
+    "tags": []
+   },
+   "database": "warehouse",
+   "description": "One row per employee (current and former), with annual salary.",
+   "doc_blocks": [],
+   "external": null,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "hr",
+    "hr",
+    "employees"
+   ],
+   "freshness": {
+    "error_after": {
+     "count": null,
+     "period": null
+    },
+    "filter": null,
+    "warn_after": {
+     "count": null,
+     "period": null
+    }
+   },
+   "identifier": "employees",
+   "loaded_at_field": "_loaded_at",
+   "loaded_at_query": null,
+   "loader": "",
+   "meta": {
+    "loader": "hris-export",
+    "owner": "people-ops@kiwiretail.example",
+    "sensitivity": "restricted"
+   },
+   "name": "employees",
+   "original_file_path": "models\\staging\\hr\\_hr__sources.yml",
+   "package_name": "kiwi_retail",
+   "path": "models\\staging\\hr\\_hr__sources.yml",
+   "quoting": {
+    "column": null,
+    "database": null,
+    "identifier": null,
+    "schema": null
+   },
+   "relation_name": "\"warehouse\".\"raw\".\"employees\"",
+   "resource_type": "source",
+   "schema": "raw",
+   "source_description": "Payroll/HRIS export, replicated weekly. Highly sensitive (salaries).",
+   "source_meta": {
+    "loader": "hris-export",
+    "owner": "people-ops@kiwiretail.example",
+    "sensitivity": "restricted"
+   },
+   "source_name": "hr",
+   "tags": [],
+   "unique_id": "source.kiwi_retail.hr.employees",
+   "unrendered_database": null,
+   "unrendered_schema": "raw"
+  },
+  "source.kiwi_retail.marketing.ad_spend": {
+   "columns": {},
+   "config": {
+    "enabled": true,
+    "event_time": null,
+    "freshness": {
+     "error_after": {
+      "count": 48,
+      "period": "hour"
+     },
+     "filter": null,
+     "warn_after": {
+      "count": 24,
+      "period": "hour"
+     }
+    },
+    "loaded_at_field": "_loaded_at",
+    "loaded_at_query": null,
+    "meta": {
+     "freshness_sla_hours": 24,
+     "loader": "adtech-vendor-sftp",
+     "owner": "marketing-analytics@kiwiretail.example",
+     "stale_on_demand": true
+    },
+    "static_analysis": null,
+    "tags": []
+   },
+   "database": "warehouse",
+   "description": "Daily spend, impressions and clicks per campaign, in the campaign's currency. Delivered daily by an external vendor; the feed has a 24h SLA.\n",
+   "doc_blocks": [],
+   "external": null,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "marketing",
+    "ad_spend"
+   ],
+   "freshness": {
+    "error_after": {
+     "count": 48,
+     "period": "hour"
+    },
+    "filter": null,
+    "warn_after": {
+     "count": 24,
+     "period": "hour"
+    }
+   },
+   "identifier": "ad_spend",
+   "loaded_at_field": "_loaded_at",
+   "loaded_at_query": null,
+   "loader": "",
+   "meta": {
+    "freshness_sla_hours": 24,
+    "loader": "adtech-vendor-sftp",
+    "owner": "marketing-analytics@kiwiretail.example",
+    "stale_on_demand": true
+   },
+   "name": "ad_spend",
+   "original_file_path": "models\\staging\\marketing\\_marketing__sources.yml",
+   "package_name": "kiwi_retail",
+   "path": "models\\staging\\marketing\\_marketing__sources.yml",
+   "quoting": {
+    "column": null,
+    "database": null,
+    "identifier": null,
+    "schema": null
+   },
+   "relation_name": "\"warehouse\".\"raw\".\"ad_spend\"",
+   "resource_type": "source",
+   "schema": "raw",
+   "source_description": "Ad platform and attribution feeds, loaded daily by the marketing data vendor.",
+   "source_meta": {
+    "loader": "adtech-vendor-sftp",
+    "owner": "marketing-analytics@kiwiretail.example"
+   },
+   "source_name": "marketing",
+   "tags": [],
+   "unique_id": "source.kiwi_retail.marketing.ad_spend",
+   "unrendered_database": null,
+   "unrendered_schema": "raw"
+  },
+  "source.kiwi_retail.marketing.campaigns": {
+   "columns": {},
+   "config": {
+    "enabled": true,
+    "event_time": null,
+    "freshness": {
+     "error_after": {
+      "count": null,
+      "period": null
+     },
+     "filter": null,
+     "warn_after": {
+      "count": null,
+      "period": null
+     }
+    },
+    "loaded_at_field": "_loaded_at",
+    "loaded_at_query": null,
+    "meta": {
+     "loader": "adtech-vendor-sftp",
+     "owner": "marketing-analytics@kiwiretail.example"
+    },
+    "static_analysis": null,
+    "tags": []
+   },
+   "database": "warehouse",
+   "description": "One row per paid campaign.",
+   "doc_blocks": [],
+   "external": null,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "marketing",
+    "marketing",
+    "campaigns"
+   ],
+   "freshness": {
+    "error_after": {
+     "count": null,
+     "period": null
+    },
+    "filter": null,
+    "warn_after": {
+     "count": null,
+     "period": null
+    }
+   },
+   "identifier": "campaigns",
+   "loaded_at_field": "_loaded_at",
+   "loaded_at_query": null,
+   "loader": "",
+   "meta": {
+    "loader": "adtech-vendor-sftp",
+    "owner": "marketing-analytics@kiwiretail.example"
+   },
+   "name": "campaigns",
+   "original_file_path": "models\\staging\\marketing\\_marketing__sources.yml",
+   "package_name": "kiwi_retail",
+   "path": "models\\staging\\marketing\\_marketing__sources.yml",
+   "quoting": {
+    "column": null,
+    "database": null,
+    "identifier": null,
+    "schema": null
+   },
+   "relation_name": "\"warehouse\".\"raw\".\"campaigns\"",
+   "resource_type": "source",
+   "schema": "raw",
+   "source_description": "Ad platform and attribution feeds, loaded daily by the marketing data vendor.",
+   "source_meta": {
+    "loader": "adtech-vendor-sftp",
+    "owner": "marketing-analytics@kiwiretail.example"
+   },
+   "source_name": "marketing",
+   "tags": [],
+   "unique_id": "source.kiwi_retail.marketing.campaigns",
+   "unrendered_database": null,
+   "unrendered_schema": "raw"
+  },
+  "source.kiwi_retail.shop.orders": {
+   "columns": {},
+   "config": {
+    "enabled": true,
+    "event_time": null,
+    "freshness": {
+     "error_after": {
+      "count": 24,
+      "period": "hour"
+     },
+     "filter": null,
+     "warn_after": {
+      "count": 12,
+      "period": "hour"
+     }
+    },
+    "loaded_at_field": "_loaded_at",
+    "loaded_at_query": null,
+    "meta": {
+     "loader": "commerce-replicator",
+     "owner": "data-platform@kiwiretail.example"
+    },
+    "static_analysis": null,
+    "tags": []
+   },
+   "database": "warehouse",
+   "description": "One row per order header, all channels.",
+   "doc_blocks": [],
+   "external": null,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "shop",
+    "orders"
+   ],
+   "freshness": {
+    "error_after": {
+     "count": 24,
+     "period": "hour"
+    },
+    "filter": null,
+    "warn_after": {
+     "count": 12,
+     "period": "hour"
+    }
+   },
+   "identifier": "orders",
+   "loaded_at_field": "_loaded_at",
+   "loaded_at_query": null,
+   "loader": "",
+   "meta": {
+    "loader": "commerce-replicator",
+    "owner": "data-platform@kiwiretail.example"
+   },
+   "name": "orders",
+   "original_file_path": "models\\staging\\shop\\_shop__sources.yml",
+   "package_name": "kiwi_retail",
+   "path": "models\\staging\\shop\\_shop__sources.yml",
+   "quoting": {
+    "column": null,
+    "database": null,
+    "identifier": null,
+    "schema": null
+   },
+   "relation_name": "\"warehouse\".\"raw\".\"orders\"",
+   "resource_type": "source",
+   "schema": "raw",
+   "source_description": "Kiwi Retail's commerce platform (POS for physical stores + the online shop), replicated nightly into the `raw` schema. Amounts are in the store's local currency (NZD or AUD).\n",
+   "source_meta": {
+    "loader": "commerce-replicator",
+    "owner": "data-platform@kiwiretail.example"
+   },
+   "source_name": "shop",
+   "tags": [],
+   "unique_id": "source.kiwi_retail.shop.orders",
+   "unrendered_database": null,
+   "unrendered_schema": "raw"
+  },
+  "source.kiwi_retail.shop.payments": {
+   "columns": {},
+   "config": {
+    "enabled": true,
+    "event_time": null,
+    "freshness": {
+     "error_after": {
+      "count": 24,
+      "period": "hour"
+     },
+     "filter": null,
+     "warn_after": {
+      "count": 12,
+      "period": "hour"
+     }
+    },
+    "loaded_at_field": "_loaded_at",
+    "loaded_at_query": null,
+    "meta": {
+     "loader": "commerce-replicator",
+     "owner": "data-platform@kiwiretail.example"
+    },
+    "static_analysis": null,
+    "tags": []
+   },
+   "database": "warehouse",
+   "description": "One row per payment attempt. An order can have several rows: failed attempts and split tenders (gift card + card).\n",
+   "doc_blocks": [],
+   "external": null,
+   "fqn": [
+    "kiwi_retail",
+    "staging",
+    "shop",
+    "shop",
+    "payments"
+   ],
+   "freshness": {
+    "error_after": {
+     "count": 24,
+     "period": "hour"
+    },
+    "filter": null,
+    "warn_after": {
+     "count": 12,
+     "period": "hour"
+    }
+   },
+   "identifier": "payments",
+   "loaded_at_field": "_loaded_at",
+   "loaded_at_query": null,
+   "loader": "",
+   "meta": {
+    "loader": "commerce-replicator",
+    "owner": "data-platform@kiwiretail.example"
+   },
+   "name": "payments",
+   "original_file_path": "models\\staging\\shop\\_shop__sources.yml",
+   "package_name": "kiwi_retail",
+   "path": "models\\staging\\shop\\_shop__sources.yml",
+   "quoting": {
+    "column": null,
+    "database": null,
+    "identifier": null,
+    "schema": null
+   },
+   "relation_name": "\"warehouse\".\"raw\".\"payments\"",
+   "resource_type": "source",
+   "schema": "raw",
+   "source_description": "Kiwi Retail's commerce platform (POS for physical stores + the online shop), replicated nightly into the `raw` schema. Amounts are in the store's local currency (NZD or AUD).\n",
+   "source_meta": {
+    "loader": "commerce-replicator",
+    "owner": "data-platform@kiwiretail.example"
+   },
+   "source_name": "shop",
+   "tags": [],
+   "unique_id": "source.kiwi_retail.shop.payments",
+   "unrendered_database": null,
+   "unrendered_schema": "raw"
+  }
+ }
+}

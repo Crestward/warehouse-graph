@@ -43,4 +43,11 @@ jobs:
       - run: uv run warehouse-graph demo-data
       - run: uv run warehouse-graph demo-build
       - run: uv run pytest -q
+      # Phase 2 gate: the graph builds from the fresh artifacts in < 1 minute (model cached).
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-all-MiniLM-L6-v2
+      - run: uv run warehouse-graph build
+        timeout-minutes: 3
       - run: uv run dagster definitions validate -f demo/orchestration/definitions.py
