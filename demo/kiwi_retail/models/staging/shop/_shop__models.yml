@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_shop__customers
-    description: Registered customers, one row per customer. Email is lower-cased.
+    description: Registered customers, one row per customer.
     columns:
       - name: customer_id
         description: Primary key.
@@ -26,7 +26,7 @@ models:
       - name: signed_up_on
         description: Date the customer account was created.
       - name: marketing_opt_in
-        description: True if the customer consented to marketing email.
+        description: True if the customer consented to marketing messages.
       - name: legacy_segment
         description: Old A/B/C value segment from the 2019 CRM. Not maintained.
         config: {meta: {deprecated: true, replaced_by: "dim_customers.customer_segment"}}

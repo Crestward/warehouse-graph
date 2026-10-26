@@ -1,0 +1,27 @@
+# Policies for the mini fixture (tests only): same shape as the real policies.yml.
+version: 1
+masks: {email: email, name: initial, default: redact}
+principals:
+  admin:
+    description: Everything.
+    schemas: [raw, staging, intermediate, marts]
+  analyst_au:
+    description: Australian rows only.
+    schemas: [marts]
+    row_filter: {column: region_code, equals: AU}
+    masked: ["fct_orders.discount_code"]
+  marketing:
+    description: No restricted HR data.
+    schemas: [staging, marts]
+    hidden: ["sensitivity:restricted", "pii:email"]
+    masked: ["pii:name"]
+  sentinel:
+    description: Diagnostics, no personal data.
+    schemas: [raw, staging, intermediate, marts]
+    hidden: ["pii:*"]
+audit_readers: [admin]
+identities:
+  admin@example: admin
+  au@example: analyst_au
+  marketing@example: marketing
+  sentinel: sentinel

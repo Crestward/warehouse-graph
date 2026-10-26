@@ -1,0 +1,14 @@
+{
+  "properties": {
+    "id": {
+      "description": "Node id, e.g. 'model.fct_orders'",
+      "title": "Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "title": "get_nodeArguments",
+  "type": "object"
+}

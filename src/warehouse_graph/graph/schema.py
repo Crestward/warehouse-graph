@@ -100,7 +100,8 @@ class ColumnNode(_Node):
     data_type: str | None = None
     tests: tuple[str, ...] = ()
     pii: str | None = None  # name | email | phone | salary
-    sensitivity: str | None = None  # restricted
+    sensitivity: str | None = None  # restricted | pii
+    masked: bool = False  # set only in a principal's filtered view of the graph
 
 
 class MetricNode(_Node):

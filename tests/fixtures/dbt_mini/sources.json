@@ -3,9 +3,9 @@
   "dbt_schema_version": "https://schemas.getdbt.com/dbt/sources/v3.json",
   "dbt_version": "1.12.6",
   "env": {},
-  "generated_at": "2026-10-26T12:23:07.155910Z",
-  "invocation_id": "1c299bd6-1532-4af2-a50a-bc33186886f5",
-  "invocation_started_at": "2026-10-26T12:23:05.957175Z"
+  "generated_at": "2026-10-26T13:18:22.871384Z",
+  "invocation_id": "3c5e2544-eff0-4b14-b110-2f3ba6838cff",
+  "invocation_started_at": "2026-10-26T13:18:21.414105Z"
  },
  "results": [
   {
@@ -25,22 +25,22 @@
      "period": "hour"
     }
    },
-   "execution_time": 0.03462409973144531,
-   "max_loaded_at": "2026-10-26T12:22:33.385837+00:00",
-   "max_loaded_at_time_ago_in_s": 33.747849,
-   "snapshotted_at": "2026-10-26T12:23:07.133686+00:00",
+   "execution_time": 0.040993690490722656,
+   "max_loaded_at": "2026-10-26T12:58:33.385198+00:00",
+   "max_loaded_at_time_ago_in_s": 1189.449099,
+   "snapshotted_at": "2026-10-26T13:18:22.834297+00:00",
    "status": "pass",
    "thread_id": "Thread-1 (worker)",
    "timing": [
     {
-     "completed_at": "2026-10-26T12:23:07.105955Z",
+     "completed_at": "2026-10-26T13:18:22.802662Z",
      "name": "compile",
-     "started_at": "2026-10-26T12:23:07.105955Z"
+     "started_at": "2026-10-26T13:18:22.802662Z"
     },
     {
-     "completed_at": "2026-10-26T12:23:07.138414Z",
+     "completed_at": "2026-10-26T13:18:22.841006Z",
      "name": "execute",
-     "started_at": "2026-10-26T12:23:07.105955Z"
+     "started_at": "2026-10-26T13:18:22.803677Z"
     }
    ],
    "unique_id": "source.kiwi_retail.marketing.ad_spend"
@@ -62,22 +62,22 @@
      "period": "hour"
     }
    },
-   "execution_time": 0.035614728927612305,
-   "max_loaded_at": "2026-10-26T12:22:33.385837+00:00",
-   "max_loaded_at_time_ago_in_s": 33.747825,
-   "snapshotted_at": "2026-10-26T12:23:07.133662+00:00",
+   "execution_time": 0.04273366928100586,
+   "max_loaded_at": "2026-10-26T12:58:33.385198+00:00",
+   "max_loaded_at_time_ago_in_s": 1189.449105,
+   "snapshotted_at": "2026-10-26T13:18:22.834303+00:00",
    "status": "pass",
    "thread_id": "Thread-3 (worker)",
    "timing": [
     {
-     "completed_at": "2026-10-26T12:23:07.105955Z",
+     "completed_at": "2026-10-26T13:18:22.803677Z",
      "name": "compile",
-     "started_at": "2026-10-26T12:23:07.105955Z"
+     "started_at": "2026-10-26T13:18:22.803677Z"
     },
     {
-     "completed_at": "2026-10-26T12:23:07.140416Z",
+     "completed_at": "2026-10-26T13:18:22.844250Z",
      "name": "execute",
-     "started_at": "2026-10-26T12:23:07.107278Z"
+     "started_at": "2026-10-26T13:18:22.805159Z"
     }
    ],
    "unique_id": "source.kiwi_retail.shop.payments"
@@ -99,22 +99,22 @@
      "period": "hour"
     }
    },
-   "execution_time": 0.037940025329589844,
-   "max_loaded_at": "2026-10-26T12:22:33.385837+00:00",
-   "max_loaded_at_time_ago_in_s": 33.747394,
-   "snapshotted_at": "2026-10-26T12:23:07.133231+00:00",
+   "execution_time": 0.04423785209655762,
+   "max_loaded_at": "2026-10-26T12:58:33.385198+00:00",
+   "max_loaded_at_time_ago_in_s": 1189.449118,
+   "snapshotted_at": "2026-10-26T13:18:22.834316+00:00",
    "status": "pass",
    "thread_id": "Thread-2 (worker)",
    "timing": [
     {
-     "completed_at": "2026-10-26T12:23:07.105955Z",
+     "completed_at": "2026-10-26T13:18:22.803677Z",
      "name": "compile",
-     "started_at": "2026-10-26T12:23:07.105955Z"
+     "started_at": "2026-10-26T13:18:22.802662Z"
     },
     {
-     "completed_at": "2026-10-26T12:23:07.141730Z",
+     "completed_at": "2026-10-26T13:18:22.844250Z",
      "name": "execute",
-     "started_at": "2026-10-26T12:23:07.107278Z"
+     "started_at": "2026-10-26T13:18:22.805159Z"
     }
    ],
    "unique_id": "source.kiwi_retail.shop.orders"

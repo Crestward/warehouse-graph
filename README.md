@@ -7,10 +7,11 @@ Shared foundation for two linked projects:
 
 This package will build a metadata/lineage graph from dbt artifacts, compile one `policies.yml` to database access controls (Postgres RLS / Unity Catalog), and serve the graph over an MCP server.
 
-> **Status: Phase 2 (graph core).** Done so far:
+> **Status: Phase 3 (adapters, policy-as-code, MCP server).** Done so far:
 > - repo tooling and the LLM wrapper (cost ledger, cache, budget cap, Batch API)
 > - **Kiwi Retail Co.**, a deliberately messy synthetic warehouse: 40 dbt models, 13 metrics, 6 dashboards, 13 documented traps
-> - **the metadata graph**: 574 nodes and 1,025 edges built from the dbt artifacts in ~10 s, with 97.8% column-level lineage and a Python query API
+> - **the metadata graph**: 574 nodes and 1,024 edges built from the dbt artifacts in ~10 s, with 97.8% column-level lineage and a Python query API
+> - **governance**: one `policies.yml` compiled to Postgres roles, RLS, column grants and masked views; role-filtered metadata; a description lint; an append-only audit log; and the 5-tool **MCP server**
 
 ## Quick start
 
@@ -19,7 +20,8 @@ cp .env.example .env      # add ANTHROPIC_API_KEY for real model calls
 uv sync
 make warehouse            # Postgres + synthetic data + dbt build + artifacts (~1 min)
 make graph                # make warehouse, then build the graph file (build/graph.wgz)
-make demo                 # make warehouse, then the Dagster UI at http://localhost:3000
+make policies             # make graph, then lint + apply policies.yml (rerun after any dbt build)
+make demo                 # make policies, then the Dagster UI at http://localhost:3000
 make check                # lint, format check, type-check, tests
 ```
 
@@ -130,6 +132,38 @@ flowchart LR
     classDef column fill:#fafafa,stroke:#999
     classDef flagged stroke:#c62828,stroke-width:2px,stroke-dasharray:4 2
 ```
+
+## Governance: one policy file, enforced by the database
+**The LLM is never the enforcement point.** [`policies.yml`](policies.yml) defines six principals: `admin`, `finance`, `marketing`, `analyst_au`, `analyst_nz` and the `sentinel` service principal. For each, it sets the schemas they may use, a row filter, and **hidden** or **masked** columns, selected by the graph's PII tags (`pii:email`, `sensitivity:restricted`, ...).
+
+`warehouse-graph policies` resolves that file against the graph, refuses to continue if any visible description mentions a hidden column, and compiles it to Postgres:
+
+| Control | How |
+|---|---|
+| Identity | one LOGIN role per principal: NOINHERIT, read-only, 30 s statement timeout, so no `SET ROLE` escalation |
+| Rows | RLS on the tables behind `marts`, keyed on `current_user` (`analyst_au` sees `region_code = 'AU'` only) |
+| Hidden columns | never granted (column-level grants), and removed from the principal's metadata |
+| Masked columns | `security_barrier` views in `marts` (`a***@***.com`, `***-***-199`, `A***`) |
+| Metadata | each principal gets its own filtered graph; a hidden id is "not found", exactly like a made-up one |
+| Audit | `audit.events`, append-only by trigger; `audit_writer` can only insert |
+
+The SQL is the same for every role (`select email from marts.dim_customers`); the database decides what comes back. Design: D13-D15 in [`docs/design-decisions.md`](docs/design-decisions.md).
+
+## MCP server
+Both projects reach the graph only through these five tools, always as the caller's principal:
+
+| Tool | Returns |
+|---|---|
+| `search_nodes(query, types?, k)` | hybrid-ranked nodes with scores, trap and deprecation flags |
+| `get_node(id)` | full record including caveats and columns |
+| `get_lineage(id, direction, depth, level)` | subgraph at model or column level |
+| `get_blast_radius(id)` | downstream models, dashboards and metrics, ranked by criticality |
+| `get_metric(name)` | definition, canonical SQL and the canonical alternative |
+
+```bash
+uv run warehouse-graph mcp --identity analyst.au@kiwiretail.example   # stdio; add --audit to log calls
+```
+Input and output schemas are pinned in [`schemas/mcp/v1/`](schemas/mcp/v1/). **Prior art:** dbt Labs ships an official [`dbt-mcp`](https://github.com/dbt-labs/dbt-mcp) server (lineage, Semantic Layer, text-to-SQL). This one differs in three ways: caveat and trap nodes, metadata filtered per role by the same policy the database enforces, and the eval harness built on top of it (Phases 4-8).
 
 ## Docs
 - [`docs/design-decisions.md`](docs/design-decisions.md): decisions and why

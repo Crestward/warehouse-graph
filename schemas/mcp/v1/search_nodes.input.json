@@ -1,0 +1,53 @@
+{
+  "$defs": {
+    "NodeType": {
+      "enum": [
+        "source",
+        "model",
+        "column",
+        "metric",
+        "exposure",
+        "caveat",
+        "query_example"
+      ],
+      "title": "NodeType",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "k": {
+      "default": 10,
+      "description": "Number of hits",
+      "maximum": 50,
+      "minimum": 1,
+      "title": "K",
+      "type": "integer"
+    },
+    "query": {
+      "description": "Free text, e.g. 'net revenue by region'",
+      "title": "Query",
+      "type": "string"
+    },
+    "types": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/NodeType"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Only these node types (default: all)",
+      "title": "Types"
+    }
+  },
+  "required": [
+    "query"
+  ],
+  "title": "search_nodesArguments",
+  "type": "object"
+}

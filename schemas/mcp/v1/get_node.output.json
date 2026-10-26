@@ -1,0 +1,106 @@
+{
+  "$defs": {
+    "NodeSummary": {
+      "properties": {
+        "deprecated": {
+          "default": false,
+          "title": "Deprecated",
+          "type": "boolean"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "trap_kind": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trap Kind"
+        },
+        "type": {
+          "$ref": "#/$defs/NodeType"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "description"
+      ],
+      "title": "NodeSummary",
+      "type": "object"
+    },
+    "NodeType": {
+      "enum": [
+        "source",
+        "model",
+        "column",
+        "metric",
+        "exposure",
+        "caveat",
+        "query_example"
+      ],
+      "title": "NodeType",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "caveats": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Caveats",
+      "type": "array"
+    },
+    "columns": {
+      "items": {
+        "$ref": "#/$defs/NodeSummary"
+      },
+      "title": "Columns",
+      "type": "array"
+    },
+    "downstream": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Downstream",
+      "type": "array"
+    },
+    "node": {
+      "additionalProperties": true,
+      "title": "Node",
+      "type": "object"
+    },
+    "upstream": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Upstream",
+      "type": "array"
+    }
+  },
+  "required": [
+    "node",
+    "caveats",
+    "columns",
+    "upstream",
+    "downstream"
+  ],
+  "title": "NodeRecord",
+  "type": "object"
+}

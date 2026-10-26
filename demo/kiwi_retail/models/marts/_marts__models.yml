@@ -9,7 +9,7 @@ models:
   - name: dim_customers
     description: >
       One row per registered customer with segment, order history and acquisition channel.
-      Contains PII (name, email, phone).
+      Contains personal data (see column tags).
     config:
       meta: {contains_pii: true}
     columns:
@@ -91,8 +91,8 @@ models:
 
   - name: dim_employees
     description: >
-      One row per employee (current and former) with store, tenure and annual salary.
-      Restricted: salary is visible to finance and admin only.
+      One row per employee (current and former) with store, region and tenure.
+      Contains restricted HR data (see column tags).
     config:
       meta: {owner: "people-ops@kiwiretail.example", sensitivity: restricted, contains_pii: true}
     columns:

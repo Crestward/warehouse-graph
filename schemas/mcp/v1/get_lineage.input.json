@@ -1,0 +1,40 @@
+{
+  "properties": {
+    "depth": {
+      "default": 3,
+      "maximum": 10,
+      "minimum": 1,
+      "title": "Depth",
+      "type": "integer"
+    },
+    "direction": {
+      "default": "upstream",
+      "enum": [
+        "upstream",
+        "downstream",
+        "both"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "id": {
+      "description": "Node id to start from",
+      "title": "Id",
+      "type": "string"
+    },
+    "level": {
+      "default": "model",
+      "enum": [
+        "model",
+        "column"
+      ],
+      "title": "Level",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "title": "get_lineageArguments",
+  "type": "object"
+}

@@ -135,7 +135,7 @@ caveats:
     added_on: 2025-09-09
 
   - id: cav_salary_currency
-    applies_to: [column.dim_employees.annual_salary, exposure.payroll_cost_report]
+    applies_to: [column.dim_employees.annual_salary]
     severity: medium
     text: >
       annual_salary is in the employee's local currency (salary_currency); AU salaries are AUD
