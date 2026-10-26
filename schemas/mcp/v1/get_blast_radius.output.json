@@ -1,0 +1,113 @@
+{
+  "$defs": {
+    "Impact": {
+      "properties": {
+        "criticality": {
+          "anyOf": [
+            {
+              "enum": [
+                "high",
+                "medium",
+                "low"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Criticality"
+        },
+        "distance": {
+          "title": "Distance",
+          "type": "integer"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/NodeType"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "distance",
+        "criticality"
+      ],
+      "title": "Impact",
+      "type": "object"
+    },
+    "NodeType": {
+      "enum": [
+        "source",
+        "model",
+        "column",
+        "metric",
+        "exposure",
+        "caveat",
+        "query_example"
+      ],
+      "title": "NodeType",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "exposures": {
+      "items": {
+        "$ref": "#/$defs/Impact"
+      },
+      "title": "Exposures",
+      "type": "array"
+    },
+    "max_criticality": {
+      "anyOf": [
+        {
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Max Criticality"
+    },
+    "metrics": {
+      "items": {
+        "$ref": "#/$defs/Impact"
+      },
+      "title": "Metrics",
+      "type": "array"
+    },
+    "models": {
+      "items": {
+        "$ref": "#/$defs/Impact"
+      },
+      "title": "Models",
+      "type": "array"
+    },
+    "root": {
+      "title": "Root",
+      "type": "string"
+    }
+  },
+  "required": [
+    "root",
+    "max_criticality",
+    "exposures",
+    "models",
+    "metrics"
+  ],
+  "title": "BlastRadius",
+  "type": "object"
+}

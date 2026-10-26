@@ -24,8 +24,10 @@ from warehouse_graph.graph.schema import (
     ColumnNode,
     Edge,
     EdgeType,
+    ModelNode,
     Node,
     QueryExampleNode,
+    SourceNode,
     Trap,
 )
 
@@ -107,6 +109,66 @@ def propagate_sensitivity(nodes: list[Node], edges: list[Edge]) -> list[Node]:
         else n
         for n in nodes
     ]
+
+
+_FRESHNESS_ORDER = {"pass": 0, "warn": 1, "error": 2, "runtime error": 3}
+
+
+def propagate_freshness(nodes: list[Node], edges: list[Edge]) -> list[Node]:
+    """Give every model the worst freshness status of the sources upstream of it.
+
+    Sources are hidden from roles that only see marts, yet "is this data stale?" matters most
+    to exactly those users (PRD §3.2 scenario 5). The note says how late the data is and what
+    the SLA is, without naming the hidden source.
+    """
+    by_id = {n.id: n for n in nodes}
+    upstream: dict[str, list[str]] = {}
+    for e in edges:
+        if e.type is EdgeType.DEPENDS_ON:
+            upstream.setdefault(e.source, []).append(e.target)
+
+    def sources_of(node_id: str) -> set[str]:
+        seen: set[str] = set()
+        stack = [node_id]
+        while stack:
+            for parent in upstream.get(stack.pop(), []):
+                if parent not in seen:
+                    seen.add(parent)
+                    stack.append(parent)
+        return {s for s in seen if isinstance(by_id.get(s), SourceNode)}
+
+    now = max(
+        (n.max_loaded_at for n in nodes if isinstance(n, SourceNode) and n.max_loaded_at),
+        default=None,
+    )
+    out: list[Node] = []
+    for n in nodes:
+        if not isinstance(n, ModelNode):
+            out.append(n)
+            continue
+        checked = [
+            s
+            for s in (by_id[i] for i in sources_of(n.id))
+            if isinstance(s, SourceNode) and s.freshness_status
+        ]
+        if not checked:
+            out.append(n)
+            continue
+        worst = max(checked, key=lambda s: _FRESHNESS_ORDER.get(s.freshness_status or "", 0))
+        status = worst.freshness_status
+        note = None
+        if status != "pass" and worst.max_loaded_at and now:
+            age_h = (now - worst.max_loaded_at).total_seconds() / 3600
+            sla = worst.freshness_warn_hours
+            note = f"upstream data last loaded about {age_h:.0f} h before the newest load" + (
+                f"; freshness SLA {sla:.0f} h" if sla else ""
+            )
+        elif status != "pass":
+            note = f"an upstream source failed its freshness check ({status})"
+        out.append(
+            n.model_copy(update={"upstream_freshness": status, "upstream_freshness_note": note})
+        )
+    return out
 
 
 def _yaml(path: Path) -> dict[str, Any]:

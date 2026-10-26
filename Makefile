@@ -1,4 +1,4 @@
-.PHONY: help up down test lint typecheck check llm-smoke warehouse graph demo
+.PHONY: help up down test lint typecheck check llm-smoke warehouse graph policies demo
 
 help:
 	@echo "make up         start local Postgres 16 (waits until healthy)"
@@ -8,7 +8,8 @@ help:
 	@echo "make llm-smoke  one cheap real model call through the wrapper (needs ANTHROPIC_API_KEY)"
 	@echo "make warehouse  Postgres up + synthetic data + dbt build/freshness/docs + artifacts"
 	@echo "make graph      make warehouse, then build the graph file (build/graph.wgz)"
-	@echo "make demo       make warehouse, then the Dagster UI at http://localhost:3000"
+	@echo "make policies   make graph, then lint + apply policies.yml (roles, RLS, masks, audit)"
+	@echo "make demo       make policies, then the Dagster UI at http://localhost:3000"
 
 up:
 	docker compose up -d --wait
@@ -38,5 +39,9 @@ warehouse: up
 graph: warehouse
 	uv run warehouse-graph build
 
-demo: warehouse
+# Rerun after every dbt build: it replaces the marts tables, and access fails closed until then.
+policies: graph
+	uv run warehouse-graph policies
+
+demo: policies
 	uv run dagster dev -f demo/orchestration/definitions.py

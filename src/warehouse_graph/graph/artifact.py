@@ -126,6 +126,7 @@ def build(
     lineage_edges, report = column_lineage(nodes, source.table_schema(), relations)
     edges += lineage_edges
     nodes = enrich.propagate_sensitivity(nodes, edges)
+    nodes = enrich.propagate_freshness(nodes, edges)
     if caveats is not None:
         more_nodes, more_edges = enrich.load_caveats(caveats, {n.id for n in nodes})
         nodes += more_nodes

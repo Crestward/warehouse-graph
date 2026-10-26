@@ -83,7 +83,7 @@ models:
       - name: has_ordered
 
   - name: int_employees__store_staff
-    description: Employees with store, region, current flag and tenure. Contains salary.
+    description: Employees with store, region, current flag and tenure.
     config:
       meta: {owner: "people-ops@kiwiretail.example", sensitivity: restricted}
     columns:

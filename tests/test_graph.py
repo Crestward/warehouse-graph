@@ -421,3 +421,31 @@ def test_cli_build_and_lineage(tmp_path: Path, capsys: pytest.CaptureFixture[str
     capsys.readouterr()
     assert main(["lineage", "model.orders_v1", "--graph", str(tmp_path / "g.wgz")]) == 0
     assert capsys.readouterr().out.startswith("flowchart LR")
+
+
+def test_search_modes(q: GraphQuery) -> None:
+    hybrid = q.search_nodes("ad spend metric", k=5)
+    vector = q.search_nodes("ad spend metric", k=5, mode="vector")
+    bm25 = q.search_nodes("ad spend metric", k=5, mode="bm25")
+    assert all(h.vector_rank == i for i, h in enumerate(vector, 1))
+    assert all(h.bm25_rank == i for i, h in enumerate(bm25, 1))
+    assert [h.score for h in vector] == sorted((h.score for h in vector), reverse=True)
+    assert hybrid and vector and bm25
+
+
+def test_freshness_propagates_to_downstream_models(artifact: GraphArtifact) -> None:
+    from warehouse_graph.graph.enrich import propagate_freshness
+
+    nodes = [
+        n.model_copy(update={"freshness_status": "error"})
+        if n.id == "source.marketing.ad_spend"
+        else n
+        for n in artifact.nodes.values()
+    ]
+    out = {n.id: n for n in propagate_freshness(nodes, artifact.edges)}
+    spend = out["model.fct_ad_spend_daily"]
+    assert isinstance(spend, ModelNode)
+    assert spend.upstream_freshness == "error"
+    assert spend.upstream_freshness_note and "marketing" not in spend.upstream_freshness_note
+    orders = out["model.orders_v1"]
+    assert isinstance(orders, ModelNode) and orders.upstream_freshness in ("pass", None)

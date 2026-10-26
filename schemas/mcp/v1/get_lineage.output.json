@@ -1,0 +1,148 @@
+{
+  "$defs": {
+    "Edge": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "target": {
+          "title": "Target",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/EdgeType"
+        }
+      },
+      "required": [
+        "source",
+        "target",
+        "type"
+      ],
+      "title": "Edge",
+      "type": "object"
+    },
+    "EdgeType": {
+      "enum": [
+        "DEPENDS_ON",
+        "HAS_COLUMN",
+        "COLUMN_DERIVES_FROM",
+        "DEFINES",
+        "EXPOSES",
+        "HAS_CAVEAT",
+        "ANSWERED_BY"
+      ],
+      "title": "EdgeType",
+      "type": "string"
+    },
+    "NodeSummary": {
+      "properties": {
+        "deprecated": {
+          "default": false,
+          "title": "Deprecated",
+          "type": "boolean"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "trap_kind": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trap Kind"
+        },
+        "type": {
+          "$ref": "#/$defs/NodeType"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "description"
+      ],
+      "title": "NodeSummary",
+      "type": "object"
+    },
+    "NodeType": {
+      "enum": [
+        "source",
+        "model",
+        "column",
+        "metric",
+        "exposure",
+        "caveat",
+        "query_example"
+      ],
+      "title": "NodeType",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "depth": {
+      "title": "Depth",
+      "type": "integer"
+    },
+    "direction": {
+      "enum": [
+        "upstream",
+        "downstream",
+        "both"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "edges": {
+      "items": {
+        "$ref": "#/$defs/Edge"
+      },
+      "title": "Edges",
+      "type": "array"
+    },
+    "level": {
+      "enum": [
+        "model",
+        "column"
+      ],
+      "title": "Level",
+      "type": "string"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/NodeSummary"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "root": {
+      "title": "Root",
+      "type": "string"
+    }
+  },
+  "required": [
+    "root",
+    "direction",
+    "level",
+    "depth",
+    "nodes",
+    "edges"
+  ],
+  "title": "Subgraph",
+  "type": "object"
+}

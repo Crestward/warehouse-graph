@@ -50,7 +50,7 @@ def q(artifact: GraphArtifact) -> GraphQuery:
 def test_counts_match_the_project(artifact: GraphArtifact) -> None:
     counts = artifact.meta.stats.nodes_by_type
     assert (counts["model"], counts["source"], counts["exposure"]) == (40, 11, 6)
-    assert (counts["metric"], counts["caveat"], counts["query_example"]) == (13, 14, 30)
+    assert (counts["metric"], counts["caveat"], counts["query_example"]) == (13, 15, 30)
 
 
 def test_no_orphan_columns(artifact: GraphArtifact) -> None:
