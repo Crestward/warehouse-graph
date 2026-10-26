@@ -10,7 +10,7 @@ This package will build a metadata/lineage graph from dbt artifacts, compile one
 > **Status: Phase 3 (adapters, policy-as-code, MCP server).** Done so far:
 > - repo tooling and the LLM wrapper (cost ledger, cache, budget cap, Batch API)
 > - **Kiwi Retail Co.**, a deliberately messy synthetic warehouse: 40 dbt models, 13 metrics, 6 dashboards, 13 documented traps
-> - **the metadata graph**: 574 nodes and 1,024 edges built from the dbt artifacts in ~10 s, with 97.8% column-level lineage and a Python query API
+> - **the metadata graph**: 575 nodes and 1,026 edges built from the dbt artifacts in ~10 s, with 97.8% column-level lineage and a Python query API
 > - **governance**: one `policies.yml` compiled to Postgres roles, RLS, column grants and masked views; role-filtered metadata; a description lint; an append-only audit log; and the 5-tool **MCP server**
 
 ## Quick start
@@ -42,7 +42,7 @@ raw.* (11 tables, seeded generator)
 |---|---|
 | Generator and loader | `src/warehouse_graph/demo/` (`warehouse-graph demo-data [--stale TABLE]`) |
 | dbt project (models, tests, freshness, exposures, Semantic Layer metrics) | `demo/kiwi_retail/` |
-| Tribal knowledge attached to nodes | `demo/caveats.yml` (14 caveats) |
+| Tribal knowledge attached to nodes | `demo/caveats.yml` (15 caveats, one a planted injection) |
 | Validated question → SQL examples | `demo/query_examples.yml` (30, each tested against the DB) |
 | Orchestration (nightly `dbt build`, run-failure sensor) | `demo/orchestration/definitions.py` (Dagster) |
 | Artifacts for the graph | `demo/artifacts/` (`manifest`, `catalog`, `run_results`, `sources`), produced by `make warehouse` |
