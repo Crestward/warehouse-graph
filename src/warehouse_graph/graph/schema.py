@@ -92,6 +92,11 @@ class ModelNode(_Node):
     last_run_status: str | None = None
     last_successful_run: dt.datetime | None = None
     compiled_sql: str = ""
+    # Derived from every upstream source's last freshness check (enrich.propagate_freshness):
+    # the worst status, and a note that names no source, so roles that can't see sources
+    # still learn that the data behind a model is stale.
+    upstream_freshness: str | None = None  # pass | warn | error | runtime error
+    upstream_freshness_note: str | None = None
 
 
 class ColumnNode(_Node):

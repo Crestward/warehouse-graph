@@ -431,3 +431,21 @@ def test_search_modes(q: GraphQuery) -> None:
     assert all(h.bm25_rank == i for i, h in enumerate(bm25, 1))
     assert [h.score for h in vector] == sorted((h.score for h in vector), reverse=True)
     assert hybrid and vector and bm25
+
+
+def test_freshness_propagates_to_downstream_models(artifact: GraphArtifact) -> None:
+    from warehouse_graph.graph.enrich import propagate_freshness
+
+    nodes = [
+        n.model_copy(update={"freshness_status": "error"})
+        if n.id == "source.marketing.ad_spend"
+        else n
+        for n in artifact.nodes.values()
+    ]
+    out = {n.id: n for n in propagate_freshness(nodes, artifact.edges)}
+    spend = out["model.fct_ad_spend_daily"]
+    assert isinstance(spend, ModelNode)
+    assert spend.upstream_freshness == "error"
+    assert spend.upstream_freshness_note and "marketing" not in spend.upstream_freshness_note
+    orders = out["model.orders_v1"]
+    assert isinstance(orders, ModelNode) and orders.upstream_freshness in ("pass", None)
