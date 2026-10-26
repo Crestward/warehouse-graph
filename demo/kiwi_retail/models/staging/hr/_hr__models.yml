@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_hr__employees
+    description: Employees, current and former. Contains salary (restricted).
+    config:
+      meta: {owner: "people-ops@kiwiretail.example", sensitivity: restricted}
+    columns:
+      - name: employee_id
+        data_tests: [unique, not_null]
+      - name: first_name
+        config: {meta: {pii: name}}
+      - name: last_name
+        config: {meta: {pii: name}}
+      - name: work_email
+        config: {meta: {pii: email}}
+      - name: store_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_shop__stores'), field: store_id}
+      - name: job_title
+      - name: hired_on
+      - name: terminated_on
+        description: Last day of employment; null for current staff.
+      - name: annual_salary
+        description: Gross annual base salary in salary_currency.
+        config: {meta: {pii: salary, sensitivity: restricted}}
+      - name: salary_currency
+      - name: manager_id
+        description: employee_id of the store manager; null for managers.

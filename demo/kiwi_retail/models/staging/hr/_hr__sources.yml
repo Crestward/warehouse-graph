@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: hr
+    description: Payroll/HRIS export, replicated weekly. Highly sensitive (salaries).
+    schema: raw
+    config:
+      loaded_at_field: _loaded_at
+      meta: {owner: "people-ops@kiwiretail.example", loader: "hris-export", sensitivity: restricted}
+    tables:
+      - name: employees
+        description: One row per employee (current and former), with annual salary.

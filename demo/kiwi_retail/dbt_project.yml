@@ -1,0 +1,58 @@
+name: kiwi_retail
+version: "1.0.0"
+profile: kiwi_retail
+config-version: 2
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+vars:
+  # Amounts in raw tables are in the store's currency. Marts convert AUD to NZD at this
+  # fixed planning rate (a caveat, not live FX).
+  aud_to_nzd: 1.09
+  # Churn and recency are measured against this date, not today, so answers are stable.
+  as_of_date: "2026-09-30"
+
+models:
+  kiwi_retail:
+    staging:
+      +schema: staging
+      +materialized: view
+      +tags: ["staging"]
+      +meta: {owner: "data-platform@kiwiretail.example", layer: staging}
+    intermediate:
+      +schema: intermediate
+      +materialized: view
+      +tags: ["intermediate"]
+      +meta: {owner: "analytics-engineering@kiwiretail.example", layer: intermediate}
+    marts:
+      +schema: marts
+      +materialized: table
+      +meta: {layer: marts}
+      core:
+        +tags: ["core"]
+        +meta: {owner: "analytics-engineering@kiwiretail.example"}
+      finance:
+        +tags: ["finance"]
+        +meta: {owner: "finance-analytics@kiwiretail.example"}
+      marketing:
+        +tags: ["marketing"]
+        +meta: {owner: "marketing-analytics@kiwiretail.example"}
+      customers:
+        +tags: ["customers"]
+        +meta: {owner: "customer-insights@kiwiretail.example"}
+      legacy:
+        +tags: ["legacy"]
+        +meta: {owner: "analytics-engineering@kiwiretail.example"}
+    utilities:
+      +schema: marts
+      +materialized: table
+      +tags: ["utility"]
+      +meta: {owner: "analytics-engineering@kiwiretail.example", layer: utility}
+
+data_tests:
+  kiwi_retail:
+    +severity: error

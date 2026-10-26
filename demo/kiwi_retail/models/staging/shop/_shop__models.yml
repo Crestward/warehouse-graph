@@ -1,0 +1,167 @@
+version: 2
+
+models:
+  - name: stg_shop__customers
+    description: Registered customers, one row per customer. Email is lower-cased.
+    columns:
+      - name: customer_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: first_name
+        config: {meta: {pii: name}}
+      - name: last_name
+        config: {meta: {pii: name}}
+      - name: email
+        description: Customer email address (lower-cased).
+        config: {meta: {pii: email}}
+      - name: phone
+        description: Mobile number in international format.
+        config: {meta: {pii: phone}}
+      - name: city
+      - name: region_code
+        description: Country the customer is registered in, NZ or AU.
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["NZ", "AU"]}
+      - name: signed_up_on
+        description: Date the customer account was created.
+      - name: marketing_opt_in
+        description: True if the customer consented to marketing email.
+      - name: legacy_segment
+        description: Old A/B/C value segment from the 2019 CRM. Not maintained.
+        config: {meta: {deprecated: true, replaced_by: "dim_customers.customer_segment"}}
+
+  - name: stg_shop__orders
+    description: Order headers, one row per order, all channels and statuses.
+    columns:
+      - name: order_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: customer_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('stg_shop__customers'), field: customer_id}
+      - name: store_id
+        description: Store or online storefront that took the order.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('stg_shop__stores'), field: store_id}
+      - name: ordered_at
+        description: Timestamp the order was placed (store local time).
+      - name: order_date
+        description: Date part of ordered_at.
+      - name: order_status
+        description: completed, returned, cancelled, or pending (awaiting payment).
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["completed", "returned", "cancelled", "pending"]}
+      - name: currency_code
+        description: Currency of all amounts on this order (NZD or AUD).
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["NZD", "AUD"]}
+      - name: shipping_fee
+        description: Shipping charged, in order currency. Zero for in-store orders.
+      - name: discount_code
+        description: Promo code applied to the whole order, if any.
+      - name: has_discount
+
+  - name: stg_shop__order_items
+    description: Order lines, one row per product per order.
+    columns:
+      - name: order_item_id
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('stg_shop__orders'), field: order_id}
+      - name: product_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_shop__products'), field: product_id}
+      - name: quantity
+      - name: unit_price
+        description: Shelf price per unit in order currency.
+      - name: discount_amount
+        description: Discount on this line in order currency.
+      - name: line_amount
+        description: quantity * unit_price - discount_amount, in order currency.
+
+  - name: stg_shop__payments
+    description: >
+      Payment attempts, one row per attempt. Includes failed attempts and split tenders, so an
+      order can have several rows. Filter payment_status = 'success' before summing.
+    columns:
+      - name: payment_id
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('stg_shop__orders'), field: order_id}
+      - name: payment_method
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["card", "afterpay", "paypal", "eftpos", "gift_card"]}
+      - name: amount
+        description: Amount attempted, in order currency.
+      - name: payment_status
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["success", "failed"]}
+      - name: paid_at
+
+  - name: stg_shop__refunds
+    description: Refunds, one row per refund. Only from 2024-03-01 (new POS).
+    columns:
+      - name: refund_id
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments: {to: ref('stg_shop__orders'), field: order_id}
+      - name: refunded_at
+      - name: refund_date
+      - name: refund_amount
+        description: Amount refunded, in order currency.
+      - name: refund_reason
+
+  - name: stg_shop__products
+    description: Product catalogue, one row per product.
+    columns:
+      - name: product_id
+        data_tests: [unique, not_null]
+      - name: sku
+        data_tests: [unique]
+      - name: product_name
+      - name: category
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["Apparel", "Footwear", "Outdoor", "Home", "Accessories"]}
+      - name: list_price_nzd
+      - name: unit_cost_nzd
+      - name: launched_on
+      - name: is_active
+
+  - name: stg_shop__stores
+    description: Stores and online storefronts, one row per store.
+    columns:
+      - name: store_id
+        data_tests: [unique, not_null]
+      - name: store_name
+      - name: city
+      - name: region_code
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["NZ", "AU"]}
+      - name: currency_code
+      - name: channel
+        description: "store for physical stores, online for the two web storefronts."
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["store", "online"]}
+      - name: opened_on

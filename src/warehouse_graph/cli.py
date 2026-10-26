@@ -7,6 +7,7 @@ import os
 import sys
 from pathlib import Path
 
+from warehouse_graph.demo.datagen import DEFAULT_SEED
 from warehouse_graph.llm import AnthropicProvider, LLMClient, LLMRequest
 
 SMOKE_MODEL = "claude-haiku-4-5"
@@ -39,14 +40,48 @@ def llm_smoke() -> int:
     return 0
 
 
+def demo_data(seed: int, stale: list[str]) -> int:
+    """Generate the Kiwi Retail Co. raw tables and load them into local Postgres."""
+    from warehouse_graph.demo.load import run
+
+    counts = run(seed, stale)
+    total = sum(counts.values())
+    print(f"loaded {total} rows into raw.* (seed={seed}, stale={stale or 'none'})")
+    for name, n in counts.items():
+        print(f"  raw.{name:<13} {n:>7}")
+    return 0
+
+
+def demo_build() -> int:
+    """Build the demo dbt project and copy its four artifacts to demo/artifacts/."""
+    from warehouse_graph.demo.build import ARTIFACTS, ARTIFACTS_DIR, run
+
+    results = run()
+    for step in results:
+        print(f"{'ok  ' if step.returncode == 0 else 'FAIL'} {step.command}")
+    missing = [a for a in ARTIFACTS if not (ARTIFACTS_DIR / a).exists()]
+    print(f"artifacts in {ARTIFACTS_DIR}: " + ("all 4" if not missing else f"missing {missing}"))
+    return 0 if results[0].returncode == 0 and results[-1].returncode == 0 and not missing else 1
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="warehouse-graph")
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("llm-smoke", help="make one cheap model call to verify the LLM wrapper")
+    demo = sub.add_parser("demo-data", help="generate and load the synthetic raw tables")
+    demo.add_argument("--seed", type=int, default=DEFAULT_SEED)
+    demo.add_argument(
+        "--stale", nargs="*", default=[], metavar="TABLE", help="back-date _loaded_at"
+    )
+    sub.add_parser("demo-build", help="dbt build + freshness + docs; collect artifacts")
     args = parser.parse_args(argv)
     load_dotenv()
     if args.command == "llm-smoke":
         return llm_smoke()
+    if args.command == "demo-data":
+        return demo_data(args.seed, args.stale)
+    if args.command == "demo-build":
+        return demo_build()
     return 1
 
 

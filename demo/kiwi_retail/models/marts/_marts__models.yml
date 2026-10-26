@@ -1,0 +1,431 @@
+version: 2
+
+# Trap convention (docs/planted-traps.md): planted messiness is flagged in `meta.trap` with
+# `kind`, a short `note`, and where relevant `use_instead`. Deprecations use
+# `meta.deprecated: true` + `meta.replaced_by`.
+
+models:
+  # ---------------------------------------------------------------- core
+  - name: dim_customers
+    description: >
+      One row per registered customer with segment, order history and acquisition channel.
+      Contains PII (name, email, phone).
+    config:
+      meta: {contains_pii: true}
+    columns:
+      - name: customer_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: first_name
+        config: {meta: {pii: name}}
+      - name: last_name
+        config: {meta: {pii: name}}
+      - name: email
+        description: Customer email address.
+        config: {meta: {pii: email}}
+      - name: phone
+        description: Customer mobile number.
+        config: {meta: {pii: phone}}
+      - name: city
+      - name: region_code
+        description: Customer's home country (NZ or AU).
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["NZ", "AU"]}
+      - name: signed_up_on
+      - name: marketing_opt_in
+      - name: customer_segment
+        description: >
+          Current value segment. VIP = 8+ revenue orders or NZ$1,500+ lifetime gross;
+          Repeat = 2+ orders; One-off = 1 order; Prospect = no orders yet.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments: {values: ["VIP", "Repeat", "One-off", "Prospect"]}
+      - name: legacy_segment
+        description: DEPRECATED. A/B/C segment from the 2019 CRM, never updated. Use customer_segment.
+        config:
+          meta:
+            deprecated: true
+            replaced_by: dim_customers.customer_segment
+            trap: {kind: deprecated_column, note: "Stale since 2019; ~20% null."}
+      - name: first_order_date
+      - name: last_order_date
+        description: Date of the most recent completed or returned order.
+      - name: lifetime_orders
+        description: Count of completed + returned orders.
+      - name: lifetime_gross_nzd
+        description: Lifetime items + shipping in NZD, before refunds.
+      - name: acquisition_channel
+        description: Campaign channel of first-touch attribution, or 'organic'.
+
+  - name: dim_products
+    description: One row per product with NZD list price, cost and list margin.
+    columns:
+      - name: product_id
+        data_tests: [unique, not_null]
+      - name: sku
+      - name: product_name
+      - name: category
+      - name: list_price_nzd
+      - name: unit_cost_nzd
+      - name: list_margin_pct
+        description: (list price - unit cost) / list price, as a fraction.
+      - name: launched_on
+      - name: is_active
+
+  - name: dim_stores
+    description: One row per store or online storefront, with current headcount.
+    columns:
+      - name: store_id
+        data_tests: [unique, not_null]
+      - name: store_name
+      - name: city
+      - name: region_code
+      - name: currency_code
+      - name: channel
+        description: store or online.
+      - name: opened_on
+      - name: current_staff
+        description: Number of current employees at the store.
+
+  - name: dim_employees
+    description: >
+      One row per employee (current and former) with store, tenure and annual salary.
+      Restricted: salary is visible to finance and admin only.
+    config:
+      meta: {owner: "people-ops@kiwiretail.example", sensitivity: restricted, contains_pii: true}
+    columns:
+      - name: employee_id
+        data_tests: [unique, not_null]
+      - name: first_name
+        config: {meta: {pii: name}}
+      - name: last_name
+        config: {meta: {pii: name}}
+      - name: work_email
+        config: {meta: {pii: email}}
+      - name: job_title
+      - name: store_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_stores'), field: store_id}
+      - name: store_name
+      - name: region_code
+      - name: hired_on
+      - name: terminated_on
+      - name: is_current
+      - name: tenure_days
+      - name: annual_salary
+        description: Gross annual base salary in salary_currency (NZD or AUD, not converted).
+        config: {meta: {pii: salary, sensitivity: restricted}}
+      - name: salary_currency
+      - name: manager_id
+
+  - name: fct_orders
+    description: >
+      One row per order (all statuses) with totals in order currency and NZD, payments and
+      refunds. The trusted order-grain fact. Revenue orders are completed + returned.
+    columns:
+      - name: order_id
+        description: Primary key.
+        data_tests: [unique, not_null]
+      - name: customer_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_customers'), field: customer_id}
+      - name: store_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_stores'), field: store_id}
+      - name: region_code
+        description: Region of the store that took the order.
+      - name: channel
+      - name: ordered_at
+      - name: order_date
+      - name: order_status
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["completed", "returned", "cancelled", "pending"]}
+      - name: is_revenue_order
+        description: True for completed and returned orders.
+      - name: currency_code
+      - name: fx_rate_to_nzd
+      - name: discount_code
+      - name: line_count
+      - name: units
+      - name: items_subtotal
+      - name: shipping_fee
+      - name: order_total
+        description: Items + shipping in order currency.
+      - name: order_total_nzd
+        description: Items + shipping in NZD.
+      - name: items_cost_nzd
+      - name: paid_amount
+        description: Successful payments only, in order currency.
+      - name: failed_payment_attempts
+      - name: is_split_tender
+      - name: refund_amount
+      - name: refund_amount_nzd
+      - name: net_revenue_nzd
+        description: For revenue orders, order_total_nzd minus refunds; 0 otherwise.
+
+  - name: fct_order_items
+    description: One row per order line with category, NZD amount, cost and margin.
+    columns:
+      - name: order_item_id
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('fct_orders'), field: order_id}
+      - name: product_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_products'), field: product_id}
+      - name: category
+      - name: line_amount_nzd
+      - name: line_cost_nzd
+      - name: line_margin_nzd
+        description: line_amount_nzd - line_cost_nzd.
+
+  - name: fct_payments
+    description: >
+      One row per payment ATTEMPT, including failed ones and split tenders. Several rows per
+      order are normal: filter payment_status = 'success', and never join this to orders to
+      sum order totals.
+    config:
+      meta:
+        trap: {kind: fanout_join, note: "Joining orders to payments on order_id duplicates orders with split tenders or failed attempts.", use_instead: "fct_orders.paid_amount"}
+    columns:
+      - name: payment_id
+        data_tests: [unique, not_null]
+      - name: order_id
+      - name: payment_method
+      - name: payment_status
+      - name: paid_at
+      - name: paid_date
+      - name: amount
+      - name: currency_code
+      - name: amount_nzd
+
+  - name: fct_refunds
+    description: One row per refund with NZD amount. Starts 2024-03-01 (see caveats).
+    columns:
+      - name: refund_id
+        data_tests: [unique, not_null]
+      - name: order_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('fct_orders'), field: order_id}
+      - name: refund_date
+      - name: refund_reason
+      - name: refund_amount_nzd
+
+  # ---------------------------------------------------------------- finance
+  - name: fct_revenue_daily
+    description: >
+      CANONICAL revenue. One row per day, region and channel: gross revenue (revenue orders,
+      booked on order date), refunds (booked on refund date) and net revenue, all in NZD.
+      Use this for any "revenue" question.
+    config:
+      meta: {canonical_for: [revenue, net_revenue]}
+    columns:
+      - name: revenue_day_id
+        data_tests: [unique, not_null]
+      - name: revenue_date
+        data_tests: [not_null]
+      - name: region_code
+      - name: channel
+      - name: gross_revenue_nzd
+      - name: refunds_nzd
+      - name: net_revenue_nzd
+        description: gross_revenue_nzd - refunds_nzd.
+      - name: orders
+        description: Revenue orders placed that day.
+
+  - name: rpt_revenue_by_region
+    description: Monthly revenue by region (NZD), rolled up from fct_revenue_daily.
+    data_tests:
+      - unique:
+          arguments: {column_name: "revenue_month || '-' || region_code"}
+    columns:
+      - name: revenue_month
+      - name: region_code
+      - name: gross_revenue_nzd
+      - name: refunds_nzd
+      - name: net_revenue_nzd
+      - name: orders
+      - name: avg_order_value_nzd
+        description: Gross revenue / orders.
+
+  - name: fct_sales
+    description: >
+      Sales lines. One row per order line with the sales amount, product and store.
+    config:
+      meta:
+        trap:
+          kind: misleading_name
+          note: >
+            Despite the name this is not the sales/revenue fact: amounts are in local
+            currency (NZD and AUD mixed), it includes cancelled and pending orders, and it
+            excludes shipping and refunds.
+          use_instead: fct_revenue_daily
+    columns:
+      - name: order_item_id
+        data_tests: [unique, not_null]
+      - name: order_id
+      - name: store_id
+      - name: region_code
+      - name: sold_on
+      - name: order_status
+      - name: product_id
+      - name: category
+      - name: quantity
+      - name: sales_amount
+        description: Line amount in the order's currency.
+      - name: currency_code
+
+  # ---------------------------------------------------------------- marketing
+  - name: dim_campaigns
+    description: One row per campaign with budget and total spend in NZD.
+    columns:
+      - name: campaign_id
+        data_tests: [unique, not_null]
+      - name: campaign_name
+      - name: campaign_channel
+      - name: region_code
+      - name: started_on
+      - name: ended_on
+      - name: budget
+      - name: currency_code
+      - name: budget_nzd
+      - name: total_spend_nzd
+      - name: active_days
+
+  - name: fct_ad_spend_daily
+    description: One row per campaign per day with spend (NZD), impressions and clicks.
+    columns:
+      - name: ad_spend_id
+        data_tests: [unique, not_null]
+      - name: campaign_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('dim_campaigns'), field: campaign_id}
+      - name: campaign_channel
+      - name: region_code
+      - name: spend_date
+      - name: spend_nzd
+      - name: impressions
+      - name: clicks
+
+  - name: rpt_campaign_performance
+    description: >
+      One row per campaign: spend, attributed and converted customers, attributed net revenue,
+      CAC and ROAS. Attribution is first-touch at signup only.
+    columns:
+      - name: campaign_id
+        data_tests: [unique, not_null]
+      - name: total_spend_nzd
+      - name: attributed_customers
+      - name: converted_customers
+        description: Attributed customers with at least one revenue order.
+      - name: attributed_net_revenue_nzd
+        description: Lifetime net revenue of attributed customers (all their orders).
+      - name: cac_nzd
+        description: Customer acquisition cost = spend / converted customers.
+      - name: roas
+        description: Return on ad spend = attributed net revenue / spend.
+
+  # ---------------------------------------------------------------- customers
+  - name: rpt_customer_churn
+    description: >
+      One row per customer with recency and two churn flags. is_churned is the canonical
+      definition (customer insights); is_churned_marketing is marketing's legacy definition.
+      Measured against the as_of_date var (2026-09-30), not today.
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: region_code
+      - name: signed_up_on
+      - name: customer_segment
+      - name: last_order_date
+      - name: days_since_last_order
+      - name: is_churned
+        description: CANONICAL. Has ordered, and no revenue order in the last 90 days.
+      - name: is_churned_marketing
+        description: >
+          Marketing's legacy definition: no order in 180 days OR never ordered. Not canonical.
+        config:
+          meta:
+            trap: {kind: competing_metric, note: "Second churn definition; counts never-ordered customers.", use_instead: rpt_customer_churn.is_churned}
+      - name: has_ordered
+
+  - name: rpt_customer_ltv
+    description: One row per customer with lifetime gross, refunds and net value (NZD).
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: revenue_orders
+      - name: gross_ltv_nzd
+      - name: refunds_nzd
+      - name: net_ltv_nzd
+      - name: avg_order_value_nzd
+
+  - name: rpt_active_customers
+    description: Active customers report.
+    config:
+      meta:
+        trap:
+          kind: misleading_name
+          note: Contains ALL customers, not only active ones. Filter is_active = true.
+          use_instead: "rpt_active_customers where is_active"
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: region_code
+      - name: customer_segment
+      - name: last_order_date
+      - name: is_active
+        description: True if the customer had a revenue order in the 180 days to as_of_date.
+
+  # ---------------------------------------------------------------- legacy
+  - name: rpt_regional_sales_legacy
+    description: Monthly sales by region (legacy). Feeds the Regional Sales (legacy) dashboard.
+    config:
+      meta:
+        trap:
+          kind: fanout_join
+          note: >
+            Joins orders to stores on region_code instead of store_id, so each order is
+            counted once per store in its region (totals inflated ~6x).
+          use_instead: rpt_revenue_by_region
+    columns:
+      - name: sales_month
+      - name: region_code
+      - name: total_sales_nzd
+      - name: order_count
+
+  - name: orders_v1
+    description: >
+      DEPRECATED. The 2022 orders model. order_amount sums every payment attempt (including
+      failed ones) and ignores currency and refunds. Use fct_orders.
+    config:
+      meta:
+        deprecated: true
+        replaced_by: fct_orders
+        trap: {kind: deprecated_model, note: "Still queried by old notebooks; amounts are wrong."}
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: order_amount
+        description: Sum of all payment attempts (wrong for split/failed payments).
+
+  # ---------------------------------------------------------------- utilities
+  - name: metricflow_time_spine
+    description: Daily date spine (2023-2026) for the dbt Semantic Layer.
+    time_spine:
+      standard_granularity_column: date_day
+    columns:
+      - name: date_day
+        granularity: day
+        data_tests: [unique, not_null]

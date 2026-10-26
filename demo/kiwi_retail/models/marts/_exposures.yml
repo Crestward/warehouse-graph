@@ -1,0 +1,80 @@
+version: 2
+
+# Dashboards that read the marts. `meta.criticality` drives blast-radius ranking (PRD §2.3).
+
+exposures:
+  - name: executive_revenue_dashboard
+    label: Executive Revenue Dashboard
+    type: dashboard
+    maturity: high
+    url: https://bi.kiwiretail.example/dashboards/exec-revenue
+    description: Board-level daily/monthly net revenue by region. Reviewed every Monday by the exec team.
+    depends_on:
+      - ref('fct_revenue_daily')
+      - ref('rpt_revenue_by_region')
+    owner: {name: Finance Analytics, email: finance-analytics@kiwiretail.example}
+    config:
+      meta: {criticality: high, consumers: "CEO, CFO, board"}
+
+  - name: store_operations_dashboard
+    label: Store Operations
+    type: dashboard
+    maturity: high
+    url: https://bi.kiwiretail.example/dashboards/store-ops
+    description: Daily orders, AOV and staffing per store. Used by store managers each morning.
+    depends_on:
+      - ref('fct_orders')
+      - ref('dim_stores')
+    owner: {name: Retail Operations, email: retail-ops@kiwiretail.example}
+    config:
+      meta: {criticality: high, consumers: "store managers"}
+
+  - name: marketing_performance_dashboard
+    label: Marketing Performance
+    type: dashboard
+    maturity: medium
+    url: https://bi.kiwiretail.example/dashboards/marketing
+    description: Campaign spend, CAC and ROAS.
+    depends_on:
+      - ref('rpt_campaign_performance')
+      - ref('fct_ad_spend_daily')
+    owner: {name: Marketing Analytics, email: marketing-analytics@kiwiretail.example}
+    config:
+      meta: {criticality: medium, consumers: "marketing team"}
+
+  - name: customer_health_dashboard
+    label: Customer Health
+    type: dashboard
+    maturity: medium
+    url: https://bi.kiwiretail.example/dashboards/customer-health
+    description: Churn, segments and lifetime value.
+    depends_on:
+      - ref('rpt_customer_churn')
+      - ref('rpt_customer_ltv')
+      - ref('dim_customers')
+    owner: {name: Customer Insights, email: customer-insights@kiwiretail.example}
+    config:
+      meta: {criticality: medium, consumers: "CRM and loyalty teams"}
+
+  - name: regional_sales_legacy_dashboard
+    label: Regional Sales (legacy)
+    type: dashboard
+    maturity: low
+    url: https://bi.kiwiretail.example/dashboards/regional-sales-legacy
+    description: Old regional sales view, kept for one AU stakeholder. Known to over-count.
+    depends_on:
+      - ref('rpt_regional_sales_legacy')
+    owner: {name: Analytics Engineering, email: analytics-engineering@kiwiretail.example}
+    config:
+      meta: {criticality: low, consumers: "AU regional manager", scheduled_for_retirement: "2026-12-31"}
+
+  - name: payroll_cost_report
+    label: Payroll Cost Report
+    type: analysis
+    maturity: high
+    description: Monthly payroll cost by store for finance. Contains salaries.
+    depends_on:
+      - ref('dim_employees')
+    owner: {name: People Ops, email: people-ops@kiwiretail.example}
+    config:
+      meta: {criticality: high, consumers: "CFO, people ops", sensitivity: restricted}

@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: marketing
+    description: Ad platform and attribution feeds, loaded daily by the marketing data vendor.
+    schema: raw
+    config:
+      loaded_at_field: _loaded_at
+      meta: {owner: "marketing-analytics@kiwiretail.example", loader: "adtech-vendor-sftp"}
+    tables:
+      - name: campaigns
+        description: One row per paid campaign.
+      - name: ad_spend
+        description: >
+          Daily spend, impressions and clicks per campaign, in the campaign's currency.
+          Delivered daily by an external vendor; the feed has a 24h SLA.
+        config:
+          freshness:
+            warn_after: {count: 24, period: hour}
+            error_after: {count: 48, period: hour}
+          meta: {freshness_sla_hours: 24, stale_on_demand: true}
+      - name: attributions
+        description: First-touch campaign attribution for customers who signed up during a campaign.
