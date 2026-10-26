@@ -1,0 +1,50 @@
+version: 2
+
+models:
+  - name: stg_marketing__campaigns
+    description: Paid campaigns, one row per campaign.
+    columns:
+      - name: campaign_id
+        data_tests: [unique, not_null]
+      - name: campaign_name
+      - name: campaign_channel
+        data_tests:
+          - accepted_values:
+              arguments: {values: ["search", "social", "email", "display"]}
+      - name: region_code
+      - name: started_on
+      - name: ended_on
+      - name: budget
+        description: Planned budget in currency_code.
+      - name: currency_code
+
+  - name: stg_marketing__ad_spend
+    description: Daily ad spend per campaign, one row per campaign per day.
+    columns:
+      - name: ad_spend_id
+        description: Surrogate key campaign_id-spend_date.
+        data_tests: [unique, not_null]
+      - name: campaign_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_marketing__campaigns'), field: campaign_id}
+      - name: spend_date
+      - name: spend
+        description: Spend in the campaign's currency.
+      - name: impressions
+      - name: clicks
+
+  - name: stg_marketing__attributions
+    description: First-touch attribution, at most one row per customer.
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - relationships:
+              arguments: {to: ref('stg_shop__customers'), field: customer_id}
+      - name: campaign_id
+        data_tests:
+          - relationships:
+              arguments: {to: ref('stg_marketing__campaigns'), field: campaign_id}
+      - name: attributed_on
+      - name: attribution_model

@@ -19,4 +19,28 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run mypy
+      - run: uv run pytest -q -m "not integration"
+
+  # Builds the demo warehouse from scratch, the same way `make warehouse` does (Phase 1 gate).
+  warehouse:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: warehouse
+          POSTGRES_PASSWORD: local-dev-only
+          POSTGRES_DB: warehouse
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U warehouse -d warehouse"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv python install 3.12
+      - run: uv sync --locked
+      - run: uv run warehouse-graph demo-data
+      - run: uv run warehouse-graph demo-build
       - run: uv run pytest -q
+      - run: uv run dagster definitions validate -f demo/orchestration/definitions.py

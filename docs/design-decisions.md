@@ -49,3 +49,15 @@ Format: **context → options → choice → why**. Newest at the bottom. Scope 
 - **Evidence:** Azure Databricks isn't offered in New Zealand North (Microsoft Learn region list, updated 2026-10-21). Australia East has serverless SQL warehouses, Unity Catalog, system tables and Model Serving.
 - **Choice:** the whole `azure` profile (Databricks, storage/queue, Function App, Key Vault, App Insights) goes in **Australia East**.
 - **Why one region:** splitting the Functions into NZ North would add cross-region latency and egress without any residency gain, because the data lives in Databricks. Australia East is the nearest Databricks region to NZ. Re-check before Phase 16 in case NZ North is added.
+
+## D9. Demo warehouse design (Phase 1)
+- **Data:** a seeded, pure-Python generator (`warehouse_graph.demo.datagen`).
+  - Fixed date range 2024-01-01 → 2026-09-30, about 125k rows, so eval answers never drift.
+  - Only `_loaded_at` is set at load time, so source freshness works against "now", and `--stale` back-dates it on demand (the P2 `stale_source` fault).
+  - *Rejected:* Faker or a sample dataset. Both are extra dependencies or licences, and neither is deterministic across versions.
+- **Size:** 9,000 customers and about 29k orders. The full `dbt build` (40 models, 115 tests) takes about 5 s locally, well inside the < 2 min budget that Phase 10 needs for its per-incident rebuilds.
+- **Metrics:** the dbt Semantic Layer (semantic models + metrics in `models/semantic/metrics.yml`) rather than a home-made YAML file. The metrics land in `manifest.json` next to everything else, and it's the format employers use. Ratio metrics need simple helper metrics; those are marked `meta.helper`.
+- **Portability:** date and string logic uses dbt's cross-database macros (`dbt.datediff`, `dbt.date_trunc`, `dbt.concat`, `dbt.type_*`). The same project should then build on Databricks in Phase 9 with no SQL changes.
+- **Artifacts:** `warehouse-graph demo-build` runs build → freshness → docs and copies each artifact as soon as it's written to `demo/artifacts/`, because dbt overwrites `run_results.json` on every command.
+- **Dependencies:** dbt and Dagster are in a `demo` dependency group, installed by default for this repo but never pulled in by `warehouse-qa` or `pipeline-sentinel`. `psycopg` and `PyYAML` are core dependencies, because Phases 2–3 need them anyway.
+- **Traps:** documented in `docs/planted-traps.md` with measured effect sizes, and flagged in dbt `meta` so the graph can see them.

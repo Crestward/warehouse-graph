@@ -1,0 +1,277 @@
+# QueryExamples: validated question -> SQL pairs used as retrieval context (PRD §2.2).
+#
+# Rules:
+# - Written BEFORE the Phase 4 eval set and kept separate. Phase 4 runs a near-duplicate
+#   check (embedding similarity + manual review) of every eval question against this file.
+# - Every SQL runs against the local profile (Postgres) and returns at least one row
+#   (tests/test_demo_assets.py, integration).
+# - They use canonical models and avoid restricted data (salary) and PII columns.
+
+examples:
+  - id: qe01
+    question: What was net revenue in NZD for each month of 2025?
+    sql: |
+      select cast(date_trunc('month', revenue_date) as date) as revenue_month,
+             sum(net_revenue_nzd) as net_revenue_nzd
+      from marts.fct_revenue_daily
+      where revenue_date >= date '2025-01-01' and revenue_date < date '2026-01-01'
+      group by 1
+      order by 1
+
+  - id: qe02
+    question: How much net revenue did each region make in Q2 2026?
+    sql: |
+      select region_code, sum(net_revenue_nzd) as net_revenue_nzd
+      from marts.fct_revenue_daily
+      where revenue_date >= date '2026-04-01' and revenue_date < date '2026-07-01'
+      group by region_code
+      order by net_revenue_nzd desc
+
+  - id: qe03
+    question: Which 10 products had the highest gross margin in 2025?
+    sql: |
+      select product_id, product_name, category, sum(line_margin_nzd) as margin_nzd
+      from marts.fct_order_items
+      where is_revenue_order and order_date >= date '2025-01-01' and order_date < date '2026-01-01'
+      group by product_id, product_name, category
+      order by margin_nzd desc
+      limit 10
+
+  - id: qe04
+    question: How many orders came through online versus physical stores in September 2026?
+    sql: |
+      select channel, count(*) as orders
+      from marts.fct_orders
+      where is_revenue_order and order_date >= date '2026-09-01' and order_date < date '2026-10-01'
+      group by channel
+
+  - id: qe05
+    question: What was the average order value by region in 2025?
+    sql: |
+      select region_code, round(avg(order_total_nzd), 2) as avg_order_value_nzd
+      from marts.fct_orders
+      where is_revenue_order and order_date >= date '2025-01-01' and order_date < date '2026-01-01'
+      group by region_code
+
+  - id: qe06
+    question: What share of revenue orders were paid with more than one payment method?
+    sql: |
+      select round(avg(case when is_split_tender then 1.0 else 0 end), 4) as split_tender_share
+      from marts.fct_orders
+      where is_revenue_order
+
+  - id: qe07
+    question: Which payment methods are used most often for successful payments?
+    sql: |
+      select payment_method, count(*) as payments, sum(amount_nzd) as amount_nzd
+      from marts.fct_payments
+      where payment_status = 'success'
+      group by payment_method
+      order by payments desc
+
+  - id: qe08
+    question: What were total refunds in NZD by refund reason in 2025?
+    sql: |
+      select refund_reason, count(*) as refunds, sum(refund_amount_nzd) as refunds_nzd
+      from marts.fct_refunds
+      where refund_date >= date '2025-01-01' and refund_date < date '2026-01-01'
+      group by refund_reason
+      order by refunds_nzd desc
+
+  - id: qe09
+    question: How many customers are in each customer segment?
+    sql: |
+      select customer_segment, count(*) as customers
+      from marts.dim_customers
+      group by customer_segment
+      order by customers desc
+
+  - id: qe10
+    question: What is the churn rate in each region?
+    sql: |
+      select region_code, round(avg(case when is_churned then 1.0 else 0 end), 4) as churn_rate
+      from marts.rpt_customer_churn
+      where has_ordered
+      group by region_code
+    notes: Canonical churn (90 days, customers who have ordered). See cav_two_churn_definitions.
+
+  - id: qe11
+    question: How many active customers do we have right now?
+    sql: |
+      select count(*) as active_customers
+      from marts.rpt_active_customers
+      where is_active
+    notes: rpt_active_customers holds every customer; the is_active filter is required.
+
+  - id: qe12
+    question: Which campaigns had the best return on ad spend?
+    sql: |
+      select campaign_id, campaign_name, total_spend_nzd, attributed_net_revenue_nzd, roas
+      from marts.rpt_campaign_performance
+      where roas is not null
+      order by roas desc
+      limit 10
+
+  - id: qe13
+    question: How much did we spend on ads per channel in 2025?
+    sql: |
+      select campaign_channel, sum(spend_nzd) as spend_nzd
+      from marts.fct_ad_spend_daily
+      where spend_date >= date '2025-01-01' and spend_date < date '2026-01-01'
+      group by campaign_channel
+      order by spend_nzd desc
+
+  - id: qe14
+    question: What is the customer acquisition cost for each campaign channel?
+    sql: |
+      select campaign_channel,
+             round(sum(total_spend_nzd) / nullif(sum(converted_customers), 0), 2) as cac_nzd
+      from marts.rpt_campaign_performance
+      group by campaign_channel
+
+  - id: qe15
+    question: Which store made the most net revenue in 2025?
+    sql: |
+      select s.store_id, s.store_name, sum(o.net_revenue_nzd) as net_revenue_nzd
+      from marts.fct_orders as o
+      join marts.dim_stores as s on o.store_id = s.store_id
+      where o.order_date >= date '2025-01-01' and o.order_date < date '2026-01-01'
+      group by s.store_id, s.store_name
+      order by net_revenue_nzd desc
+      limit 1
+
+  - id: qe16
+    question: How many stores and current staff do we have in each region?
+    sql: |
+      select region_code, count(*) as stores, sum(current_staff) as current_staff
+      from marts.dim_stores
+      group by region_code
+
+  - id: qe17
+    question: Show daily net revenue for the last 7 days of data.
+    sql: |
+      select revenue_date, sum(net_revenue_nzd) as net_revenue_nzd
+      from marts.fct_revenue_daily
+      where revenue_date > (select max(revenue_date) from marts.fct_revenue_daily) - 7
+      group by revenue_date
+      order by revenue_date
+
+  - id: qe18
+    question: How did Black Friday week revenue in 2025 compare with 2024?
+    sql: |
+      select extract(year from revenue_date) as year, sum(net_revenue_nzd) as net_revenue_nzd
+      from marts.fct_revenue_daily
+      where (revenue_date between date '2024-11-24' and date '2024-11-30')
+         or (revenue_date between date '2025-11-24' and date '2025-11-30')
+      group by 1
+      order by 1
+
+  - id: qe19
+    question: How many new customers signed up each month in 2025?
+    sql: |
+      select cast(date_trunc('month', signed_up_on) as date) as signup_month, count(*) as new_customers
+      from marts.dim_customers
+      where signed_up_on >= date '2025-01-01' and signed_up_on < date '2026-01-01'
+      group by 1
+      order by 1
+
+  - id: qe20
+    question: What share of customers who have bought from us have ordered more than once?
+    sql: |
+      select round(avg(case when lifetime_orders >= 2 then 1.0 else 0 end), 4) as repeat_rate
+      from marts.dim_customers
+      where lifetime_orders >= 1
+
+  - id: qe21
+    question: What is the average net lifetime value by acquisition channel?
+    sql: |
+      select c.acquisition_channel, round(avg(l.net_ltv_nzd), 2) as avg_net_ltv_nzd, count(*) as customers
+      from marts.rpt_customer_ltv as l
+      join marts.dim_customers as c on l.customer_id = c.customer_id
+      where l.revenue_orders > 0
+      group by c.acquisition_channel
+      order by avg_net_ltv_nzd desc
+
+  - id: qe22
+    question: How many units did we sell in each product category in 2026?
+    sql: |
+      select category, sum(quantity) as units
+      from marts.fct_order_items
+      where is_revenue_order and order_date >= date '2026-01-01'
+      group by category
+      order by units desc
+
+  - id: qe23
+    question: What is the order cancellation rate by channel?
+    sql: |
+      select channel,
+             round(avg(case when order_status = 'cancelled' then 1.0 else 0 end), 4) as cancellation_rate
+      from marts.fct_orders
+      group by channel
+
+  - id: qe24
+    question: How many orders had a failed payment attempt each month in 2026?
+    sql: |
+      select cast(date_trunc('month', order_date) as date) as order_month, count(*) as orders_with_failed_payment
+      from marts.fct_orders
+      where failed_payment_attempts > 0 and order_date >= date '2026-01-01'
+      group by 1
+      order by 1
+
+  - id: qe25
+    question: What is the average discount on orders that used a discount code?
+    sql: |
+      select round(avg(discount_nzd), 2) as avg_discount_nzd
+      from (
+          select i.order_id, sum(i.discount_amount * o.fx_rate_to_nzd) as discount_nzd
+          from marts.fct_order_items as i
+          join marts.fct_orders as o on i.order_id = o.order_id
+          where o.discount_code is not null and o.is_revenue_order
+          group by i.order_id
+      ) as per_order
+
+  - id: qe26
+    question: Which 5 New Zealand cities have the most customers?
+    sql: |
+      select city, count(*) as customers
+      from marts.dim_customers
+      where region_code = 'NZ'
+      group by city
+      order by customers desc
+      limit 5
+
+  - id: qe27
+    question: Compare gross and net revenue for each month of 2024.
+    sql: |
+      select revenue_month, sum(gross_revenue_nzd) as gross_revenue_nzd, sum(net_revenue_nzd) as net_revenue_nzd
+      from marts.rpt_revenue_by_region
+      where revenue_month >= date '2024-01-01' and revenue_month < date '2025-01-01'
+      group by revenue_month
+      order by revenue_month
+    notes: Jan-Feb 2024 net revenue is overstated (cav_refunds_before_2024_03).
+
+  - id: qe28
+    question: What was Australia's net revenue in 2025, in NZD?
+    sql: |
+      select sum(net_revenue_nzd) as au_net_revenue_nzd
+      from marts.fct_revenue_daily
+      where region_code = 'AU' and revenue_date >= date '2025-01-01' and revenue_date < date '2026-01-01'
+    notes: Converted at the fixed planning rate (cav_fixed_fx_rate).
+
+  - id: qe29
+    question: What is the click-through rate for each campaign channel?
+    sql: |
+      select campaign_channel, round(sum(clicks) * 1.0 / nullif(sum(impressions), 0), 4) as ctr
+      from marts.fct_ad_spend_daily
+      group by campaign_channel
+      order by ctr desc
+
+  - id: qe30
+    question: Which discontinued products were still sold in 2026?
+    sql: |
+      select p.product_id, p.product_name, sum(i.quantity) as units_2026
+      from marts.fct_order_items as i
+      join marts.dim_products as p on i.product_id = p.product_id
+      where not p.is_active and i.is_revenue_order and i.order_date >= date '2026-01-01'
+      group by p.product_id, p.product_name
+      order by units_2026 desc

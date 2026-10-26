@@ -1,0 +1,144 @@
+# Tribal knowledge that isn't in the dbt docs: the things an experienced analyst at
+# Kiwi Retail Co. would warn you about. Phase 2 turns each entry into a Caveat node with
+# HAS_CAVEAT edges to the nodes in `applies_to`.
+#
+# Node reference format (resolved against manifest.json; checked by tests/test_demo_assets.py):
+#   model.<name> | source.<source>.<table> | column.<model>.<column> | metric.<name> | exposure.<name>
+#
+# Severity: high = answers will be wrong without it; medium = misleading; low = context.
+
+caveats:
+  - id: cav_refunds_before_2024_03
+    applies_to: [source.shop.refunds, model.fct_refunds, model.fct_revenue_daily, metric.net_revenue]
+    severity: high
+    text: >
+      Refunds processed on the old POS before 2024-03-01 were never migrated. Net revenue for
+      January and February 2024 is overstated because their refunds are missing. Compare
+      periods from March 2024 onward, or use gross revenue for early 2024.
+    author: finance-analytics@kiwiretail.example
+    added_on: 2024-04-12
+
+  - id: cav_fixed_fx_rate
+    applies_to: [model.fct_orders, model.fct_revenue_daily, model.rpt_revenue_by_region, column.fct_orders.order_total_nzd]
+    severity: medium
+    text: >
+      AUD amounts are converted to NZD at a fixed planning rate of 1.09 (dbt var aud_to_nzd),
+      not the daily market rate. Finance's statutory reports use monthly average rates, so AU
+      figures here differ from the published accounts by a few percent.
+    author: finance-analytics@kiwiretail.example
+    added_on: 2024-07-01
+
+  - id: cav_fct_sales_not_revenue
+    applies_to: [model.fct_sales, metric.revenue]
+    severity: high
+    text: >
+      fct_sales and the "revenue" metric are NOT revenue. They mix NZD and AUD, include
+      cancelled and pending orders, and exclude shipping and refunds. They exist for the old
+      sales dashboard. For revenue use fct_revenue_daily or the net_revenue metric.
+    author: analytics-engineering@kiwiretail.example
+    added_on: 2025-02-03
+
+  - id: cav_payments_multiple_rows
+    applies_to: [model.fct_payments, model.stg_shop__payments, source.shop.payments]
+    severity: high
+    text: >
+      An order can have several payment rows: failed attempts (about 4% of orders) and split
+      tenders such as gift card + card (about 9%). Joining orders to payments on order_id and
+      summing order totals double-counts. Use fct_orders.paid_amount instead.
+    author: analytics-engineering@kiwiretail.example
+    added_on: 2024-09-18
+
+  - id: cav_regional_sales_legacy_inflated
+    applies_to: [model.rpt_regional_sales_legacy, exposure.regional_sales_legacy_dashboard]
+    severity: high
+    text: >
+      The legacy regional sales report joins orders to stores on region, so every order is
+      counted once per store in its region. Totals are inflated roughly 6x. It is kept for one
+      AU stakeholder until 2026-12-31. Use rpt_revenue_by_region.
+    author: analytics-engineering@kiwiretail.example
+    added_on: 2025-06-20
+
+  - id: cav_orders_v1_deprecated
+    applies_to: [model.orders_v1]
+    severity: high
+    text: >
+      orders_v1 is deprecated. order_amount adds up every payment attempt, including failed
+      ones, and ignores currency and refunds. Some old notebooks still read it. Use fct_orders.
+    author: analytics-engineering@kiwiretail.example
+    added_on: 2025-01-10
+
+  - id: cav_two_churn_definitions
+    applies_to: [model.rpt_customer_churn, metric.churn_rate, metric.churn_rate_marketing, column.rpt_customer_churn.is_churned_marketing]
+    severity: medium
+    text: >
+      There are two churn definitions. Customer Insights' churn_rate (canonical) is 90 days
+      without an order, among customers who have ordered. Marketing's churn_rate_marketing is
+      180 days and counts never-ordered customers as churned. When someone says "churn",
+      ask which one; default to churn_rate.
+    author: customer-insights@kiwiretail.example
+    added_on: 2025-03-14
+
+  - id: cav_as_of_date
+    applies_to: [model.rpt_customer_churn, model.rpt_active_customers, model.int_employees__store_staff]
+    severity: medium
+    text: >
+      Recency, churn, activity and tenure are measured against the as_of_date var
+      (2026-09-30), the last day of loaded data, not today's date.
+    author: analytics-engineering@kiwiretail.example
+    added_on: 2026-10-01
+
+  - id: cav_active_customers_all_rows
+    applies_to: [model.rpt_active_customers]
+    severity: medium
+    text: >
+      Despite the name, rpt_active_customers has every customer. Count only rows where
+      is_active is true (a revenue order in the last 180 days).
+    author: customer-insights@kiwiretail.example
+    added_on: 2025-08-05
+
+  - id: cav_legacy_segment
+    applies_to: [column.dim_customers.legacy_segment, column.stg_shop__customers.legacy_segment]
+    severity: medium
+    text: >
+      legacy_segment is the A/B/C segment from the 2019 CRM. It has not been updated since
+      and about 20% is null. Use customer_segment.
+    author: customer-insights@kiwiretail.example
+    added_on: 2024-02-20
+
+  - id: cav_order_region_vs_customer_region
+    applies_to: [model.fct_orders, column.fct_orders.region_code, column.dim_customers.region_code]
+    severity: low
+    text: >
+      fct_orders.region_code is where the order was taken (store or storefront country);
+      dim_customers.region_code is the customer's home country. They differ for a small number
+      of customers. Revenue by region uses the order's region.
+    author: analytics-engineering@kiwiretail.example
+    added_on: 2024-11-02
+
+  - id: cav_attribution_first_touch
+    applies_to: [model.rpt_campaign_performance, model.int_marketing__attributed_customers]
+    severity: medium
+    text: >
+      Attribution is first-touch at signup only, for customers who signed up while a campaign
+      in their region was live. Repeat purchases from existing customers are never attributed,
+      so ROAS understates retention campaigns (especially email).
+    author: marketing-analytics@kiwiretail.example
+    added_on: 2025-05-27
+
+  - id: cav_ad_spend_vendor_delay
+    applies_to: [source.marketing.ad_spend, model.fct_ad_spend_daily]
+    severity: low
+    text: >
+      The ad spend feed comes from an external vendor via SFTP with a 24h SLA. It is
+      sometimes late on Mondays; if freshness fails, recent days of spend will be missing.
+    author: marketing-analytics@kiwiretail.example
+    added_on: 2025-09-09
+
+  - id: cav_salary_currency
+    applies_to: [column.dim_employees.annual_salary, exposure.payroll_cost_report]
+    severity: medium
+    text: >
+      annual_salary is in the employee's local currency (salary_currency); AU salaries are AUD
+      and are not converted. Restricted: finance and admin only.
+    author: people-ops@kiwiretail.example
+    added_on: 2024-06-30

@@ -1,0 +1,97 @@
+version: 2
+
+models:
+  - name: int_orders__enriched
+    description: Orders joined to their store, with region, channel and the NZD conversion rate.
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: region_code
+        description: Region of the store that took the order (not the customer's home region).
+      - name: channel
+        description: store or online.
+      - name: fx_rate_to_nzd
+        description: Fixed planning rate (var aud_to_nzd) for AUD orders, 1 for NZD.
+      - name: is_revenue_order
+        description: True for completed and returned orders, the statuses that count as revenue.
+
+  - name: int_order_items__priced
+    description: Order lines with product category, NZD line amount and NZD line cost.
+    columns:
+      - name: order_item_id
+        data_tests: [unique, not_null]
+      - name: line_amount_nzd
+        description: Line amount converted to NZD.
+      - name: line_cost_nzd
+        description: quantity * product unit cost (NZD).
+
+  - name: int_orders__item_totals
+    description: One row per order with line count, units and item subtotals (excludes shipping).
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: items_subtotal
+        description: Sum of line amounts in order currency.
+      - name: items_subtotal_nzd
+      - name: items_cost_nzd
+
+  - name: int_payments__by_order
+    description: >
+      One row per order with payment attempts. paid_amount sums successful payments only, so
+      it is safe to join to orders 1:1.
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: paid_amount
+        description: Sum of successful payments, in order currency.
+      - name: failed_attempts
+      - name: is_split_tender
+        description: True if the order was paid with more than one method (e.g. gift card + card).
+
+  - name: int_refunds__by_order
+    description: One row per refunded order.
+    columns:
+      - name: order_id
+        data_tests: [unique, not_null]
+      - name: refund_amount
+        description: Total refunded, in order currency.
+
+  - name: int_customers__order_history
+    description: One row per customer with at least one completed or returned order.
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: first_order_date
+      - name: last_order_date
+      - name: revenue_orders
+        description: Count of completed + returned orders.
+      - name: lifetime_gross_nzd
+        description: Items + shipping over all revenue orders, NZD, before refunds.
+
+  - name: int_marketing__spend_daily
+    description: Daily spend per campaign with channel and region, converted to NZD.
+    columns:
+      - name: ad_spend_id
+        data_tests: [unique, not_null]
+      - name: spend_nzd
+
+  - name: int_marketing__attributed_customers
+    description: Customers attributed to a campaign, with their first order date if they ordered.
+    columns:
+      - name: customer_id
+        data_tests: [unique, not_null]
+      - name: has_ordered
+
+  - name: int_employees__store_staff
+    description: Employees with store, region, current flag and tenure. Contains salary.
+    config:
+      meta: {owner: "people-ops@kiwiretail.example", sensitivity: restricted}
+    columns:
+      - name: employee_id
+        data_tests: [unique, not_null]
+      - name: is_current
+        description: True if terminated_on is null.
+      - name: tenure_days
+        description: Days employed, up to terminated_on or the as_of_date var.
+      - name: annual_salary
+        config: {meta: {pii: salary, sensitivity: restricted}}

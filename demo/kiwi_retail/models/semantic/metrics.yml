@@ -1,0 +1,268 @@
+version: 2
+
+# dbt Semantic Layer definitions. Each metric's meta says who owns it and whether it is the
+# canonical definition. Two planted competing pairs (docs/planted-traps.md):
+#   revenue (non-canonical, fct_sales)      vs net_revenue (canonical, fct_revenue_daily)
+#   churn_rate_marketing (non-canonical)    vs churn_rate (canonical)
+
+semantic_models:
+  - name: revenue_daily
+    description: Canonical daily revenue by region and channel (NZD).
+    model: ref('fct_revenue_daily')
+    defaults:
+      agg_time_dimension: revenue_date
+    entities:
+      - name: revenue_day
+        type: primary
+        expr: revenue_day_id
+    dimensions:
+      - name: revenue_date
+        type: time
+        type_params: {time_granularity: day}
+      - name: region_code
+        type: categorical
+      - name: channel
+        type: categorical
+    measures:
+      - name: gross_revenue_nzd
+        agg: sum
+      - name: refunds_nzd
+        agg: sum
+      - name: net_revenue_nzd
+        agg: sum
+      - name: revenue_orders
+        agg: sum
+        expr: orders
+
+  - name: orders
+    description: Order-grain facts (all statuses).
+    model: ref('fct_orders')
+    defaults:
+      agg_time_dimension: order_date
+    entities:
+      - name: order
+        type: primary
+        expr: order_id
+      - name: customer
+        type: foreign
+        expr: customer_id
+    dimensions:
+      - name: order_date
+        type: time
+        type_params: {time_granularity: day}
+      - name: order_status
+        type: categorical
+      - name: region_code
+        type: categorical
+      - name: channel
+        type: categorical
+      - name: is_revenue_order
+        type: categorical
+    measures:
+      - name: order_count
+        agg: count
+        expr: order_id
+      - name: revenue_order_count
+        agg: sum
+        expr: "case when is_revenue_order then 1 else 0 end"
+      - name: revenue_order_total_nzd
+        agg: sum
+        expr: "case when is_revenue_order then order_total_nzd else 0 end"
+
+  - name: sales
+    description: Line-level sales in local currency (see the fct_sales trap).
+    model: ref('fct_sales')
+    defaults:
+      agg_time_dimension: sold_on
+    entities:
+      - name: sale_line
+        type: primary
+        expr: order_item_id
+    dimensions:
+      - name: sold_on
+        type: time
+        type_params: {time_granularity: day}
+      - name: region_code
+        type: categorical
+    measures:
+      - name: sales_amount
+        agg: sum
+
+  - name: customer_churn
+    description: Customer recency and churn flags (as of the as_of_date var).
+    model: ref('rpt_customer_churn')
+    defaults:
+      agg_time_dimension: signed_up_on
+    entities:
+      - name: customer
+        type: primary
+        expr: customer_id
+    dimensions:
+      - name: signed_up_on
+        type: time
+        type_params: {time_granularity: day}
+      - name: region_code
+        type: categorical
+      - name: customer_segment
+        type: categorical
+    measures:
+      - name: customers
+        agg: count
+        expr: customer_id
+      - name: customers_with_orders
+        agg: sum
+        expr: "case when has_ordered then 1 else 0 end"
+      - name: churned_customers
+        agg: sum
+        expr: "case when is_churned then 1 else 0 end"
+      - name: churned_customers_marketing
+        agg: sum
+        expr: "case when is_churned_marketing then 1 else 0 end"
+
+  - name: ad_spend
+    description: Daily campaign spend (NZD).
+    model: ref('fct_ad_spend_daily')
+    defaults:
+      agg_time_dimension: spend_date
+    entities:
+      - name: ad_spend_day
+        type: primary
+        expr: ad_spend_id
+    dimensions:
+      - name: spend_date
+        type: time
+        type_params: {time_granularity: day}
+      - name: campaign_channel
+        type: categorical
+      - name: region_code
+        type: categorical
+    measures:
+      - name: spend_nzd
+        agg: sum
+      - name: clicks
+        agg: sum
+      - name: impressions
+        agg: sum
+
+metrics:
+  - name: net_revenue
+    label: Net revenue
+    description: CANONICAL revenue. Gross revenue of completed and returned orders minus refunds, NZD.
+    type: simple
+    type_params: {measure: net_revenue_nzd}
+    config:
+      meta: {owner: "finance-analytics@kiwiretail.example", canonical: true, team: finance}
+
+  - name: gross_revenue
+    label: Gross revenue
+    description: Items + shipping of completed and returned orders, before refunds, NZD.
+    type: simple
+    type_params: {measure: gross_revenue_nzd}
+    config:
+      meta: {owner: "finance-analytics@kiwiretail.example", canonical: true, team: finance}
+
+  - name: revenue
+    label: Revenue
+    description: >
+      Sum of sales line amounts. Legacy definition from the old sales dashboard: local currency
+      (NZD and AUD mixed), includes cancelled and pending orders, excludes shipping and refunds.
+    type: simple
+    type_params: {measure: sales_amount}
+    config:
+      meta:
+        owner: "analytics-engineering@kiwiretail.example"
+        canonical: false
+        superseded_by: net_revenue
+        trap: {kind: competing_metric, note: "Named 'revenue' but not the canonical revenue."}
+
+  - name: order_count
+    label: Orders
+    description: Revenue orders (completed + returned).
+    type: simple
+    type_params: {measure: revenue_order_count}
+    config:
+      meta: {owner: "analytics-engineering@kiwiretail.example", canonical: true, team: analytics}
+
+  - name: average_order_value
+    label: Average order value
+    description: Gross revenue order total (NZD) per revenue order.
+    type: ratio
+    type_params:
+      numerator: revenue_order_total
+      denominator: order_count
+    config:
+      meta: {owner: "finance-analytics@kiwiretail.example", canonical: true, team: finance}
+
+  - name: churn_rate
+    label: Churn rate
+    description: >
+      CANONICAL. Share of customers who have ordered that have no revenue order in the last
+      90 days (as of 2026-09-30).
+    type: ratio
+    type_params:
+      numerator: churned_customers
+      denominator: customers_with_orders
+    config:
+      meta: {owner: "customer-insights@kiwiretail.example", canonical: true, team: customer-insights}
+
+  - name: churn_rate_marketing
+    label: Churn rate (marketing)
+    description: >
+      Marketing's legacy churn: share of ALL customers with no order in 180 days, counting
+      never-ordered customers as churned.
+    type: ratio
+    type_params:
+      numerator: churned_customers_marketing
+      denominator: customer_count
+    config:
+      meta:
+        owner: "marketing-analytics@kiwiretail.example"
+        canonical: false
+        superseded_by: churn_rate
+        trap: {kind: competing_metric, note: "Different window and denominator from churn_rate."}
+
+  - name: ad_spend_nzd
+    label: Ad spend
+    description: Paid media spend in NZD.
+    type: simple
+    type_params: {measure: spend_nzd}
+    config:
+      meta: {owner: "marketing-analytics@kiwiretail.example", canonical: true, team: marketing}
+
+  # Helper metrics: building blocks for the ratio metrics above.
+  - name: revenue_order_total
+    label: Revenue order total (NZD)
+    description: Items + shipping of revenue orders, NZD (helper for average_order_value).
+    type: simple
+    type_params: {measure: revenue_order_total_nzd}
+    config:
+      meta: {helper: true}
+
+  - name: customer_count
+    label: Customers
+    description: Registered customers.
+    type: simple
+    type_params: {measure: customers}
+    config:
+      meta: {helper: true}
+
+  - name: customers_with_orders
+    label: Customers with orders
+    type: simple
+    type_params: {measure: customers_with_orders}
+    config:
+      meta: {helper: true}
+
+  - name: churned_customers
+    label: Churned customers
+    type: simple
+    type_params: {measure: churned_customers}
+    config:
+      meta: {helper: true}
+
+  - name: churned_customers_marketing
+    label: Churned customers (marketing)
+    type: simple
+    type_params: {measure: churned_customers_marketing}
+    config:
+      meta: {helper: true}
