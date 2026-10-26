@@ -421,3 +421,13 @@ def test_cli_build_and_lineage(tmp_path: Path, capsys: pytest.CaptureFixture[str
     capsys.readouterr()
     assert main(["lineage", "model.orders_v1", "--graph", str(tmp_path / "g.wgz")]) == 0
     assert capsys.readouterr().out.startswith("flowchart LR")
+
+
+def test_search_modes(q: GraphQuery) -> None:
+    hybrid = q.search_nodes("ad spend metric", k=5)
+    vector = q.search_nodes("ad spend metric", k=5, mode="vector")
+    bm25 = q.search_nodes("ad spend metric", k=5, mode="bm25")
+    assert all(h.vector_rank == i for i, h in enumerate(vector, 1))
+    assert all(h.bm25_rank == i for i, h in enumerate(bm25, 1))
+    assert [h.score for h in vector] == sorted((h.score for h in vector), reverse=True)
+    assert hybrid and vector and bm25

@@ -45,6 +45,7 @@ from warehouse_graph.graph.query import (
     MetricRecord,
     NodeRecord,
     SearchHit,
+    SearchMode,
     Subgraph,
 )
 from warehouse_graph.graph.schema import NodeType
@@ -146,12 +147,15 @@ def create_server(
             list[NodeType] | None, Field(description="Only these node types (default: all)")
         ] = None,
         k: Annotated[int, Field(ge=1, le=MAX_K, description="Number of hits")] = 10,
+        mode: Annotated[
+            SearchMode, Field(description="hybrid (default), or one signal: vector | bm25")
+        ] = "hybrid",
     ) -> SearchResult:
         """Find nodes by hybrid search (BM25 + embeddings). Returns ids, types, flags, scores."""
         return gs.call(
             "search_nodes",
-            {"query": query, "types": types, "k": k},
-            lambda q: SearchResult(hits=q.search_nodes(query, types, k)),
+            {"query": query, "types": types, "k": k, "mode": mode},
+            lambda q: SearchResult(hits=q.search_nodes(query, types, k, mode)),
         )
 
     @server.tool(meta=meta)

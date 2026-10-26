@@ -23,6 +23,17 @@
       "title": "K",
       "type": "integer"
     },
+    "mode": {
+      "default": "hybrid",
+      "description": "hybrid (default), or one signal: vector | bm25",
+      "enum": [
+        "hybrid",
+        "vector",
+        "bm25"
+      ],
+      "title": "Mode",
+      "type": "string"
+    },
     "query": {
       "description": "Free text, e.g. 'net revenue by region'",
       "title": "Query",
