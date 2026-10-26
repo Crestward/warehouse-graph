@@ -24,4 +24,4 @@ make llm-smoke            # one cheap real call; logs a row to costs.csv
 - [`docs/parking-lot.md`](docs/parking-lot.md): ideas deliberately left out of v1
 
 ## Licence
-MIT
+MIT. See [LICENSE](LICENSE).
