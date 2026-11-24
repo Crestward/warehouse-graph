@@ -1,0 +1,8 @@
+# Graph build settings for `warehouse-graph build` (paths relative to this file).
+[graph]
+artifacts_dir = "demo/artifacts"
+caveats = "demo/caveats.yml"
+query_examples = "demo/query_examples.yml"
+output = "build/graph.wgz"
+# One local sentence-transformer on CPU (PRD §2.2): no embedding API, no per-call cost.
+embedding_model = "sentence-transformers/all-MiniLM-L6-v2"

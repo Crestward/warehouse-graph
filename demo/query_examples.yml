@@ -7,6 +7,10 @@
 #   (tests/test_demo_assets.py, integration).
 # - They use canonical models and avoid restricted data (salary) and PII columns.
 
+# Defaults for every example; an example can override them.
+author: analytics-engineering@kiwiretail.example
+added_on: 2026-10-26
+
 examples:
   - id: qe01
     question: What was net revenue in NZD for each month of 2025?

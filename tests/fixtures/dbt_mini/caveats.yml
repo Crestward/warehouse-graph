@@ -1,0 +1,12 @@
+caveats:
+  - id: cav_spend_delay
+    applies_to: [source.marketing.ad_spend, model.fct_ad_spend_daily, metric.ad_spend_nzd]
+    severity: medium
+    text: The ad vendor's file can arrive up to two days late.
+    author: marketing-analytics@kiwiretail.example
+    added_on: 2025-01-15
+  - id: cav_orders_v1
+    applies_to: [model.orders_v1]
+    severity: high
+    text: Deprecated; sums failed payment attempts. Use fct_orders.
+    added_on: 2025-03-01

@@ -1,0 +1,1127 @@
+{
+ "errors": null,
+ "metadata": {
+  "dbt_schema_version": "https://schemas.getdbt.com/dbt/catalog/v1.json",
+  "dbt_version": "1.12.6",
+  "env": {},
+  "generated_at": "2026-10-26T12:23:12.802218Z",
+  "invocation_id": "a4869e79-a1bd-4eae-84f4-af9b12590793",
+  "invocation_started_at": "2026-10-26T12:23:09.986798Z"
+ },
+ "nodes": {
+  "model.kiwi_retail.fct_ad_spend_daily": {
+   "columns": {
+    "ad_spend_id": {
+     "comment": null,
+     "index": 1,
+     "name": "ad_spend_id",
+     "type": "text"
+    },
+    "campaign_channel": {
+     "comment": null,
+     "index": 3,
+     "name": "campaign_channel",
+     "type": "text"
+    },
+    "campaign_id": {
+     "comment": null,
+     "index": 2,
+     "name": "campaign_id",
+     "type": "integer"
+    },
+    "clicks": {
+     "comment": null,
+     "index": 8,
+     "name": "clicks",
+     "type": "integer"
+    },
+    "impressions": {
+     "comment": null,
+     "index": 7,
+     "name": "impressions",
+     "type": "integer"
+    },
+    "region_code": {
+     "comment": null,
+     "index": 4,
+     "name": "region_code",
+     "type": "text"
+    },
+    "spend_date": {
+     "comment": null,
+     "index": 5,
+     "name": "spend_date",
+     "type": "date"
+    },
+    "spend_nzd": {
+     "comment": null,
+     "index": 6,
+     "name": "spend_nzd",
+     "type": "numeric"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "fct_ad_spend_daily",
+    "owner": "warehouse",
+    "schema": "marts",
+    "type": "BASE TABLE"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.fct_ad_spend_daily"
+  },
+  "model.kiwi_retail.fct_orders": {
+   "columns": {
+    "channel": {
+     "comment": null,
+     "index": 5,
+     "name": "channel",
+     "type": "text"
+    },
+    "currency_code": {
+     "comment": null,
+     "index": 10,
+     "name": "currency_code",
+     "type": "text"
+    },
+    "customer_id": {
+     "comment": null,
+     "index": 2,
+     "name": "customer_id",
+     "type": "integer"
+    },
+    "discount_code": {
+     "comment": null,
+     "index": 12,
+     "name": "discount_code",
+     "type": "text"
+    },
+    "failed_payment_attempts": {
+     "comment": null,
+     "index": 21,
+     "name": "failed_payment_attempts",
+     "type": "bigint"
+    },
+    "fx_rate_to_nzd": {
+     "comment": null,
+     "index": 11,
+     "name": "fx_rate_to_nzd",
+     "type": "numeric"
+    },
+    "is_revenue_order": {
+     "comment": null,
+     "index": 9,
+     "name": "is_revenue_order",
+     "type": "boolean"
+    },
+    "is_split_tender": {
+     "comment": null,
+     "index": 22,
+     "name": "is_split_tender",
+     "type": "boolean"
+    },
+    "items_cost_nzd": {
+     "comment": null,
+     "index": 19,
+     "name": "items_cost_nzd",
+     "type": "numeric"
+    },
+    "items_subtotal": {
+     "comment": null,
+     "index": 15,
+     "name": "items_subtotal",
+     "type": "numeric"
+    },
+    "line_count": {
+     "comment": null,
+     "index": 13,
+     "name": "line_count",
+     "type": "bigint"
+    },
+    "net_revenue_nzd": {
+     "comment": null,
+     "index": 25,
+     "name": "net_revenue_nzd",
+     "type": "numeric"
+    },
+    "order_date": {
+     "comment": null,
+     "index": 7,
+     "name": "order_date",
+     "type": "date"
+    },
+    "order_id": {
+     "comment": null,
+     "index": 1,
+     "name": "order_id",
+     "type": "integer"
+    },
+    "order_status": {
+     "comment": null,
+     "index": 8,
+     "name": "order_status",
+     "type": "text"
+    },
+    "order_total": {
+     "comment": null,
+     "index": 17,
+     "name": "order_total",
+     "type": "numeric"
+    },
+    "order_total_nzd": {
+     "comment": null,
+     "index": 18,
+     "name": "order_total_nzd",
+     "type": "numeric"
+    },
+    "ordered_at": {
+     "comment": null,
+     "index": 6,
+     "name": "ordered_at",
+     "type": "timestamp without time zone"
+    },
+    "paid_amount": {
+     "comment": null,
+     "index": 20,
+     "name": "paid_amount",
+     "type": "numeric"
+    },
+    "refund_amount": {
+     "comment": null,
+     "index": 23,
+     "name": "refund_amount",
+     "type": "numeric"
+    },
+    "refund_amount_nzd": {
+     "comment": null,
+     "index": 24,
+     "name": "refund_amount_nzd",
+     "type": "numeric"
+    },
+    "region_code": {
+     "comment": null,
+     "index": 4,
+     "name": "region_code",
+     "type": "text"
+    },
+    "shipping_fee": {
+     "comment": null,
+     "index": 16,
+     "name": "shipping_fee",
+     "type": "numeric(10,2)"
+    },
+    "store_id": {
+     "comment": null,
+     "index": 3,
+     "name": "store_id",
+     "type": "integer"
+    },
+    "units": {
+     "comment": null,
+     "index": 14,
+     "name": "units",
+     "type": "bigint"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "fct_orders",
+    "owner": "warehouse",
+    "schema": "marts",
+    "type": "BASE TABLE"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.fct_orders"
+  },
+  "model.kiwi_retail.int_marketing__spend_daily": {
+   "columns": {
+    "ad_spend_id": {
+     "comment": null,
+     "index": 1,
+     "name": "ad_spend_id",
+     "type": "text"
+    },
+    "campaign_channel": {
+     "comment": null,
+     "index": 4,
+     "name": "campaign_channel",
+     "type": "text"
+    },
+    "campaign_id": {
+     "comment": null,
+     "index": 2,
+     "name": "campaign_id",
+     "type": "integer"
+    },
+    "campaign_name": {
+     "comment": null,
+     "index": 3,
+     "name": "campaign_name",
+     "type": "text"
+    },
+    "clicks": {
+     "comment": null,
+     "index": 11,
+     "name": "clicks",
+     "type": "integer"
+    },
+    "currency_code": {
+     "comment": null,
+     "index": 8,
+     "name": "currency_code",
+     "type": "text"
+    },
+    "impressions": {
+     "comment": null,
+     "index": 10,
+     "name": "impressions",
+     "type": "integer"
+    },
+    "region_code": {
+     "comment": null,
+     "index": 5,
+     "name": "region_code",
+     "type": "text"
+    },
+    "spend": {
+     "comment": null,
+     "index": 7,
+     "name": "spend",
+     "type": "numeric(12,2)"
+    },
+    "spend_date": {
+     "comment": null,
+     "index": 6,
+     "name": "spend_date",
+     "type": "date"
+    },
+    "spend_nzd": {
+     "comment": null,
+     "index": 9,
+     "name": "spend_nzd",
+     "type": "numeric"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "int_marketing__spend_daily",
+    "owner": "warehouse",
+    "schema": "intermediate",
+    "type": "VIEW"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.int_marketing__spend_daily"
+  },
+  "model.kiwi_retail.orders_v1": {
+   "columns": {
+    "customer_id": {
+     "comment": null,
+     "index": 2,
+     "name": "customer_id",
+     "type": "integer"
+    },
+    "order_amount": {
+     "comment": null,
+     "index": 6,
+     "name": "order_amount",
+     "type": "numeric"
+    },
+    "order_date": {
+     "comment": null,
+     "index": 4,
+     "name": "order_date",
+     "type": "date"
+    },
+    "order_id": {
+     "comment": null,
+     "index": 1,
+     "name": "order_id",
+     "type": "integer"
+    },
+    "order_status": {
+     "comment": null,
+     "index": 5,
+     "name": "order_status",
+     "type": "text"
+    },
+    "store_id": {
+     "comment": null,
+     "index": 3,
+     "name": "store_id",
+     "type": "integer"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "orders_v1",
+    "owner": "warehouse",
+    "schema": "marts",
+    "type": "BASE TABLE"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.orders_v1"
+  },
+  "model.kiwi_retail.stg_hr__employees": {
+   "columns": {
+    "annual_salary": {
+     "comment": null,
+     "index": 9,
+     "name": "annual_salary",
+     "type": "numeric(12,2)"
+    },
+    "employee_id": {
+     "comment": null,
+     "index": 1,
+     "name": "employee_id",
+     "type": "integer"
+    },
+    "first_name": {
+     "comment": null,
+     "index": 2,
+     "name": "first_name",
+     "type": "text"
+    },
+    "hired_on": {
+     "comment": null,
+     "index": 7,
+     "name": "hired_on",
+     "type": "date"
+    },
+    "job_title": {
+     "comment": null,
+     "index": 6,
+     "name": "job_title",
+     "type": "text"
+    },
+    "last_name": {
+     "comment": null,
+     "index": 3,
+     "name": "last_name",
+     "type": "text"
+    },
+    "manager_id": {
+     "comment": null,
+     "index": 11,
+     "name": "manager_id",
+     "type": "integer"
+    },
+    "salary_currency": {
+     "comment": null,
+     "index": 10,
+     "name": "salary_currency",
+     "type": "text"
+    },
+    "store_id": {
+     "comment": null,
+     "index": 5,
+     "name": "store_id",
+     "type": "integer"
+    },
+    "terminated_on": {
+     "comment": null,
+     "index": 8,
+     "name": "terminated_on",
+     "type": "date"
+    },
+    "work_email": {
+     "comment": null,
+     "index": 4,
+     "name": "work_email",
+     "type": "text"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "stg_hr__employees",
+    "owner": "warehouse",
+    "schema": "staging",
+    "type": "VIEW"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.stg_hr__employees"
+  },
+  "model.kiwi_retail.stg_marketing__ad_spend": {
+   "columns": {
+    "ad_spend_id": {
+     "comment": null,
+     "index": 1,
+     "name": "ad_spend_id",
+     "type": "text"
+    },
+    "campaign_id": {
+     "comment": null,
+     "index": 2,
+     "name": "campaign_id",
+     "type": "integer"
+    },
+    "clicks": {
+     "comment": null,
+     "index": 6,
+     "name": "clicks",
+     "type": "integer"
+    },
+    "impressions": {
+     "comment": null,
+     "index": 5,
+     "name": "impressions",
+     "type": "integer"
+    },
+    "spend": {
+     "comment": null,
+     "index": 4,
+     "name": "spend",
+     "type": "numeric(12,2)"
+    },
+    "spend_date": {
+     "comment": null,
+     "index": 3,
+     "name": "spend_date",
+     "type": "date"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "stg_marketing__ad_spend",
+    "owner": "warehouse",
+    "schema": "staging",
+    "type": "VIEW"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.stg_marketing__ad_spend"
+  },
+  "model.kiwi_retail.stg_marketing__campaigns": {
+   "columns": {
+    "budget": {
+     "comment": null,
+     "index": 7,
+     "name": "budget",
+     "type": "numeric(12,2)"
+    },
+    "campaign_channel": {
+     "comment": null,
+     "index": 3,
+     "name": "campaign_channel",
+     "type": "text"
+    },
+    "campaign_id": {
+     "comment": null,
+     "index": 1,
+     "name": "campaign_id",
+     "type": "integer"
+    },
+    "campaign_name": {
+     "comment": null,
+     "index": 2,
+     "name": "campaign_name",
+     "type": "text"
+    },
+    "currency_code": {
+     "comment": null,
+     "index": 8,
+     "name": "currency_code",
+     "type": "text"
+    },
+    "ended_on": {
+     "comment": null,
+     "index": 6,
+     "name": "ended_on",
+     "type": "date"
+    },
+    "region_code": {
+     "comment": null,
+     "index": 4,
+     "name": "region_code",
+     "type": "text"
+    },
+    "started_on": {
+     "comment": null,
+     "index": 5,
+     "name": "started_on",
+     "type": "date"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "stg_marketing__campaigns",
+    "owner": "warehouse",
+    "schema": "staging",
+    "type": "VIEW"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.stg_marketing__campaigns"
+  },
+  "model.kiwi_retail.stg_shop__orders": {
+   "columns": {
+    "currency_code": {
+     "comment": null,
+     "index": 7,
+     "name": "currency_code",
+     "type": "text"
+    },
+    "customer_id": {
+     "comment": null,
+     "index": 2,
+     "name": "customer_id",
+     "type": "integer"
+    },
+    "discount_code": {
+     "comment": null,
+     "index": 9,
+     "name": "discount_code",
+     "type": "text"
+    },
+    "has_discount": {
+     "comment": null,
+     "index": 10,
+     "name": "has_discount",
+     "type": "boolean"
+    },
+    "order_date": {
+     "comment": null,
+     "index": 5,
+     "name": "order_date",
+     "type": "date"
+    },
+    "order_id": {
+     "comment": null,
+     "index": 1,
+     "name": "order_id",
+     "type": "integer"
+    },
+    "order_status": {
+     "comment": null,
+     "index": 6,
+     "name": "order_status",
+     "type": "text"
+    },
+    "ordered_at": {
+     "comment": null,
+     "index": 4,
+     "name": "ordered_at",
+     "type": "timestamp without time zone"
+    },
+    "shipping_fee": {
+     "comment": null,
+     "index": 8,
+     "name": "shipping_fee",
+     "type": "numeric(10,2)"
+    },
+    "store_id": {
+     "comment": null,
+     "index": 3,
+     "name": "store_id",
+     "type": "integer"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "stg_shop__orders",
+    "owner": "warehouse",
+    "schema": "staging",
+    "type": "VIEW"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.stg_shop__orders"
+  },
+  "model.kiwi_retail.stg_shop__payments": {
+   "columns": {
+    "amount": {
+     "comment": null,
+     "index": 4,
+     "name": "amount",
+     "type": "numeric(10,2)"
+    },
+    "order_id": {
+     "comment": null,
+     "index": 2,
+     "name": "order_id",
+     "type": "integer"
+    },
+    "paid_at": {
+     "comment": null,
+     "index": 6,
+     "name": "paid_at",
+     "type": "timestamp without time zone"
+    },
+    "payment_id": {
+     "comment": null,
+     "index": 1,
+     "name": "payment_id",
+     "type": "integer"
+    },
+    "payment_method": {
+     "comment": null,
+     "index": 3,
+     "name": "payment_method",
+     "type": "text"
+    },
+    "payment_status": {
+     "comment": null,
+     "index": 5,
+     "name": "payment_status",
+     "type": "text"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "stg_shop__payments",
+    "owner": "warehouse",
+    "schema": "staging",
+    "type": "VIEW"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "model.kiwi_retail.stg_shop__payments"
+  }
+ },
+ "sources": {
+  "source.kiwi_retail.hr.employees": {
+   "columns": {
+    "_loaded_at": {
+     "comment": null,
+     "index": 12,
+     "name": "_loaded_at",
+     "type": "timestamp with time zone"
+    },
+    "annual_salary": {
+     "comment": null,
+     "index": 9,
+     "name": "annual_salary",
+     "type": "numeric(12,2)"
+    },
+    "employee_id": {
+     "comment": null,
+     "index": 1,
+     "name": "employee_id",
+     "type": "integer"
+    },
+    "first_name": {
+     "comment": null,
+     "index": 2,
+     "name": "first_name",
+     "type": "text"
+    },
+    "hired_on": {
+     "comment": null,
+     "index": 7,
+     "name": "hired_on",
+     "type": "date"
+    },
+    "job_title": {
+     "comment": null,
+     "index": 6,
+     "name": "job_title",
+     "type": "text"
+    },
+    "last_name": {
+     "comment": null,
+     "index": 3,
+     "name": "last_name",
+     "type": "text"
+    },
+    "manager_id": {
+     "comment": null,
+     "index": 11,
+     "name": "manager_id",
+     "type": "integer"
+    },
+    "salary_currency": {
+     "comment": null,
+     "index": 10,
+     "name": "salary_currency",
+     "type": "text"
+    },
+    "store_id": {
+     "comment": null,
+     "index": 5,
+     "name": "store_id",
+     "type": "integer"
+    },
+    "terminated_on": {
+     "comment": null,
+     "index": 8,
+     "name": "terminated_on",
+     "type": "date"
+    },
+    "work_email": {
+     "comment": null,
+     "index": 4,
+     "name": "work_email",
+     "type": "text"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "employees",
+    "owner": "warehouse",
+    "schema": "raw",
+    "type": "BASE TABLE"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "source.kiwi_retail.hr.employees"
+  },
+  "source.kiwi_retail.marketing.ad_spend": {
+   "columns": {
+    "_loaded_at": {
+     "comment": null,
+     "index": 6,
+     "name": "_loaded_at",
+     "type": "timestamp with time zone"
+    },
+    "campaign_id": {
+     "comment": null,
+     "index": 1,
+     "name": "campaign_id",
+     "type": "integer"
+    },
+    "clicks": {
+     "comment": null,
+     "index": 5,
+     "name": "clicks",
+     "type": "integer"
+    },
+    "impressions": {
+     "comment": null,
+     "index": 4,
+     "name": "impressions",
+     "type": "integer"
+    },
+    "spend": {
+     "comment": null,
+     "index": 3,
+     "name": "spend",
+     "type": "numeric(12,2)"
+    },
+    "spend_date": {
+     "comment": null,
+     "index": 2,
+     "name": "spend_date",
+     "type": "date"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "ad_spend",
+    "owner": "warehouse",
+    "schema": "raw",
+    "type": "BASE TABLE"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "source.kiwi_retail.marketing.ad_spend"
+  },
+  "source.kiwi_retail.marketing.campaigns": {
+   "columns": {
+    "_loaded_at": {
+     "comment": null,
+     "index": 9,
+     "name": "_loaded_at",
+     "type": "timestamp with time zone"
+    },
+    "budget": {
+     "comment": null,
+     "index": 7,
+     "name": "budget",
+     "type": "numeric(12,2)"
+    },
+    "campaign_id": {
+     "comment": null,
+     "index": 1,
+     "name": "campaign_id",
+     "type": "integer"
+    },
+    "campaign_name": {
+     "comment": null,
+     "index": 2,
+     "name": "campaign_name",
+     "type": "text"
+    },
+    "channel": {
+     "comment": null,
+     "index": 3,
+     "name": "channel",
+     "type": "text"
+    },
+    "currency_code": {
+     "comment": null,
+     "index": 8,
+     "name": "currency_code",
+     "type": "text"
+    },
+    "ended_on": {
+     "comment": null,
+     "index": 6,
+     "name": "ended_on",
+     "type": "date"
+    },
+    "region_code": {
+     "comment": null,
+     "index": 4,
+     "name": "region_code",
+     "type": "text"
+    },
+    "started_on": {
+     "comment": null,
+     "index": 5,
+     "name": "started_on",
+     "type": "date"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "campaigns",
+    "owner": "warehouse",
+    "schema": "raw",
+    "type": "BASE TABLE"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "source.kiwi_retail.marketing.campaigns"
+  },
+  "source.kiwi_retail.shop.orders": {
+   "columns": {
+    "_loaded_at": {
+     "comment": null,
+     "index": 9,
+     "name": "_loaded_at",
+     "type": "timestamp with time zone"
+    },
+    "currency_code": {
+     "comment": null,
+     "index": 6,
+     "name": "currency_code",
+     "type": "text"
+    },
+    "customer_id": {
+     "comment": null,
+     "index": 2,
+     "name": "customer_id",
+     "type": "integer"
+    },
+    "discount_code": {
+     "comment": null,
+     "index": 8,
+     "name": "discount_code",
+     "type": "text"
+    },
+    "order_id": {
+     "comment": null,
+     "index": 1,
+     "name": "order_id",
+     "type": "integer"
+    },
+    "ordered_at": {
+     "comment": null,
+     "index": 4,
+     "name": "ordered_at",
+     "type": "timestamp without time zone"
+    },
+    "shipping_fee": {
+     "comment": null,
+     "index": 7,
+     "name": "shipping_fee",
+     "type": "numeric(10,2)"
+    },
+    "status": {
+     "comment": null,
+     "index": 5,
+     "name": "status",
+     "type": "text"
+    },
+    "store_id": {
+     "comment": null,
+     "index": 3,
+     "name": "store_id",
+     "type": "integer"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "orders",
+    "owner": "warehouse",
+    "schema": "raw",
+    "type": "BASE TABLE"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "source.kiwi_retail.shop.orders"
+  },
+  "source.kiwi_retail.shop.payments": {
+   "columns": {
+    "_loaded_at": {
+     "comment": null,
+     "index": 7,
+     "name": "_loaded_at",
+     "type": "timestamp with time zone"
+    },
+    "amount": {
+     "comment": null,
+     "index": 4,
+     "name": "amount",
+     "type": "numeric(10,2)"
+    },
+    "created_at": {
+     "comment": null,
+     "index": 6,
+     "name": "created_at",
+     "type": "timestamp without time zone"
+    },
+    "order_id": {
+     "comment": null,
+     "index": 2,
+     "name": "order_id",
+     "type": "integer"
+    },
+    "payment_id": {
+     "comment": null,
+     "index": 1,
+     "name": "payment_id",
+     "type": "integer"
+    },
+    "payment_method": {
+     "comment": null,
+     "index": 3,
+     "name": "payment_method",
+     "type": "text"
+    },
+    "status": {
+     "comment": null,
+     "index": 5,
+     "name": "status",
+     "type": "text"
+    }
+   },
+   "metadata": {
+    "comment": null,
+    "database": "warehouse",
+    "name": "payments",
+    "owner": "warehouse",
+    "schema": "raw",
+    "type": "BASE TABLE"
+   },
+   "stats": {
+    "has_stats": {
+     "description": "Indicates whether there are statistics for this table",
+     "id": "has_stats",
+     "include": false,
+     "label": "Has Stats?",
+     "value": false
+    }
+   },
+   "unique_id": "source.kiwi_retail.shop.payments"
+  }
+ }
+}

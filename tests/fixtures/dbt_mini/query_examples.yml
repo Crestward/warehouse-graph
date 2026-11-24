@@ -1,0 +1,12 @@
+author: analytics-engineering@kiwiretail.example
+added_on: 2026-10-26
+examples:
+  - id: qe01
+    question: How much did we spend on ads per channel?
+    sql: |
+      with spend as (select * from marts.fct_ad_spend_daily)
+      select campaign_channel, sum(spend_nzd) from spend group by 1
+  - id: qe02
+    question: How many orders were completed?
+    sql: select count(*) from marts.fct_orders where order_status = 'completed'
+    author: someone-else@kiwiretail.example

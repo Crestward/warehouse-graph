@@ -61,3 +61,23 @@ Format: **context → options → choice → why**. Newest at the bottom. Scope 
 - **Artifacts:** `warehouse-graph demo-build` runs build → freshness → docs and copies each artifact as soon as it's written to `demo/artifacts/`, because dbt overwrites `run_results.json` on every command.
 - **Dependencies:** dbt and Dagster are in a `demo` dependency group, installed by default for this repo but never pulled in by `warehouse-qa` or `pipeline-sentinel`. `psycopg` and `PyYAML` are core dependencies, because Phases 2–3 need them anyway.
 - **Traps:** documented in `docs/planted-traps.md` with measured effect sizes, and flagged in dbt `meta` so the graph can see them.
+
+## D10. Graph storage, ids and search (Phase 2)
+- **Storage:** one zip file (`build/graph.wgz`) with `meta.json`, `graph.json` and `embeddings.npy`, loaded into an in-memory NetworkX `MultiDiGraph`.
+  - No pickle, so loading a graph file can't run code. A `format_version` makes an old file fail loudly ("rebuild it") instead of half-loading.
+  - The meta records the manifest sha256, a hash over all inputs, the embedding model and the build stats.
+- **Vectors:** brute-force NumPy dot products, not FAISS. With 574 nodes an exact search takes microseconds, so an index would only add a dependency. FAISS stays in the PRD's stack as an option if the graph ever grows by 100×.
+- **Embeddings:** `sentence-transformers/all-MiniLM-L6-v2` on CPU (384 dims, ~90 MB, ~1 s for the whole graph), set in `warehouse-graph.toml`. Torch comes from the PyTorch CPU index, so CI doesn't download CUDA. Tests use a hashing embedder and need no download.
+- **Hybrid ranking:** BM25 (implemented in ~20 lines, no dependency) and cosine similarity, fused by **reciprocal rank fusion** (k = 60). RRF needs no score normalisation or weight tuning, which keeps tuning out of Phase 2. Phase 5 measures retrieval and may change this.
+- **Ids:** short and readable (`model.fct_orders`, `column.fct_orders.order_total_nzd`, `source.shop.orders`), not dbt's `model.kiwi_retail.fct_orders`. They're what the LLM reads and quotes back, so they cost fewer tokens and can't be confused across projects. They match the reference format in `caveats.yml`.
+- **Neo4j/Kùzu/pgvector:** not used (PRD §2.2). The graph is small and read-only at runtime, so a file artifact works in every profile with nothing to host.
+
+## D11. Column lineage and PII propagation (tasks 2.3–2.4)
+- **Lineage:** sqlglot's `lineage()` over each model's compiled SQL, qualified against the catalog schema. It took well under the 1-day time box: **97.8%** of model columns (363/371) trace upstream, with no model failing to parse and no hand fixes. The 8 untraced columns are all `count(*)`-style aggregates or the time spine's generated dates, which genuinely have no upstream column.
+- **PII propagation:** dbt sources declare no columns, so raw columns such as `shop.customers.email` had no PII tag, and role-filtered metadata (Phase 3) would have leaked them. Tags now spread along `COLUMN_DERIVES_FROM` edges **between same-named columns only** (pass-throughs), in both directions. A computed column (e.g. `has_email`) isn't tagged just because it reads a PII column. The quality tests check that every name/email/phone/salary column is tagged from raw to marts.
+- **Rejected:** tagging by column name pattern alone. It's simple, but it misses renamed PII and silently tags unrelated columns.
+
+## D12. Mermaid instead of a PNG for the lineage picture (task 2.8)
+- **Context:** task 2.8 asks for one rendered subgraph as a PNG for the README.
+- **Choice:** `warehouse-graph lineage <node> --direction both` prints a Mermaid flowchart, pasted into the README, where GitHub renders it.
+- **Why:** a PNG needs matplotlib or Graphviz, which is a new dependency for one picture (PRD §7: adding to the stack is a scope change). Mermaid is text, so it diffs and can be regenerated from the artifact. It's the same size of task or smaller (§1.4.5 rule 2: a swap, not an addition).
