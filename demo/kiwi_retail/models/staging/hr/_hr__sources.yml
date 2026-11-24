@@ -9,4 +9,4 @@ sources:
       meta: {owner: "people-ops@kiwiretail.example", loader: "hris-export", sensitivity: restricted}
     tables:
       - name: employees
-        description: One row per employee (current and former), with annual salary.
+        description: One row per employee (current and former).

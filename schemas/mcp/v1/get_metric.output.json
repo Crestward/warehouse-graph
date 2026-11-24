@@ -1,0 +1,60 @@
+{
+  "properties": {
+    "canonical_alternative": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Canonical Alternative"
+    },
+    "caveats": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Caveats",
+      "type": "array"
+    },
+    "inputs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "metric": {
+      "additionalProperties": true,
+      "title": "Metric",
+      "type": "object"
+    },
+    "model": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Model"
+    },
+    "sql": {
+      "title": "Sql",
+      "type": "string"
+    }
+  },
+  "required": [
+    "metric",
+    "sql",
+    "model",
+    "inputs",
+    "caveats",
+    "canonical_alternative"
+  ],
+  "title": "MetricRecord",
+  "type": "object"
+}

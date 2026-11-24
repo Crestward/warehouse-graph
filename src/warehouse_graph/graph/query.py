@@ -36,6 +36,7 @@ from warehouse_graph.graph.schema import (
 )
 
 Direction = Literal["upstream", "downstream", "both"]
+SearchMode = Literal["hybrid", "vector", "bm25"]
 Level = Literal["model", "column"]
 
 RRF_K = 60  # standard reciprocal-rank-fusion constant
@@ -199,8 +200,14 @@ class GraphQuery:
     # -- the five operations -----------------------------------------------------------------
 
     def search_nodes(
-        self, query: str, types: Iterable[NodeType | str] | None = None, k: int = 10
+        self,
+        query: str,
+        types: Iterable[NodeType | str] | None = None,
+        k: int = 10,
+        mode: SearchMode = "hybrid",
     ) -> list[SearchHit]:
+        """`hybrid` fuses the BM25 and vector rankings (RRF); `vector` and `bm25` rank by one
+        signal alone, which is what single-signal baselines (P1 retriever 2) use."""
         allowed = {NodeType(t) for t in types} if types else set(NodeType)
         mask = np.array([self.nodes[i].type in allowed for i in self._ids])
 
@@ -211,9 +218,14 @@ class GraphQuery:
             order = np.argsort(-scores, kind="stable")[:CANDIDATES]
             ranks.append({int(i): r for r, i in enumerate(order, 1) if scores[i] > floor})
         fused: dict[int, float] = {}
-        for rank in ranks:
-            for i, r in rank.items():
-                fused[i] = fused.get(i, 0.0) + 1.0 / (RRF_K + r)
+        if mode == "hybrid":
+            for rank in ranks:
+                for i, r in rank.items():
+                    fused[i] = fused.get(i, 0.0) + 1.0 / (RRF_K + r)
+        else:
+            scores = vector if mode == "vector" else bm25
+            only = ranks[1] if mode == "vector" else ranks[0]
+            fused = {i: float(scores[i]) for i in only}
 
         best = sorted(fused, key=lambda i: (-fused[i], self._ids[i]))[:k]
         return [

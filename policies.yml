@@ -1,0 +1,74 @@
+# Access policy for the Kiwi Retail Co. warehouse: the single source of truth (PRD §3.4, §6.3).
+#
+# `warehouse-graph policies` compiles this file, resolved against the graph's column tags, to:
+#   Postgres (local):        one login role per principal, RLS, column grants, masked views
+#   Unity Catalog (Phase 9): row filters and column masks
+# The same file also filters the graph's metadata per principal, so what an LLM can *see*
+# and what the database lets it *query* can't drift apart.
+#
+# Column selectors:
+#   pii:<kind>          a column tagged meta.pii = kind (email | phone | name | salary)
+#   pii:*               any PII column
+#   sensitivity:<lvl>   a column tagged meta.sensitivity = lvl (restricted | pii)
+#   <model>.<column>    one column, e.g. dim_customers.email
+#
+# hidden: no grant, and removed from metadata entirely (the principal can't learn it exists).
+# masked: visible, values replaced by the mask for the column's PII kind. Masking is only
+#         available in `marts` (served through views); elsewhere a masked column is hidden.
+# Deny by default: a principal sees only the schemas listed, and with a row filter only the
+# tables that have the filter column (plus the ones listed as `unfiltered`).
+
+version: 1
+
+masks:  # PII kind -> mask function (see governance/postgres.py)
+  email: email      # aroha.ngata@example.com -> a***@***.com
+  phone: phone      # 021 555 0199 -> ***-***-199
+  name: initial     # Aroha -> A***
+  default: redact   # any other masked column -> ***
+
+principals:
+  admin:
+    description: Data platform team. Full read access to every layer, no filters.
+    schemas: [raw, staging, intermediate, marts]
+
+  finance:
+    description: Finance analytics. All regions; needs salaries for payroll cost; customer contact details masked.
+    schemas: [marts]
+    masked: ["pii:email", "pii:phone"]
+
+  marketing:
+    description: Marketing analytics. Customer contact details and restricted HR data are hidden; names masked.
+    schemas: [marts]
+    hidden: ["pii:email", "pii:phone", "sensitivity:restricted"]
+    masked: ["pii:name"]
+
+  analyst_au:
+    description: Australian business analysts. Australian rows only; personal data masked; restricted HR data hidden.
+    schemas: [marts]
+    row_filter: {column: region_code, equals: AU, unfiltered: [dim_products, metricflow_time_spine]}
+    hidden: ["sensitivity:restricted"]
+    masked: ["pii:email", "pii:phone", "pii:name"]
+
+  analyst_nz:
+    description: New Zealand business analysts. New Zealand rows only; personal data masked; restricted HR data hidden.
+    schemas: [marts]
+    row_filter: {column: region_code, equals: NZ, unfiltered: [dim_products, metricflow_time_spine]}
+    hidden: ["sensitivity:restricted"]
+    masked: ["pii:email", "pii:phone", "pii:name"]
+
+  sentinel:
+    description: pipeline-sentinel service principal. Every layer for diagnostics, but no personal data at all.
+    schemas: [raw, staging, intermediate, marts]
+    hidden: ["pii:*", "sensitivity:restricted"]
+
+# Who may read the append-only audit log (audit.events). Nobody may change it.
+audit_readers: [admin]
+
+# Request identity -> principal. Unknown identities are refused (deny by default).
+identities:
+  platform@kiwiretail.example: admin
+  finance@kiwiretail.example: finance
+  marketing@kiwiretail.example: marketing
+  analyst.au@kiwiretail.example: analyst_au
+  analyst.nz@kiwiretail.example: analyst_nz
+  pipeline-sentinel: sentinel

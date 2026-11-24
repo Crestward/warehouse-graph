@@ -110,6 +110,77 @@ def graph_lineage(
     return 0
 
 
+def policies(policy_path: Path, graph_path: Path | None, print_only: bool) -> int:
+    """Lint, then compile policies.yml to Postgres and apply it (idempotent)."""
+    from warehouse_graph.adapters import PostgresAdapter
+    from warehouse_graph.governance import load_policies, resolve
+    from warehouse_graph.governance.lint import lint_descriptions
+    from warehouse_graph.governance.postgres import compile_postgres, redact
+    from warehouse_graph.graph import GraphArtifact, GraphConfig
+
+    graph = GraphArtifact.load(graph_path or GraphConfig.load().output)
+    spec = resolve(load_policies(policy_path), graph)
+    if print_only:
+        print(";\n\n".join(redact(s) for s in compile_postgres(spec)) + ";")
+        return 0
+    findings = lint_descriptions(spec, graph)
+    for f in findings:
+        print(
+            f"LINT {f.principal}: {f.node_id} mentions hidden {f.hidden_column}: ...{f.excerpt}..."
+        )
+    if findings:
+        print(f"{len(findings)} description lint finding(s); fix the docs, then rerun")
+        return 1
+    PostgresAdapter(graph).apply_policies(spec)
+    for name, access in spec.access.items():
+        print(
+            f"{name:<11} {len(access.relations):>3} relations, {len(access.hidden_columns):>3}"
+            f" hidden, {len(access.masked_columns):>3} masked columns"
+            + (
+                f", rows where {access.row_filter.column} = {access.row_filter.equals!r}"
+                if access.row_filter
+                else ""
+            )
+        )
+    print("policies applied; description lint clean")
+    return 0
+
+
+def mcp_serve(identity: str, graph_path: Path | None, policy_path: Path, audit: bool) -> int:
+    """Run the MCP server over stdio, bound to one already-authenticated identity."""
+    from warehouse_graph.governance import load_policies
+    from warehouse_graph.governance.audit import AuditWriter
+    from warehouse_graph.graph import GraphArtifact, GraphConfig
+    from warehouse_graph.mcp_server import create_server
+
+    graph = GraphArtifact.load(graph_path or GraphConfig.load().output)
+    writer = AuditWriter() if audit else None
+    create_server(graph, load_policies(policy_path), identity=identity, audit=writer).run()
+    return 0
+
+
+def mcp_schemas(write: bool) -> int:
+    """Print (or write to schemas/mcp/v1/) the JSON Schemas the MCP tools advertise."""
+    import asyncio
+    import json
+
+    from warehouse_graph.governance import load_policies
+    from warehouse_graph.graph import DbtArtifacts, build
+    from warehouse_graph.graph.embed import HashEmbedder
+    from warehouse_graph.mcp_server import SCHEMA_DIR, create_server, tool_schemas, write_schemas
+
+    fixture = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "dbt_mini"
+    graph = build(DbtArtifacts(fixture), HashEmbedder())  # schemas don't depend on the data
+    server = create_server(graph, load_policies(fixture / "policies.yml"), embedder=HashEmbedder())
+    schemas = asyncio.run(tool_schemas(server))
+    if write:
+        write_schemas(schemas)
+        print(f"wrote {len(schemas)} tools' schemas to {SCHEMA_DIR}")
+    else:
+        print(json.dumps(schemas, indent=2, sort_keys=True))
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="warehouse-graph")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -130,6 +201,17 @@ def main(argv: list[str] | None = None) -> int:
     gl.add_argument("--depth", type=int, default=10)
     gl.add_argument("--level", choices=["model", "column"], default="model")
     gl.add_argument("--graph", type=Path, help="graph file (default: the config's output)")
+    pol = sub.add_parser("policies", help="lint + compile policies.yml and apply it to Postgres")
+    pol.add_argument("--policies", type=Path, default=Path("policies.yml"))
+    pol.add_argument("--graph", type=Path, help="graph file (default: the config's output)")
+    pol.add_argument("--print", action="store_true", help="print the SQL instead of applying it")
+    mc = sub.add_parser("mcp", help="run the MCP server over stdio for one identity")
+    mc.add_argument("--identity", required=True, help="the authenticated user, e.g. an email")
+    mc.add_argument("--graph", type=Path, help="graph file (default: the config's output)")
+    mc.add_argument("--policies", type=Path, default=Path("policies.yml"))
+    mc.add_argument("--audit", action="store_true", help="log every tool call to audit.events")
+    ms = sub.add_parser("mcp-schemas", help="print the MCP tools' JSON Schemas")
+    ms.add_argument("--write", action="store_true", help="update the pinned schemas/mcp/v1/")
     args = parser.parse_args(argv)
     load_dotenv()
     if args.command == "llm-smoke":
@@ -140,6 +222,12 @@ def main(argv: list[str] | None = None) -> int:
         return demo_build()
     if args.command == "build":
         return graph_build(args.config, args.embedding_model, args.stats)
+    if args.command == "mcp":
+        return mcp_serve(args.identity, args.graph, args.policies, args.audit)
+    if args.command == "mcp-schemas":
+        return mcp_schemas(args.write)
+    if args.command == "policies":
+        return policies(args.policies, args.graph, args.print)
     if args.command == "lineage":
         return graph_lineage(args.node_id, args.direction, args.depth, args.level, args.graph)
     return 1

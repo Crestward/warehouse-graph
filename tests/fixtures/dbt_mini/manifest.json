@@ -61,8 +61,8 @@
   "dbt_schema_version": "https://schemas.getdbt.com/dbt/manifest/v12.json",
   "dbt_version": "1.12.6",
   "env": {},
-  "generated_at": "2026-10-26T12:23:10.687003Z",
-  "invocation_id": "a4869e79-a1bd-4eae-84f4-af9b12590793",
+  "generated_at": "2026-10-26T13:18:26.903689Z",
+  "invocation_id": "5d98c814-5324-45c3-911d-9a50bce46afc",
   "invocation_started_at": "2026-10-26T12:07:32.844033+00:00",
   "project_id": "56b807187f44d0d57bb862b4f4a84eff",
   "project_name": "kiwi_retail",
@@ -1568,7 +1568,7 @@
     ]
    },
    "deprecation_date": null,
-   "description": "Employees, current and former. Contains salary (restricted).",
+   "description": "Employees, current and former.",
    "doc_blocks": [],
    "extra_ctes": [],
    "extra_ctes_injected": true,
@@ -5862,7 +5862,7 @@
     "tags": []
    },
    "database": "warehouse",
-   "description": "One row per employee (current and former), with annual salary.",
+   "description": "One row per employee (current and former).",
    "doc_blocks": [],
    "external": null,
    "fqn": [

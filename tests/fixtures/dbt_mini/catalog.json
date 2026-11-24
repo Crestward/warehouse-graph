@@ -4,9 +4,9 @@
   "dbt_schema_version": "https://schemas.getdbt.com/dbt/catalog/v1.json",
   "dbt_version": "1.12.6",
   "env": {},
-  "generated_at": "2026-10-26T12:23:12.802218Z",
-  "invocation_id": "a4869e79-a1bd-4eae-84f4-af9b12590793",
-  "invocation_started_at": "2026-10-26T12:23:09.986798Z"
+  "generated_at": "2026-10-26T13:18:29.202845Z",
+  "invocation_id": "5d98c814-5324-45c3-911d-9a50bce46afc",
+  "invocation_started_at": "2026-10-26T13:18:26.045564Z"
  },
  "nodes": {
   "model.kiwi_retail.fct_ad_spend_daily": {

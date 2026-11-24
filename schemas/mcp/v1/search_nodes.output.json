@@ -1,0 +1,104 @@
+{
+  "$defs": {
+    "NodeType": {
+      "enum": [
+        "source",
+        "model",
+        "column",
+        "metric",
+        "exposure",
+        "caveat",
+        "query_example"
+      ],
+      "title": "NodeType",
+      "type": "string"
+    },
+    "SearchHit": {
+      "properties": {
+        "bm25_rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Bm25 Rank"
+        },
+        "deprecated": {
+          "default": false,
+          "title": "Deprecated",
+          "type": "boolean"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "score": {
+          "title": "Score",
+          "type": "number"
+        },
+        "trap_kind": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Trap Kind"
+        },
+        "type": {
+          "$ref": "#/$defs/NodeType"
+        },
+        "vector_rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Vector Rank"
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "name",
+        "description",
+        "score",
+        "bm25_rank",
+        "vector_rank"
+      ],
+      "title": "SearchHit",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "hits": {
+      "items": {
+        "$ref": "#/$defs/SearchHit"
+      },
+      "title": "Hits",
+      "type": "array"
+    }
+  },
+  "required": [
+    "hits"
+  ],
+  "title": "SearchResult",
+  "type": "object"
+}

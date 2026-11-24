@@ -81,3 +81,55 @@ Format: **context → options → choice → why**. Newest at the bottom. Scope 
 - **Context:** task 2.8 asks for one rendered subgraph as a PNG for the README.
 - **Choice:** `warehouse-graph lineage <node> --direction both` prints a Mermaid flowchart, pasted into the README, where GitHub renders it.
 - **Why:** a PNG needs matplotlib or Graphviz, which is a new dependency for one picture (PRD §7: adding to the stack is a scope change). Mermaid is text, so it diffs and can be regenerated from the artifact. It's the same size of task or smaller (§1.4.5 rule 2: a swap, not an addition).
+
+## D13. Postgres policy layout: masked views over RLS tables (task 3.3)
+- **Problem:** Postgres has RLS and column grants but no column masking. Masking needs a view, and a masking view has to read the raw column, so the view can't run with the caller's rights (`security_invoker`). If it did, the caller would need a grant on the raw value, and could read it directly.
+- **Choice:**
+  - `warehouse-graph policies` moves each table dbt built in `marts` to `marts_base`, and puts a `security_barrier` view with the same name in `marts`.
+  - The view is owned by `policy_owner` (no login, not superuser, not the table owner). It masks with `CASE WHEN current_user IN (...)`.
+  - Row filters are real **RLS policies** on the `marts_base` tables, written for `policy_owner` and keyed on `current_user`. Inside a view, `current_user` is still the *caller*, which I checked against Postgres before building on it.
+  - Principals have no USAGE on `marts_base`, and get **column-level** SELECT on the views. A hidden column is simply never granted.
+  - Each principal is its own LOGIN role: NOINHERIT, not a member of anything, read-only by default, 30 s statement timeout.
+- **Why:**
+  - The SQL an LLM writes is `marts.<table>` for every role. It means the same thing on Unity Catalog (Phase 9), where native row filters and column masks sit on the table itself. Gold SQL and eval questions don't fork per backend.
+  - Two independent controls protect a row: the view's owner is subject to RLS, and the caller can't reach the base table at all.
+- **Rejected:**
+  - *Generated `email_masked` columns:* the column names would differ per role and per backend.
+  - *Per-role schemas with `search_path`:* the LLM's SQL would have to change per role.
+  - *Predicates inline in each view:* no RLS at all, and the PRD's control matrix asks for it.
+- **Consequences:**
+  - dbt replaces the tables on every build, dropping the views, so access **fails closed** until `make policies` runs again. The script is idempotent: it revokes everything, then re-grants.
+  - Tables that can't be filtered (no `region_code`, e.g. `orders_v1`) are *denied* to row-filtered roles unless listed as `unfiltered`. That's deny by default.
+  - Masking only exists in `marts`. A masked column elsewhere is hidden instead (fail closed).
+  - Trap evals that need `orders_v1` must use a role without a row filter.
+  - The `audit_writer` role is the one login role that isn't read-only by default. It has an INSERT-only grant instead. The first DB test run caught this: it had been created read-only like the principals and couldn't write.
+
+## D14. Role-filtered metadata and the description lint (tasks 3.5-3.6)
+- **One decision, two enforcers:** `policies.yml` is resolved once against the graph's tags into a `PolicySpec`. The same spec drives the SQL compiler and the metadata filter, so "what the model can see" and "what the database allows" can't drift apart.
+- **What filtering removes for each principal:**
+  - relations it can't query, and hidden columns
+  - metrics and query examples that would reveal them
+  - caveats and exposures left with nothing visible to attach to
+  - compiled model SQL, for anyone who doesn't see everything, because it names every upstream column
+- Relations that lost columns are **re-embedded**, because their original text listed the hidden column names and the vector would still "know" them.
+- **Non-confirming:** a hidden id returns exactly the same "unknown node id" error as a made-up id, through the query API and the MCP tools (tested both ways).
+- **Lint:**
+  - Visible text is flagged if it names a column hidden from that principal, its name with spaces, or its PII kind (`salary`, `email`, `phone`). `name` alone is too common to flag.
+  - It is scoped to the tables the text describes. "Retention campaigns (especially email)" on a campaign caveat is about a channel, so it isn't flagged.
+  - The first run found real leaks in the dbt docs, e.g. "Contains PII (name, email, phone)" on `dim_customers` (visible to marketing) and "with annual salary" on `dim_employees`. The descriptions were rewritten to point at column tags instead, and the payroll caveat now attaches only to the salary column.
+  - `warehouse-graph policies` refuses to apply while the lint has findings.
+
+## D15. MCP server on SDK v2, identity binding, pinned schemas (tasks 3.7-3.9)
+- **SDK:** the official Python SDK is now at 2.x, where `FastMCP` became `MCPServer`. Tool functions return the Pydantic models from the query API, so every tool has a structured output schema.
+- **Identity:**
+  - Over an authenticated transport, the access token's subject is the identity.
+  - Over stdio there's no token, so the host app, which has already authenticated its user, starts the server bound to that identity (`warehouse-graph mcp --identity`).
+  - Either way `policies.yml` maps the identity to a principal. Unknown identities are refused at startup, and a server with no identity answers nothing.
+- **Schemas:** `schemas/mcp/v1/` pins every tool's input and output JSON Schema, and contract tests fail on drift. Changing them is a deliberate act (`warehouse-graph mcp-schemas --write`) and means a schema version bump for clients.
+- **Audit:** `audit.events` is append-only by trigger (UPDATE, DELETE and TRUNCATE are rejected, even for the owner). Only `audit_writer` (INSERT only) writes, and only `admin` reads. MCP tool calls and not-found lookups are logged when the server runs with `--audit`.
+- **Additive change (2026-10-26, for P1 retriever 2):** `search_nodes` gained an optional `mode` (`hybrid` default, `vector`, `bm25`) so a single-signal baseline goes through the same governed tool. Existing calls are unchanged; the pinned input schema was regenerated deliberately. Still exactly 5 tools.
+
+## D16. Freshness propagated to models (found in Phase 5)
+- **Problem:** roles that only see `marts` (analysts, marketing, finance) have no source nodes in their filtered graph. A retriever acting as them therefore can't walk lineage to a stale source, and PRD §3.2 scenario 5 ("source last loaded 9 days ago, SLA 1 day") was impossible for exactly the users who need it. The P1 retrieval eval showed this: 0% on the stale-source traps for both retrievers.
+- **Choice:** at build time every model gets `upstream_freshness` (the worst freshness status of all its upstream sources) and `upstream_freshness_note` (how late the data is and the SLA, **without naming the source**). Any role that can see the model sees whether its data is stale; hidden nodes stay hidden.
+- **Rejected:** granting marts-only roles metadata access to sources (it widens what they can see for one fact), and walking lineage at query time as an admin service account (a second identity inside the request path is exactly the kind of back door D13 avoids).

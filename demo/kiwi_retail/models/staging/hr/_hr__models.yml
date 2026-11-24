@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_hr__employees
-    description: Employees, current and former. Contains salary (restricted).
+    description: Employees, current and former.
     config:
       meta: {owner: "people-ops@kiwiretail.example", sensitivity: restricted}
     columns:

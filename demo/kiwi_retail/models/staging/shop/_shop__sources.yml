@@ -11,7 +11,7 @@ sources:
       meta: {owner: "data-platform@kiwiretail.example", loader: "commerce-replicator"}
     tables:
       - name: customers
-        description: One row per registered customer. Contains PII (email, phone).
+        description: One row per registered customer.
       - name: orders
         description: One row per order header, all channels.
         config:

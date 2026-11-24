@@ -1,0 +1,14 @@
+{
+  "properties": {
+    "id": {
+      "description": "Source, model or column id",
+      "title": "Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "title": "get_blast_radiusArguments",
+  "type": "object"
+}
