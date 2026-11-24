@@ -19,7 +19,7 @@ import pytest
 from mcp import Client
 from mcp.types import TextContent
 
-from warehouse_graph.adapters import PostgresAdapter
+from warehouse_graph.adapters import AccessDenied, PostgresAdapter, WarehouseError
 from warehouse_graph.adapters.postgres import principal_conninfo
 from warehouse_graph.demo.load import conninfo_from_env
 from warehouse_graph.governance import Principal, load_policies, resolve
@@ -278,9 +278,9 @@ def test_postgres_adapter(roles: dict[str, psycopg.Connection[Any]]) -> None:
         assert rows.stats().row_count == 5
         plan = adapter.explain(s, "select count(*) from marts.fct_orders")
         assert "marts_base.fct_orders" in plan.relations
-        with pytest.raises(psycopg.errors.QueryCanceled):
+        with pytest.raises(WarehouseError, match="timeout"):
             adapter.execute(s, "select pg_sleep(3)", 1, 1)
-        with pytest.raises(DENIED):
+        with pytest.raises(AccessDenied):
             adapter.execute(s, "select annual_salary from marts.dim_employees", 1, 5)
     finally:
         s.close()

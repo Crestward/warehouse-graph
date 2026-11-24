@@ -22,6 +22,11 @@ dependencies = [
 [project.scripts]
 warehouse-graph = "warehouse_graph.cli:main"
 
+[project.optional-dependencies]
+# The databricks-dev profile (Phase 9). dbt-databricks is run isolated with uvx instead: it pins
+# older shared packages.
+databricks = ["databricks-sql-connector>=4"]
+
 [dependency-groups]
 demo = [
     "dagster>=1.13.26",
@@ -74,6 +79,7 @@ files = ["src", "tests"]
 testpaths = ["tests"]
 markers = [
     "integration: needs local Postgres with the demo warehouse built (make warehouse)",
+    "databricks: needs the live Databricks workspace (WG_DATABRICKS_TESTS=1)",
 ]
 filterwarnings = [
     # sqlglot[rs] comes in through dagster-dbt/metricflow (demo group), not from our code.

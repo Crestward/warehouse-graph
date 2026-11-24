@@ -15,7 +15,15 @@ from typing import Any
 
 import psycopg
 
-from warehouse_graph.adapters.protocols import Freshness, PlanInfo, Rows, Session
+from warehouse_graph.adapters.protocols import (
+    AccessDenied,
+    Freshness,
+    PlanInfo,
+    Rows,
+    Session,
+    UnknownObject,
+    WarehouseError,
+)
 from warehouse_graph.demo.load import conninfo_from_env
 from warehouse_graph.governance.policies import PolicySpec, Principal
 from warehouse_graph.governance.postgres import compile_postgres, role_password
@@ -50,6 +58,24 @@ def _conn(s: Session) -> psycopg.Connection[Any]:
     return s.conn
 
 
+_UNKNOWN = (
+    psycopg.errors.UndefinedColumn,
+    psycopg.errors.UndefinedTable,
+    psycopg.errors.UndefinedFunction,
+    psycopg.errors.InvalidSchemaName,
+)
+
+
+def translate(error: psycopg.Error) -> WarehouseError:
+    first = str(error).splitlines()[0][:300] if str(error) else ""
+    text = f"{type(error).__name__}: {first}" if first else type(error).__name__
+    if isinstance(error, psycopg.errors.InsufficientPrivilege):
+        return AccessDenied(text)
+    if isinstance(error, _UNKNOWN):
+        return UnknownObject(text)
+    return WarehouseError(text)
+
+
 def _relations(plan: dict[str, Any]) -> set[str]:
     found: set[str] = set()
     if "Relation Name" in plan:
@@ -65,12 +91,17 @@ class PostgresAdapter:
         self.admin_conninfo = admin_conninfo or conninfo_from_env()
 
     def session_as(self, principal: Principal) -> PostgresSession:
-        return PostgresSession(principal, psycopg.connect(principal_conninfo(principal)))
+        try:
+            return PostgresSession(principal, psycopg.connect(principal_conninfo(principal)))
+        except psycopg.Error as e:
+            raise translate(e) from e
 
     def explain(self, s: Session, sql: str) -> PlanInfo:
         conn = _conn(s)
         try:
             row = conn.execute(f"explain (format json, verbose) {sql}").fetchone()
+        except psycopg.Error as e:
+            raise translate(e) from e
         finally:
             conn.rollback()
         assert row is not None
@@ -90,6 +121,8 @@ class PostgresAdapter:
             cur = conn.execute(sql)
             columns = tuple(d.name for d in cur.description or ())
             fetched = cur.fetchmany(limit + 1)
+        except psycopg.Error as e:
+            raise translate(e) from e
         finally:
             conn.rollback()  # read-only work; never leave a transaction open
         return Rows(

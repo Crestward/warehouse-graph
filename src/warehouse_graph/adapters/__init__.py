@@ -2,6 +2,7 @@
 
 from warehouse_graph.adapters.postgres import PostgresAdapter
 from warehouse_graph.adapters.protocols import (
+    AccessDenied,
     EventSource,
     Freshness,
     LLMProvider,
@@ -14,10 +15,13 @@ from warehouse_graph.adapters.protocols import (
     ResultStats,
     Rows,
     Session,
+    UnknownObject,
     WarehouseAdapter,
+    WarehouseError,
 )
 
 __all__ = [
+    "AccessDenied",
     "EventSource",
     "Freshness",
     "LLMProvider",
@@ -31,5 +35,7 @@ __all__ = [
     "ResultStats",
     "Rows",
     "Session",
+    "UnknownObject",
     "WarehouseAdapter",
+    "WarehouseError",
 ]
