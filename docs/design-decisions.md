@@ -133,3 +133,25 @@ Format: **context → options → choice → why**. Newest at the bottom. Scope 
 - **Problem:** roles that only see `marts` (analysts, marketing, finance) have no source nodes in their filtered graph. A retriever acting as them therefore can't walk lineage to a stale source, and PRD §3.2 scenario 5 ("source last loaded 9 days ago, SLA 1 day") was impossible for exactly the users who need it. The P1 retrieval eval showed this: 0% on the stale-source traps for both retrievers.
 - **Choice:** at build time every model gets `upstream_freshness` (the worst freshness status of all its upstream sources) and `upstream_freshness_note` (how late the data is and the SLA, **without naming the source**). Any role that can see the model sees whether its data is stale; hidden nodes stay hidden.
 - **Rejected:** granting marts-only roles metadata access to sources (it widens what they can see for one fact), and walking lineage at query time as an admin service account (a second identity inside the request path is exactly the kind of back door D13 avoids).
+
+## D17. Unity Catalog policy layout: one catalog of views per principal, over native filters (task 9.4)
+- **Problem:** Unity Catalog has native row filters and column masks, but **no column-level grants**. "Hidden = not granted" (D13) has no direct equivalent: a mask can null a column, but `DESCRIBE` still shows that it exists.
+- **Choice:**
+  - `kiwi.marts.*` (the tables dbt built) carry a native **row filter** and **column masks**, keyed on `current_user()` through `policy.principal()`. An unknown user gets no rows; a hidden column is NULL.
+  - Each principal has its own catalog, `kiwi_<principal>`, of **views**: visible columns only, masked, filtered. It is granted that catalog and nothing else that holds data.
+  - A session's default catalog is its principal's, so generated SQL stays `marts.<t>` for every role and both backends. The adapter transpiles Postgres to Databricks and refuses a table qualified with a catalog.
+- **Two independent layers.** Each alone gives the right rows and masks, and both are tested alone. It matters in practice: **a dbt rebuild drops the row filter** (masks survive; measured 2026-11-24). Until `policies` runs again, the views still filter.
+- **Rejected:**
+  - *Masks returning NULL as the only way to hide:* the column's existence leaks.
+  - *One schema per principal and rewriting SQL:* a bug in the rewriter would be a bug in enforcement. A default catalog needs no rewriting.
+  - *Views only:* PRD §6.4 asks for native controls, and they also hold for queries that bypass the views.
+- **Raw tables stay unfiltered,** so the fault injector can write to them.
+- **dbt-databricks runs isolated (`uvx`),** into its own target directory: installed next to dagster-dbt it downgraded shared packages (pydantic), and the local artifacts the graph is built from stay untouched. The dbt project built unchanged: 40 models, 115 tests, no SQL changes (D9's portability claim holds).
+- **Errors are backend-neutral** (`AccessDenied`, `UnknownObject`, `WarehouseError`). A hidden column reads as denied on Postgres and unknown on Unity Catalog, and warehouse-qa words both the same.
+
+## D18. Identity on `databricks-dev`: single-user fallback (tasks 9.0-9.1)
+- **Evidence:** the Free Edition workspace still has one user and no service principals (checked 2026-11-24). Spike check 3 wasn't done, so the fallback written in the spike applies.
+- **Choice:** the design is one login per principal (`DATABRICKS_USER_<P>`, `DATABRICKS_TOKEN_<P>`), and `session_as` **refuses** a principal without its own token. Tests opt in to `single_identity`, which uses the deployer's token with the principal's catalog.
+- **What that can test, for all six principals:** the views (rows, columns, masks, hidden columns, unseen tables) and, by mapping the deployer to each principal in turn, the native filters and masks with no view in the way.
+- **What it can't:** that a *different* user is really refused outside its own catalog. The grants are compiled and unit-tested, and the live catalogs are checked for unexpected grantees, but with one owner nothing is denied. That needs a second user, or Phase 16's service principals.
+- **Expiry:** the workspace token lasts 30 days (next: 2026-11-25).

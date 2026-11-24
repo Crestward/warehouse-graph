@@ -7,11 +7,12 @@ Shared foundation for two linked projects:
 
 This package will build a metadata/lineage graph from dbt artifacts, compile one `policies.yml` to database access controls (Postgres RLS / Unity Catalog), and serve the graph over an MCP server.
 
-> **Status: Phase 3 (adapters, policy-as-code, MCP server).** Done so far:
+> **Status: Phase 9 (runs on Postgres and Databricks Unity Catalog).** Done so far:
 > - repo tooling and the LLM wrapper (cost ledger, cache, budget cap, Batch API)
 > - **Kiwi Retail Co.**, a deliberately messy synthetic warehouse: 40 dbt models, 13 metrics, 6 dashboards, 13 documented traps
 > - **the metadata graph**: 575 nodes and 1,026 edges built from the dbt artifacts in ~10 s, with 97.8% column-level lineage and a Python query API
 > - **governance**: one `policies.yml` compiled to Postgres roles, RLS, column grants and masked views; role-filtered metadata; a description lint; an append-only audit log; and the 5-tool **MCP server**
+> - **Unity Catalog**: the same `policies.yml` compiled to per-principal catalogs, row filters and column masks, and tested against Postgres principal by principal
 
 ## Quick start
 
@@ -148,6 +149,27 @@ flowchart LR
 | Audit | `audit.events`, append-only by trigger; `audit_writer` can only insert |
 
 The SQL is the same for every role (`select email from marts.dim_customers`); the database decides what comes back. Design: D13-D15 in [`docs/design-decisions.md`](docs/design-decisions.md).
+
+## Runs on Postgres and Databricks Unity Catalog
+The same dbt project, the same `policies.yml` and the same `marts.<table>` SQL run on both. Only the compiler and the adapter differ.
+
+| Control | Postgres (`local`) | Unity Catalog (`databricks-dev`) |
+|---|---|---|
+| Rows | RLS on `current_user` | view predicate **and** native row filter on `current_user()` |
+| Masked columns | `security_barrier` views | view **and** native column mask |
+| Hidden columns | no column grant | not in the principal's catalog of views; NULL in the base table |
+| Reach | schema and column grants | granted its own catalog only; catalog-qualified SQL is refused |
+| Identity | one login role per principal | one user per principal |
+
+```bash
+uv sync --extra databricks                              # DATABRICKS_* in .env (see .env.example)
+uv run warehouse-graph demo-data --target databricks --stale ad_spend
+uv run warehouse-graph demo-build --target databricks   # dbt-databricks, isolated with uvx
+uv run warehouse-graph policies --backend databricks    # rerun after every dbt build
+WG_DATABRICKS_TESTS=1 uv run pytest -m databricks       # compare with local Postgres
+```
+**Tested live, for all six principals:** same row counts in every visible table, same visible columns, same non-null and distinct counts in every `marts` column, identical masked values, and hidden columns and unseen tables that don't exist. The native filters alone (no views) give the same access. Breaking a view or a mask on purpose fails the tests.
+**Not tested:** that a second user is refused outside its own catalog, because the Free Edition workspace has one user (D18). Queries only ever compare access: accuracy is evaluated on Postgres.
 
 ## MCP server
 Both projects reach the graph only through these five tools, always as the caller's principal:
