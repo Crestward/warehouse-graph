@@ -6,9 +6,14 @@ import argparse
 import os
 import sys
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from warehouse_graph.demo.datagen import DEFAULT_SEED
 from warehouse_graph.llm import AnthropicProvider, LLMClient, LLMRequest
+
+if TYPE_CHECKING:
+    from warehouse_graph.governance.policies import PolicySpec
+    from warehouse_graph.graph import GraphArtifact
 
 SMOKE_MODEL = "claude-haiku-4-5"
 
@@ -40,11 +45,16 @@ def llm_smoke() -> int:
     return 0
 
 
-def demo_data(seed: int, stale: list[str]) -> int:
-    """Generate the Kiwi Retail Co. raw tables and load them into local Postgres."""
-    from warehouse_graph.demo.load import run
+def demo_data(seed: int, stale: list[str], target: str) -> int:
+    """Generate the Kiwi Retail Co. raw tables and load them into Postgres or Unity Catalog."""
+    if target == "databricks":
+        from warehouse_graph.demo.databricks import load
 
-    counts = run(seed, stale)
+        counts = load(seed, stale)
+    else:
+        from warehouse_graph.demo.load import run
+
+        counts = run(seed, stale)
     total = sum(counts.values())
     print(f"loaded {total} rows into raw.* (seed={seed}, stale={stale or 'none'})")
     for name, n in counts.items():
@@ -52,8 +62,12 @@ def demo_data(seed: int, stale: list[str]) -> int:
     return 0
 
 
-def demo_build() -> int:
+def demo_build(target: str) -> int:
     """Build the demo dbt project and copy its four artifacts to demo/artifacts/."""
+    if target == "databricks":  # no artifacts: the graph is built from the local ones
+        from warehouse_graph.demo.databricks import dbt
+
+        return dbt(["build"])  # the deployer is `admin`, so its reads aren't filtered
     from warehouse_graph.demo.build import ARTIFACTS, ARTIFACTS_DIR, run
 
     results = run()
@@ -110,8 +124,10 @@ def graph_lineage(
     return 0
 
 
-def policies(policy_path: Path, graph_path: Path | None, print_only: bool) -> int:
-    """Lint, then compile policies.yml to Postgres and apply it (idempotent)."""
+def policies(
+    policy_path: Path, graph_path: Path | None, print_only: bool, backend: str = "postgres"
+) -> int:
+    """Lint, then compile policies.yml to a backend and apply it (idempotent)."""
     from warehouse_graph.adapters import PostgresAdapter
     from warehouse_graph.governance import load_policies, resolve
     from warehouse_graph.governance.lint import lint_descriptions
@@ -121,6 +137,8 @@ def policies(policy_path: Path, graph_path: Path | None, print_only: bool) -> in
     graph = GraphArtifact.load(graph_path or GraphConfig.load().output)
     spec = resolve(load_policies(policy_path), graph)
     if print_only:
+        if backend == "databricks":
+            return print_unity(spec)
         print(";\n\n".join(redact(s) for s in compile_postgres(spec)) + ";")
         return 0
     findings = lint_descriptions(spec, graph)
@@ -131,7 +149,10 @@ def policies(policy_path: Path, graph_path: Path | None, print_only: bool) -> in
     if findings:
         print(f"{len(findings)} description lint finding(s); fix the docs, then rerun")
         return 1
-    PostgresAdapter(graph).apply_policies(spec)
+    if backend == "databricks":
+        apply_unity(graph, spec)
+    else:
+        PostgresAdapter(graph).apply_policies(spec)
     for name, access in spec.access.items():
         print(
             f"{name:<11} {len(access.relations):>3} relations, {len(access.hidden_columns):>3}"
@@ -144,6 +165,31 @@ def policies(policy_path: Path, graph_path: Path | None, print_only: bool) -> in
         )
     print("policies applied; description lint clean")
     return 0
+
+
+def print_unity(spec: PolicySpec) -> int:
+    from warehouse_graph.adapters.databricks import DatabricksAdapter, identities_from_env
+    from warehouse_graph.governance.unity import compile_unity
+
+    adapter = DatabricksAdapter()
+    identities = {p: f"<user of {p}>" for p in identities_from_env(spec.access)}
+    statements = compile_unity(spec, adapter.catalog, adapter.column_types(), identities)
+    print(";\n\n".join(statements) + ";")
+    return 0
+
+
+def apply_unity(graph: GraphArtifact, spec: PolicySpec) -> None:
+    """Apply to Unity Catalog. The deployer is `admin` unless DATABRICKS_USER_ADMIN says who is:
+    it owns the tables, and dbt must not read them filtered."""
+    from warehouse_graph.adapters.databricks import DatabricksAdapter, identities_from_env
+
+    adapter = DatabricksAdapter(graph)
+    identities = identities_from_env(spec.access)
+    identities.setdefault("admin", adapter.current_user())
+    adapter.apply_policies(spec, identities)
+    missing = sorted(set(spec.access) - set(identities))
+    if missing:
+        print(f"no user for {', '.join(missing)}: views created, nothing granted")
 
 
 def mcp_serve(identity: str, graph_path: Path | None, policy_path: Path, audit: bool) -> int:
@@ -190,7 +236,9 @@ def main(argv: list[str] | None = None) -> int:
     demo.add_argument(
         "--stale", nargs="*", default=[], metavar="TABLE", help="back-date _loaded_at"
     )
-    sub.add_parser("demo-build", help="dbt build + freshness + docs; collect artifacts")
+    db = sub.add_parser("demo-build", help="dbt build + freshness + docs; collect artifacts")
+    for p in (demo, db):
+        p.add_argument("--target", choices=["local", "databricks"], default="local")
     gb = sub.add_parser("build", help="build the graph file from the dbt artifacts")
     gb.add_argument("--config", type=Path, default=Path("warehouse-graph.toml"))
     gb.add_argument("--embedding-model", help="override the config (`hash` = no model, tests)")
@@ -204,6 +252,7 @@ def main(argv: list[str] | None = None) -> int:
     pol = sub.add_parser("policies", help="lint + compile policies.yml and apply it to Postgres")
     pol.add_argument("--policies", type=Path, default=Path("policies.yml"))
     pol.add_argument("--graph", type=Path, help="graph file (default: the config's output)")
+    pol.add_argument("--backend", choices=["postgres", "databricks"], default="postgres")
     pol.add_argument("--print", action="store_true", help="print the SQL instead of applying it")
     mc = sub.add_parser("mcp", help="run the MCP server over stdio for one identity")
     mc.add_argument("--identity", required=True, help="the authenticated user, e.g. an email")
@@ -217,9 +266,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "llm-smoke":
         return llm_smoke()
     if args.command == "demo-data":
-        return demo_data(args.seed, args.stale)
+        return demo_data(args.seed, args.stale, args.target)
     if args.command == "demo-build":
-        return demo_build()
+        return demo_build(args.target)
     if args.command == "build":
         return graph_build(args.config, args.embedding_model, args.stats)
     if args.command == "mcp":
@@ -227,7 +276,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "mcp-schemas":
         return mcp_schemas(args.write)
     if args.command == "policies":
-        return policies(args.policies, args.graph, args.print)
+        return policies(args.policies, args.graph, args.print, args.backend)
     if args.command == "lineage":
         return graph_lineage(args.node_id, args.direction, args.depth, args.level, args.graph)
     return 1

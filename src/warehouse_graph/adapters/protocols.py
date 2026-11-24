@@ -23,6 +23,7 @@ from warehouse_graph.graph.dbt import MetadataSource
 from warehouse_graph.llm.provider import LLMProvider
 
 __all__ = [
+    "AccessDenied",
     "ColumnStats",
     "EventSource",
     "Freshness",
@@ -36,8 +37,23 @@ __all__ = [
     "ResultStats",
     "Rows",
     "Session",
+    "UnknownObject",
     "WarehouseAdapter",
+    "WarehouseError",
 ]
+
+
+class WarehouseError(Exception):
+    """A query failed. Adapters translate their driver's errors to these, so callers don't
+    depend on one backend."""
+
+
+class AccessDenied(WarehouseError):
+    """The database refused: this principal may not do that."""
+
+
+class UnknownObject(WarehouseError):
+    """No such table, column, schema or function, as far as this principal can tell."""
 
 
 class Session(Protocol):
